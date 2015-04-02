@@ -8,6 +8,8 @@ public class HospitalE3G {
         System.out.println("Paiva gay");
 
         System.out.println("Teste");
+        
+        System.out.println("Verdão comanda");
 
     }
     
