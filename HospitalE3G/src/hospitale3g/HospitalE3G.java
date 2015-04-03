@@ -9,4 +9,5 @@ public class HospitalE3G {
         login.setLocationRelativeTo(null);
         login.setVisible(true);
     }
+    
 }
