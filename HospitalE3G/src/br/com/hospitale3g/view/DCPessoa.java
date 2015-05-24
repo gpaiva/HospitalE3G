@@ -1,24 +1,27 @@
-package view;
+package br.com.hospitale3g.view;
 
-import dao.DaoPessoa;
+import br.com.hospitale3g.dao.DaoPessoa;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import model.Pessoa;
+import br.com.hospitale3g.model.Pessoa;
+import br.com.hospitale3g.controller.Lib;
 
 public class DCPessoa extends javax.swing.JDialog {
 
     public DCPessoa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
+        this.initComponents();
+        
         this.atualizarJTable();
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jpPrincipal = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbPessoa = new javax.swing.JTable();
         btNovo = new javax.swing.JButton();
@@ -29,11 +32,13 @@ public class DCPessoa extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Pessoa");
+        setName("cPessoa"); // NOI18N
         setPreferredSize(new java.awt.Dimension(700, 500));
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
+        jpPrincipal.setBorder(null);
 
         tbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         tbPessoa.setModel(new javax.swing.table.DefaultTableModel(
@@ -88,48 +93,48 @@ public class DCPessoa extends javax.swing.JDialog {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
+        jpPrincipal.setLayout(jpPrincipalLayout);
+        jpPrincipalLayout.setHorizontalGroup(
+            jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        jpPrincipalLayout.setVerticalGroup(
+            jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -137,24 +142,20 @@ public class DCPessoa extends javax.swing.JDialog {
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
         DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
-                "Inclui - Pessoa");
-        iPessoa.setLocationRelativeTo(null);
+                "Incluir - Pessoa");
         iPessoa.setVisible(true);
         this.atualizarJTable();
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
         DaoPessoa daoPessoa = new DaoPessoa();
-        daoPessoa.delete(this.getPessoaSelecionada().getPesCodigo());
+        daoPessoa.delete(this.getPessoaSelecionada().getCodPessoa());
         this.atualizarJTable();
     }//GEN-LAST:event_btExcluirActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
-                "Editar - Pessoa",
-                this.getPessoaSelecionada().getPesCodigo(),
-                this.getPessoaSelecionada().getPesNome());
-        iPessoa.setLocationRelativeTo(null);
+                "Editar - Pessoa", this.getPessoaSelecionada());
         iPessoa.setVisible(true);
         this.atualizarJTable();
 
@@ -206,9 +207,13 @@ public class DCPessoa extends javax.swing.JDialog {
     }
 
     private Pessoa getPessoaSelecionada() {
-        Pessoa pessoa = new Pessoa(Integer.parseInt(this.getTbPessoa().getValueAt(
-                this.getTbPessoa().getSelectedRow(), 0).toString()),
-                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 1).toString());
+        Pessoa pessoa = new Pessoa(
+                Integer.parseInt(this.getTbPessoa().getValueAt(
+                                this.getTbPessoa().getSelectedRow(), 0).toString()),
+                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 1).toString(),
+                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 2).toString().charAt(0),
+                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 3).toString(),
+                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 4).toString());
         return (pessoa);
     }
 
@@ -217,22 +222,8 @@ public class DCPessoa extends javax.swing.JDialog {
     }
 
     private void atualizarJTable() {
-        DefaultTableModel modelo = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int rowIndex, int mColIndex) {
-                return (false);
-            }
-        };
         DaoPessoa daoPessoa = new DaoPessoa();
-        for (int i = 0; i <= daoPessoa.getColumns().length - 1; i++) {
-            String[] aux = daoPessoa.getColumns();
-            modelo.addColumn(aux[i]);
-        }
-        modelo.setNumRows(0);
-        for (Pessoa pessoa : daoPessoa.select()) {
-            modelo.addRow(new Object[]{pessoa.getPesCodigo(), pessoa.getPesNome()});
-        }
-        this.getTbPessoa().setModel(modelo);
+        this.getTbPessoa().setModel(daoPessoa.getTableModel());
         this.getTbPessoa().getColumnModel().getColumn(0).setPreferredWidth(10);
         this.getTbPessoa().getColumnModel().getColumn(1).setPreferredWidth(100);
         this.getTbPessoa().requestFocus();
@@ -245,8 +236,8 @@ public class DCPessoa extends javax.swing.JDialog {
     private javax.swing.JButton btExcluir;
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSair;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable tbPessoa;
     // End of variables declaration//GEN-END:variables
 

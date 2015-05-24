@@ -1,17 +1,20 @@
-package view;
+package br.com.hospitale3g.view;
 
-import dao.DaoUsuario;
+import br.com.hospitale3g.dao.DaoUsuario;
+import br.com.hospitale3g.view.DExcecao;
 
 public class FLogin extends javax.swing.JFrame {
 
     public FLogin() {
-        initComponents();
+        this.initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jpPrincipal = new javax.swing.JPanel();
         pfSenha = new javax.swing.JPasswordField();
         tfUsuario = new javax.swing.JTextField();
         lbUsuario = new javax.swing.JLabel();
@@ -19,6 +22,11 @@ public class FLogin extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hospital E3G");
+        setName("jfLogin"); // NOI18N
+        setResizable(false);
+
+        jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
 
         pfSenha.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
@@ -38,24 +46,24 @@ public class FLogin extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+        javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
+        jpPrincipal.setLayout(jpPrincipalLayout);
+        jpPrincipalLayout.setHorizontalGroup(
+            jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lbUsuario)
                     .addComponent(lbSenha)
                     .addComponent(tfUsuario)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
+        jpPrincipalLayout.setVerticalGroup(
+            jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
+                .addContainerGap(61, Short.MAX_VALUE)
                 .addComponent(lbUsuario)
                 .addGap(4, 4, 4)
                 .addComponent(tfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -65,7 +73,18 @@ public class FLogin extends javax.swing.JFrame {
                 .addComponent(pfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -75,12 +94,11 @@ public class FLogin extends javax.swing.JFrame {
         DaoUsuario daoUsuario = new DaoUsuario();
         if (daoUsuario.findUsuario(this.tfUsuario.getText(), String.valueOf(this.pfSenha.getPassword()))) {
             FPrincipal principal = new FPrincipal();
-            principal.setLocationRelativeTo(null);
-            principal.setExtendedState(FPrincipal.MAXIMIZED_BOTH);
             principal.setVisible(true);
             this.dispose();
         } else {
-            System.err.println("Usuário não encontrado no Banco de Dados!");
+            DExcecao excecao = new DExcecao(null, true, "Usuário não encontrado no Banco de Dados!");
+            excecao.setVisible(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -116,6 +134,7 @@ public class FLogin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jpPrincipal;
     private javax.swing.JLabel lbSenha;
     private javax.swing.JLabel lbUsuario;
     private javax.swing.JPasswordField pfSenha;

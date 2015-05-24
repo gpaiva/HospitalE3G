@@ -1,22 +1,29 @@
-package view;
+package br.com.hospitale3g.view;
 
 import java.awt.Dialog;
 
 public class FPrincipal extends javax.swing.JFrame {
 
     public FPrincipal() {
-        initComponents();
+        this.initComponents();
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(FPrincipal.MAXIMIZED_BOTH);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jpPrincipal = new javax.swing.JPanel();
         btPessoa = new javax.swing.JButton();
+        btUsuario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hospital E3G");
 
+        jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
+
+        btPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btPessoa.setText("Pessoas");
         btPessoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -24,19 +31,44 @@ public class FPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btUsuario.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btUsuario.setText("Usuarios");
+        btUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btUsuarioActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
+        jpPrincipal.setLayout(jpPrincipalLayout);
+        jpPrincipalLayout.setHorizontalGroup(
+            jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(299, Short.MAX_VALUE))
+        );
+        jpPrincipalLayout.setVerticalGroup(
+            jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(202, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(btPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 305, Short.MAX_VALUE))
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(btPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 190, Short.MAX_VALUE))
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -44,9 +76,13 @@ public class FPrincipal extends javax.swing.JFrame {
 
     private void btPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPessoaActionPerformed
         DCPessoa cPessoa = new DCPessoa(this, true);
-        cPessoa.setLocationRelativeTo(null);
         cPessoa.setVisible(true);
     }//GEN-LAST:event_btPessoaActionPerformed
+
+    private void btUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUsuarioActionPerformed
+        DCUsuario cUsuario = new DCUsuario(this, true);
+        cUsuario.setVisible(true);
+    }//GEN-LAST:event_btUsuarioActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -80,5 +116,7 @@ public class FPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btPessoa;
+    private javax.swing.JButton btUsuario;
+    private javax.swing.JPanel jpPrincipal;
     // End of variables declaration//GEN-END:variables
 }
