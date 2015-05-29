@@ -10,58 +10,65 @@ import javax.swing.JComboBox;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.Lib;
 
-public class DIUsuario extends javax.swing.JDialog {
-
+public class DIMedico extends javax.swing.JDialog {
+    
     public enum tipoFormulario {
 
         tfINCLUSAO, tfEDICAO;
     }
-
+    
     private tipoFormulario tipo;
-
-    public DIUsuario(java.awt.Frame parent, boolean modal, String title) {
+    
+    public DIMedico(java.awt.Frame parent, boolean modal, String title) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
-
+        
         this.setTipo(tipoFormulario.tfINCLUSAO);
     }
-
-    public DIUsuario(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
+    
+    public DIMedico(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
-
+        
         this.setTipo(tipoFormulario.tfEDICAO);
-        this.jcbPessoa.setEnabled(false);
-        this.jtfSenhaAntiga.setEnabled(true);
+        this.jcbPessoas.setEnabled(false);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jpPrincipal = new javax.swing.JPanel();
+        jlbCRM = new javax.swing.JLabel();
+        jtfCRM = new javax.swing.JTextField();
+        jcbPessoas = new javax.swing.JComboBox();
+        jlbPessoas = new javax.swing.JLabel();
         jpBotoes = new javax.swing.JPanel();
         btSalvar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
-        jtfUsuario = new javax.swing.JTextField();
-        jlbUsuario = new javax.swing.JLabel();
-        jcbPessoa = new javax.swing.JComboBox();
-        jlbPessoa = new javax.swing.JLabel();
-        jtfSenhaAntiga = new javax.swing.JTextField();
-        jlbSenhaAntiga = new javax.swing.JLabel();
-        jtfSenha = new javax.swing.JTextField();
-        jlbSenha = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Incluir - Usuário");
+        setTitle("Incluir - Médico");
+        setName("iMedico"); // NOI18N
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
         jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
+
+        jlbCRM.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jlbCRM.setText("*CRM");
+
+        jtfCRM.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+
+        jcbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jcbPessoas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pessoas..." }));
+
+        jlbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jlbPessoas.setText("*Pessoa");
 
         jpBotoes.setBackground(new java.awt.Color(204, 204, 255));
         jpBotoes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -91,11 +98,11 @@ public class DIUsuario extends javax.swing.JDialog {
         jpBotoesLayout.setHorizontalGroup(
             jpBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpBotoesLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         jpBotoesLayout.setVerticalGroup(
             jpBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,74 +114,31 @@ public class DIUsuario extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jtfUsuario.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-
-        jlbUsuario.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbUsuario.setText("*Usuário:");
-
-        jcbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-
-        jlbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbPessoa.setText("*Pessoa:");
-
-        jtfSenhaAntiga.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jtfSenhaAntiga.setEnabled(false);
-
-        jlbSenhaAntiga.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbSenhaAntiga.setText("*Senha Antiga:");
-
-        jtfSenha.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-
-        jlbSenha.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbSenha.setText("*Senha:");
-
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcbPessoa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlbPessoa)
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbUsuario)
-                            .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbSenhaAntiga)
-                            .addComponent(jtfSenhaAntiga, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbSenha)
-                            .addComponent(jtfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jlbPessoas)
+                    .addComponent(jlbCRM)
+                    .addComponent(jcbPessoas, 0, 258, Short.MAX_VALUE)
+                    .addComponent(jtfCRM))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jpBotoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(jlbPessoa)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jlbPessoas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addComponent(jcbPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                .addComponent(jlbUsuario)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
-                                .addComponent(jlbSenha)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addComponent(jlbSenhaAntiga)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfSenhaAntiga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jcbPessoas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jlbCRM)
+                .addGap(2, 2, 2)
+                .addComponent(jtfCRM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -200,17 +164,15 @@ public class DIUsuario extends javax.swing.JDialog {
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         this.salvar();
     }//GEN-LAST:event_btSalvarActionPerformed
-
+    
     private void salvar() {
-        char sexo = Lib.iif(jcbPessoa.getSelectedIndex() == 0, 'M', 'F');
-
         sair();
     }
-
+    
     private void sair() {
         this.dispose();
     }
-
+    
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -224,20 +186,22 @@ public class DIUsuario extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DIUsuario dialog = new DIUsuario(new javax.swing.JFrame(), true, "Pessoa");
+                DIMedico dialog = new DIMedico(new javax.swing.JFrame(), true, "Pessoa");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -248,11 +212,11 @@ public class DIUsuario extends javax.swing.JDialog {
             }
         });
     }
-
+    
     private tipoFormulario getTipo() {
         return (this.tipo);
     }
-
+    
     private void setTipo(tipoFormulario tipo) {
         this.tipo = tipo;
     }
@@ -260,15 +224,11 @@ public class DIUsuario extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btSair;
     private javax.swing.JButton btSalvar;
-    private javax.swing.JComboBox jcbPessoa;
-    private javax.swing.JLabel jlbPessoa;
-    private javax.swing.JLabel jlbSenha;
-    private javax.swing.JLabel jlbSenhaAntiga;
-    private javax.swing.JLabel jlbUsuario;
+    private javax.swing.JComboBox jcbPessoas;
+    private javax.swing.JLabel jlbCRM;
+    private javax.swing.JLabel jlbPessoas;
     private javax.swing.JPanel jpBotoes;
     private javax.swing.JPanel jpPrincipal;
-    private javax.swing.JTextField jtfSenha;
-    private javax.swing.JTextField jtfSenhaAntiga;
-    private javax.swing.JTextField jtfUsuario;
+    private javax.swing.JTextField jtfCRM;
     // End of variables declaration//GEN-END:variables
 }

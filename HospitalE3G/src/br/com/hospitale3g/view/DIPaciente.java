@@ -10,7 +10,7 @@ import javax.swing.JComboBox;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.Lib;
 
-public class DIUsuario extends javax.swing.JDialog {
+public class DIPaciente extends javax.swing.JDialog {
 
     public enum tipoFormulario {
 
@@ -19,7 +19,7 @@ public class DIUsuario extends javax.swing.JDialog {
 
     private tipoFormulario tipo;
 
-    public DIUsuario(java.awt.Frame parent, boolean modal, String title) {
+    public DIPaciente(java.awt.Frame parent, boolean modal, String title) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
@@ -28,15 +28,14 @@ public class DIUsuario extends javax.swing.JDialog {
         this.setTipo(tipoFormulario.tfINCLUSAO);
     }
 
-    public DIUsuario(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
+    public DIPaciente(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
 
         this.setTipo(tipoFormulario.tfEDICAO);
-        this.jcbPessoa.setEnabled(false);
-        this.jtfSenhaAntiga.setEnabled(true);
+        this.jcbPessoas.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -44,24 +43,30 @@ public class DIUsuario extends javax.swing.JDialog {
     private void initComponents() {
 
         jpPrincipal = new javax.swing.JPanel();
+        jlbId = new javax.swing.JLabel();
+        jcbPessoas = new javax.swing.JComboBox();
+        jlbPessoas = new javax.swing.JLabel();
         jpBotoes = new javax.swing.JPanel();
         btSalvar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
-        jtfUsuario = new javax.swing.JTextField();
-        jlbUsuario = new javax.swing.JLabel();
-        jcbPessoa = new javax.swing.JComboBox();
-        jlbPessoa = new javax.swing.JLabel();
-        jtfSenhaAntiga = new javax.swing.JTextField();
-        jlbSenhaAntiga = new javax.swing.JLabel();
-        jtfSenha = new javax.swing.JTextField();
-        jlbSenha = new javax.swing.JLabel();
+        jsId = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Incluir - Usuário");
+        setTitle("Incluir - Médico");
+        setName("iMedico"); // NOI18N
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
         jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
+
+        jlbId.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jlbId.setText("*Id:");
+
+        jcbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jcbPessoas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pessoas..." }));
+
+        jlbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jlbPessoas.setText("*Pessoa");
 
         jpBotoes.setBackground(new java.awt.Color(204, 204, 255));
         jpBotoes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -91,10 +96,10 @@ public class DIUsuario extends javax.swing.JDialog {
         jpBotoesLayout.setHorizontalGroup(
             jpBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpBotoesLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
+                .addContainerGap()
                 .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpBotoesLayout.setVerticalGroup(
@@ -107,74 +112,36 @@ public class DIUsuario extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jtfUsuario.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-
-        jlbUsuario.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbUsuario.setText("*Usuário:");
-
-        jcbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-
-        jlbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbPessoa.setText("*Pessoa:");
-
-        jtfSenhaAntiga.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jtfSenhaAntiga.setEnabled(false);
-
-        jlbSenhaAntiga.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbSenhaAntiga.setText("*Senha Antiga:");
-
-        jtfSenha.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-
-        jlbSenha.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbSenha.setText("*Senha:");
+        jsId.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jsId.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcbPessoa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlbPessoa)
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbUsuario)
-                            .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbSenhaAntiga)
-                            .addComponent(jtfSenhaAntiga, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbSenha)
-                            .addComponent(jtfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                    .addComponent(jcbPessoas, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlbPessoas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlbId)
+                    .addComponent(jsId, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(62, Short.MAX_VALUE))
+            .addComponent(jpBotoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(jlbPessoa)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlbPessoas)
+                    .addComponent(jlbId))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addComponent(jcbPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                .addComponent(jlbUsuario)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
-                                .addComponent(jlbSenha)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addComponent(jlbSenhaAntiga)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfSenhaAntiga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcbPessoas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jsId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -183,7 +150,9 @@ public class DIUsuario extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,8 +171,6 @@ public class DIUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_btSalvarActionPerformed
 
     private void salvar() {
-        char sexo = Lib.iif(jcbPessoa.getSelectedIndex() == 0, 'M', 'F');
-
         sair();
     }
 
@@ -224,20 +191,50 @@ public class DIUsuario extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DIUsuario dialog = new DIUsuario(new javax.swing.JFrame(), true, "Pessoa");
+                DIPaciente dialog = new DIPaciente(new javax.swing.JFrame(), true, "Pessoa");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -260,15 +257,11 @@ public class DIUsuario extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btSair;
     private javax.swing.JButton btSalvar;
-    private javax.swing.JComboBox jcbPessoa;
-    private javax.swing.JLabel jlbPessoa;
-    private javax.swing.JLabel jlbSenha;
-    private javax.swing.JLabel jlbSenhaAntiga;
-    private javax.swing.JLabel jlbUsuario;
+    private javax.swing.JComboBox jcbPessoas;
+    private javax.swing.JLabel jlbId;
+    private javax.swing.JLabel jlbPessoas;
     private javax.swing.JPanel jpBotoes;
     private javax.swing.JPanel jpPrincipal;
-    private javax.swing.JTextField jtfSenha;
-    private javax.swing.JTextField jtfSenhaAntiga;
-    private javax.swing.JTextField jtfUsuario;
+    private javax.swing.JSpinner jsId;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,13 +1,14 @@
 package br.com.hospitale3g.view;
 
-import br.com.hospitale3g.dao.DaoPessoa;
+import br.com.hospitale3g.dao.PessoaDao;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import br.com.hospitale3g.dao.DaoUsuario;
+import br.com.hospitale3g.dao.UsuarioDao;
 import br.com.hospitale3g.model.Usuario;
 import br.com.hospitale3g.controller.Lib;
 import br.com.hospitale3g.model.Pessoa;
+import javax.swing.JOptionPane;
 
 public class DCUsuario extends javax.swing.JDialog {
 
@@ -54,6 +55,7 @@ public class DCUsuario extends javax.swing.JDialog {
         tbUsuario.getAccessibleContext().setAccessibleParent(this);
 
         btNovo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/novo.png"))); // NOI18N
         btNovo.setText("Novo");
         btNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,6 +64,7 @@ public class DCUsuario extends javax.swing.JDialog {
         });
 
         btExcluir.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/excluir.png"))); // NOI18N
         btExcluir.setText("Excluir");
         btExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,6 +73,7 @@ public class DCUsuario extends javax.swing.JDialog {
         });
 
         btEditar.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/editar.png"))); // NOI18N
         btEditar.setText("Editar");
         btEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,6 +82,7 @@ public class DCUsuario extends javax.swing.JDialog {
         });
 
         btAtualizar.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/atualizar.png"))); // NOI18N
         btAtualizar.setText("Atualizar");
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,6 +91,7 @@ public class DCUsuario extends javax.swing.JDialog {
         });
 
         btSair.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sair.png"))); // NOI18N
         btSair.setText("Sair");
         btSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,15 +107,15 @@ public class DCUsuario extends javax.swing.JDialog {
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btAtualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btSair)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jpPrincipalLayout.setVerticalGroup(
@@ -148,17 +154,24 @@ public class DCUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        DaoUsuario daoUsuario = new DaoUsuario();
-        daoUsuario.delete(this.getUsuarioSelected().getCodPessoa());
-        this.atualizarJTable();
+        if (this.getUsuarioSelected() != null) {
+            UsuarioDao daoUsuario = new UsuarioDao();
+            daoUsuario.delete(this.getUsuarioSelected().getCodPessoa());
+            this.atualizarJTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhum Usuário selecionado!");
+        }
     }//GEN-LAST:event_btExcluirActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
-        DIUsuario iUsuario = new DIUsuario((JFrame) this.getParent(), true,
-                "Editar - Usuario", this.getUsuarioSelected());
-        iUsuario.setVisible(true);
-        this.atualizarJTable();
-
+        if (this.getUsuarioSelected() != null) {
+            DIUsuario iUsuario = new DIUsuario((JFrame) this.getParent(), true,
+                    "Editar - Usuario", this.getUsuarioSelected());
+            iUsuario.setVisible(true);
+            this.atualizarJTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhum Usuário selecionado!");
+        }
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
@@ -208,13 +221,16 @@ public class DCUsuario extends javax.swing.JDialog {
     }
 
     private Usuario getUsuarioSelected() {
-        DaoPessoa daoPessoa = new DaoPessoa();
+        if (tbUsuario.getRowCount() <= 0) {
+            return (null);
+        }
+
+        PessoaDao daoPessoa = new PessoaDao();
         Pessoa pessoa = daoPessoa.getPessoa(Integer.parseInt(this.getTbUsuario().getValueAt(
                 this.getTbUsuario().getSelectedRow(), 0).toString()));
 
         Usuario usuario = new Usuario(pessoa,
-                this.getTbUsuario().getValueAt(this.getTbUsuario().getSelectedRow(), 1).toString(),
-                this.getTbUsuario().getValueAt(this.getTbUsuario().getSelectedRow(), 2).toString());
+                this.getTbUsuario().getValueAt(this.getTbUsuario().getSelectedRow(), 1).toString());
         return (usuario);
     }
 
@@ -223,7 +239,7 @@ public class DCUsuario extends javax.swing.JDialog {
     }
 
     private void atualizarJTable() {
-        DaoUsuario daoUsuario = new DaoUsuario();
+        UsuarioDao daoUsuario = new UsuarioDao();
         this.getTbUsuario().setModel(daoUsuario.getTableModel());
         this.getTbUsuario().getColumnModel().getColumn(0).setPreferredWidth(10);
         this.getTbUsuario().getColumnModel().getColumn(1).setPreferredWidth(100);

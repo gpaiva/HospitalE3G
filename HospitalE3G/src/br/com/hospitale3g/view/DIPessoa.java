@@ -1,7 +1,7 @@
 package br.com.hospitale3g.view;
 
 import br.com.hospitale3g.controller.Lib;
-import br.com.hospitale3g.dao.DaoPessoa;
+import br.com.hospitale3g.dao.PessoaDao;
 import javax.swing.JFrame;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -24,7 +24,7 @@ public class DIPessoa extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         this.setTitle(title);
         
-        DaoPessoa daoPessoa = new DaoPessoa();
+        PessoaDao daoPessoa = new PessoaDao();
         this.getSCodigo().setValue(daoPessoa.getNextCodPessoa());
         this.setTipo(tipoFormulario.tfINCLUSAO);
     }
@@ -85,6 +85,7 @@ public class DIPessoa extends javax.swing.JDialog {
         jpBotoes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btSalvar.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/salvar.png"))); // NOI18N
         btSalvar.setText("Salvar");
         btSalvar.setPreferredSize(new java.awt.Dimension(70, 70));
         btSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -94,6 +95,7 @@ public class DIPessoa extends javax.swing.JDialog {
         });
 
         btSair.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sair.png"))); // NOI18N
         btSair.setText("Sair");
         btSair.setPreferredSize(new java.awt.Dimension(70, 70));
         btSair.addActionListener(new java.awt.event.ActionListener() {
@@ -108,9 +110,9 @@ public class DIPessoa extends javax.swing.JDialog {
             jpBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpBotoesLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
-                .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpBotoesLayout.setVerticalGroup(
@@ -230,7 +232,7 @@ public class DIPessoa extends javax.swing.JDialog {
         
         Pessoa pessoa = new Pessoa(Integer.parseInt(this.getSCodigo().getValue().toString()),
                 this.getTNome().getText(), sexo, tCPF.getText(), tRG.getText());
-        DaoPessoa daoPessoa = new DaoPessoa();
+        PessoaDao daoPessoa = new PessoaDao();
         if (this.getTipo() == tipoFormulario.tfINCLUSAO) {
             daoPessoa.insert(pessoa);
         } else if (this.getTipo() == tipoFormulario.tfEDICAO) {

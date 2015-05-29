@@ -7,36 +7,34 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import br.com.hospitale3g.model.Pessoa;
-import br.com.hospitale3g.model.Usuario;
+import br.com.hospitale3g.model.Secretario;
 import br.com.hospitale3g.view.DExcecao;
 
-public class DaoUsuario extends Dao {
+public class SecretarioDao extends Dao {
 
     static final String codPessoa = "codPessoa";
-    static final String usuLogin = "usuLogin";
-    static final String usuSenha = "usuSenha";
+    static final String registro = "registro";
 
-    public List<Usuario> select() {
+    public List<Secretario> select() {
         String sqlQuery = "SELECT * "
-                + "FROM USUARIO";
+                + "FROM SECRETARIO";
 
         this.conect(Dao.url);
-        List<Usuario> usuarios = new ArrayList<Usuario>();
-        ResultSet rs1;
+        List<Secretario> secretarios = new ArrayList<Secretario>();
+        ResultSet resultSet;
         try {
-            rs1 = this.getComando().executeQuery(sqlQuery);
-            while (rs1.next()) {
-                int codPessoa = rs1.getInt(DaoUsuario.codPessoa);
+            resultSet = this.getComando().executeQuery(sqlQuery);
+            while (resultSet.next()) {
+                int codPessoa = resultSet.getInt(SecretarioDao.codPessoa);
 
-                DaoPessoa daoPessoa = new DaoPessoa();
+                PessoaDao daoPessoa = new PessoaDao();
                 Pessoa pessoa = daoPessoa.getPessoa(codPessoa);
 
-                Usuario usuario = new Usuario(pessoa,
-                        rs1.getString(DaoUsuario.usuLogin),
-                        rs1.getString(DaoUsuario.usuSenha));
-                usuarios.add(usuario);
+                Secretario secretario = new Secretario(pessoa,
+                        resultSet.getInt(SecretarioDao.registro));
+                secretarios.add(secretario);
             }
-            return (usuarios);
+            return (secretarios);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -46,11 +44,10 @@ public class DaoUsuario extends Dao {
         }
     }
 
-    public void insert(Usuario usuario) {
-        String sqlQuery = "INSERT INTO USUARIO(CODPESSOA, USULOGIN, USUSENHA) "
-                + "VALUES(" + usuario.getCodPessoa() + ", "
-                + Lib.quotedStr(usuario.getUsuLogin()) + ", "
-                + Lib.quotedStr(usuario.getUsuSenha()) + ");";
+    public void insert(Secretario secretario) {
+        String sqlQuery = "INSERT INTO MEDICO(CODPESSOA, REGISTRO) "
+                + "VALUES(" + secretario.getCodPessoa() + ", "
+                + secretario.getRegistro() + ");";
 
         this.conect(Dao.url);
         try {
@@ -63,12 +60,11 @@ public class DaoUsuario extends Dao {
         }
     }
 
-    public void update(Usuario usuario) {
-        String sqlQuery = "UPDATE USUARIO "
-                + "SET CODPESSOA = " + usuario.getCodPessoa() + ", "
-                + " USULOGIN = " + Lib.quotedStr(usuario.getUsuLogin()) + ", "
-                + " USUSENHA = " + Lib.quotedStr(usuario.getUsuSenha()) + " "
-                + "WHERE CODPESSOA = " + usuario.getCodPessoa();
+    public void update(Secretario secretario) {
+        String sqlQuery = "UPDATE SECRETARIO "
+                + "SET CODPESSOA = " + secretario.getCodPessoa() + ", "
+                + " REGISTRO = " + secretario.getRegistro() + " "
+                + "WHERE CODPESSOA = " + secretario.getCodPessoa();
 
         this.conect(Dao.url);
         try {
@@ -82,7 +78,7 @@ public class DaoUsuario extends Dao {
     }
 
     public void delete(int codPessoa) {
-        String sqlQuery = "DELETE FROM USUARIO "
+        String sqlQuery = "DELETE FROM SECRETARIO "
                 + " WHERE CODPESSOA = " + codPessoa;
 
         this.conect(Dao.url);
@@ -96,24 +92,23 @@ public class DaoUsuario extends Dao {
         }
     }
 
-    public Usuario getUsuario(int codPessoa) {
+    public Secretario getSecretario(int codPessoa) {
         String sqlQuery = "SELECT * "
-                + " FROM USUARIO "
+                + " FROM SECRETARIO "
                 + " WHERE CODPESSOA = " + codPessoa;
 
         this.conect(Dao.url);
-        List<Usuario> usuarios = new ArrayList<Usuario>();
-        ResultSet rs;
+        List<Secretario> secretarios = new ArrayList<Secretario>();
+        ResultSet resultSet;
         try {
-            rs = this.getComando().executeQuery(sqlQuery);
-            if ((rs != null) && (rs.next())) {
-                DaoPessoa daoPessoa = new DaoPessoa();
-                Pessoa pessoa = daoPessoa.getPessoa(rs.getInt(DaoUsuario.codPessoa));
+            resultSet = this.getComando().executeQuery(sqlQuery);
+            if ((resultSet != null) && (resultSet.next())) {
+                PessoaDao daoPessoa = new PessoaDao();
+                Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(SecretarioDao.codPessoa));
 
-                Usuario usuario = new Usuario(pessoa,
-                        rs.getString(DaoUsuario.usuLogin),
-                        rs.getString(DaoUsuario.usuSenha));
-                return (usuario);
+                Secretario secretario = new Secretario(pessoa,
+                        resultSet.getInt(SecretarioDao.registro));
+                return (secretario);
             }
             return (null);
         } catch (SQLException e) {
@@ -125,15 +120,14 @@ public class DaoUsuario extends Dao {
         }
     }
 
-    public boolean findUsuario(String usuLogin, String usuSenha) {
+    public boolean findMedico(int registro) {
         this.conect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
-                    + " FROM USUARIO "
-                    + " WHERE USULOGIN LIKE '" + usuLogin + "' AND "
-                    + " USUSENHA LIKE '" + usuSenha + "'";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
-            return (result.first());
+                    + " FROM SECRETARIO "
+                    + " WHERE REGISTRO LIKE " + registro;
+            ResultSet resultSet = this.getComando().executeQuery(sqlQuery);
+            return (resultSet.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
         } finally {
@@ -143,7 +137,7 @@ public class DaoUsuario extends Dao {
     }
 
     public String[] getColumns() {
-        String[] aux = {"Código", "Login"};
+        String[] aux = {"Código", "Registro"};
         return (aux);
     }
 
@@ -154,14 +148,15 @@ public class DaoUsuario extends Dao {
                 return (false);
             }
         };
-        DaoUsuario daoUsuario = new DaoUsuario();
-        for (int i = 0; i <= daoUsuario.getColumns().length - 1; i++) {
-            String[] aux = daoUsuario.getColumns();
+
+        SecretarioDao secretarioDao = new SecretarioDao();
+        for (int i = 0; i <= secretarioDao.getColumns().length - 1; i++) {
+            String[] aux = secretarioDao.getColumns();
             model.addColumn(aux[i]);
         }
         model.setNumRows(0);
-        for (Usuario usuario : this.select()) {
-            model.addRow(new Object[]{usuario.getCodPessoa(), usuario.getUsuLogin()});
+        for (Secretario secretario : this.select()) {
+            model.addRow(new Object[]{secretario.getCodPessoa(), secretario.getRegistro()});
         }
         return (model);
     }

@@ -17,6 +17,15 @@ public class Usuario extends Pessoa{
         this.setUsuSenha(usuSenha);
     }
     
+    public Usuario(Pessoa pessoa, String usuLogin){
+        this.setCodPessoa(pessoa.getCodPessoa());
+        this.setNome(pessoa.getNome());
+        this.setCpf(pessoa.getCpf());
+        this.setRg(pessoa.getRg());
+        this.setSexo(pessoa.getSexo());
+        this.setUsuLogin(usuLogin);
+    }
+    
     public String getUsuLogin(){
         return(this.usuLogin);
     }

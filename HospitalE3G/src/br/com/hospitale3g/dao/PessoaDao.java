@@ -9,7 +9,7 @@ import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.view.DExcecao;
 import javax.swing.table.DefaultTableModel;
 
-public class DaoPessoa extends Dao {
+public class PessoaDao extends Dao {
 
     static final String codPessoa = "codPessoa";
     static final String nome = "nome";
@@ -130,11 +130,11 @@ public class DaoPessoa extends Dao {
             rs = this.getComando().executeQuery(sqlQuery);
 
             if ((rs != null) && (rs.next())) {
-                Pessoa pessoa = new Pessoa(rs.getInt(DaoPessoa.codPessoa),
-                        rs.getString(DaoPessoa.nome),
-                        rs.getString(DaoPessoa.sexo).charAt(0),
-                        rs.getString(DaoPessoa.cpf),
-                        rs.getString(DaoPessoa.rg));
+                Pessoa pessoa = new Pessoa(rs.getInt(PessoaDao.codPessoa),
+                        rs.getString(PessoaDao.nome),
+                        rs.getString(PessoaDao.sexo).charAt(0),
+                        rs.getString(PessoaDao.cpf),
+                        rs.getString(PessoaDao.rg));
                 return (pessoa);
             }
             return (null);
