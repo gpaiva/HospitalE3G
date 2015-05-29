@@ -95,7 +95,6 @@ public class FPrincipal extends javax.swing.JFrame {
         jbtAtendimento.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jbtAtendimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/atendimento.png"))); // NOI18N
         jbtAtendimento.setText("Atendimentos");
-        jbtAtendimento.setEnabled(false);
         jbtAtendimento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtAtendimentoActionPerformed(evt);
@@ -192,7 +191,8 @@ public class FPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtSairActionPerformed
 
     private void jbtAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAtendimentoActionPerformed
-        // TODO add your handling code here:
+        DCAtendimento cAtendimento = new DCAtendimento(this, true);
+        cAtendimento.setVisible(true);
     }//GEN-LAST:event_jbtAtendimentoActionPerformed
 
     public static void main(String args[]) {
