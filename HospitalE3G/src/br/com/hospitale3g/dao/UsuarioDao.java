@@ -164,6 +164,9 @@ public class UsuarioDao extends Dao {
     }
 
     public String getPrivilegio(Usuario usuario) {
+        if (usuario.getCodPessoa() == 1) {
+            return ("Administrador");
+        }
         Enfermeiro enfermeiro = EnfermeiroController.getEnfermeiro(usuario.getCodPessoa());
         if (enfermeiro != null) {
             return ("Enfermeiro");
