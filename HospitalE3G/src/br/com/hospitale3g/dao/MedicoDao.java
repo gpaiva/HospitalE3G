@@ -120,6 +120,34 @@ public class MedicoDao extends Dao {
         }
     }
 
+    public Medico getMedico(String crm) {
+        String sqlQuery = "SELECT * "
+                + " FROM MEDICO "
+                + " WHERE CRM LIKE " + Lib.quotedStr(crm);
+
+        this.conect(Dao.url);
+        List<Medico> medicos = new ArrayList<Medico>();
+        ResultSet resultSet;
+        try {
+            resultSet = this.getComando().executeQuery(sqlQuery);
+            if ((resultSet != null) && (resultSet.next())) {
+                PessoaDao daoPessoa = new PessoaDao();
+                Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(MedicoDao.codPessoa));
+
+                Medico medico = new Medico(pessoa,
+                        resultSet.getString(MedicoDao.crm));
+                return (medico);
+            }
+            return (null);
+        } catch (SQLException e) {
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
+            return (null);
+        } finally {
+            this.close();
+        }
+    }
+
     public boolean findMedico(String crm) {
         this.conect(Dao.url);
         try {
@@ -136,8 +164,40 @@ public class MedicoDao extends Dao {
         return (false);
     }
 
+    public boolean existsMedico(int codPessoa) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT * "
+                    + " FROM MEDICO "
+                    + " WHERE CODPESSOA = " + codPessoa + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
+    public boolean existsMedico(String crm) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT * "
+                    + " FROM MEDICO "
+                    + " WHERE CRM LIKE " + Lib.quotedStr(crm) + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
     public String[] getColumns() {
-        String[] aux = {"Código", "CRM"};
+        String[] aux = {"Código", "Nome", "CPF", "CRM", "Sexo"};
         return (aux);
     }
 
@@ -148,7 +208,7 @@ public class MedicoDao extends Dao {
                 return (false);
             }
         };
-        
+
         MedicoDao medicoDao = new MedicoDao();
         for (int i = 0; i <= medicoDao.getColumns().length - 1; i++) {
             String[] aux = medicoDao.getColumns();
@@ -156,7 +216,11 @@ public class MedicoDao extends Dao {
         }
         model.setNumRows(0);
         for (Medico medico : this.select()) {
-            model.addRow(new Object[]{medico.getCodPessoa(), medico.getCrm()});
+            model.addRow(new Object[]{medico.getCodPessoa(),
+                medico.getNome(),
+                medico.getCpf(),
+                medico.getCrm(),
+                Lib.iif(medico.getSexo() == 'M', "Masculino", "Feminino"),});
         }
         return (model);
     }

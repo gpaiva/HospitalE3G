@@ -1,14 +1,11 @@
 package br.com.hospitale3g.view;
 
-import br.com.hospitale3g.dao.PessoaDao;
 import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import br.com.hospitale3g.dao.UsuarioDao;
 import br.com.hospitale3g.model.Usuario;
 import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.controller.UsuarioController;
 import br.com.hospitale3g.model.Pessoa;
-import javax.swing.JOptionPane;
 
 public class DCUsuario extends javax.swing.JDialog {
 
@@ -31,6 +28,16 @@ public class DCUsuario extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btAtualizar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jmArquivo = new javax.swing.JMenu();
+        jmiNovo = new javax.swing.JMenuItem();
+        jmiEditar = new javax.swing.JMenuItem();
+        jmiExcluir = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jmiAtualizar = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jmiSair = new javax.swing.JMenuItem();
+        jmRelatorio = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Usuário");
@@ -51,6 +58,10 @@ public class DCUsuario extends javax.swing.JDialog {
                 ""
             }
         ));
+        tbUsuario.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tbUsuario.setAutoscrolls(false);
+        tbUsuario.setShowHorizontalLines(true);
+        tbUsuario.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tbUsuario);
         tbUsuario.getAccessibleContext().setAccessibleParent(this);
 
@@ -105,7 +116,7 @@ public class DCUsuario extends javax.swing.JDialog {
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addComponent(btNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -116,7 +127,7 @@ public class DCUsuario extends javax.swing.JDialog {
                         .addComponent(btAtualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btSair)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,9 +139,64 @@ public class DCUsuario extends javax.swing.JDialog {
                     .addComponent(btAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
         );
+
+        jmArquivo.setText("Arquivo");
+
+        jmiNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/novo.png"))); // NOI18N
+        jmiNovo.setText("Novo");
+        jmiNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiNovoActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiNovo);
+
+        jmiEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/editar.png"))); // NOI18N
+        jmiEditar.setText("Editar");
+        jmiEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiEditarActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiEditar);
+
+        jmiExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/excluir.png"))); // NOI18N
+        jmiExcluir.setText("Excluir");
+        jmiExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiExcluirActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiExcluir);
+        jmArquivo.add(jSeparator1);
+
+        jmiAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/atualizar.png"))); // NOI18N
+        jmiAtualizar.setText("Atualizar");
+        jmiAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAtualizarActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiAtualizar);
+        jmArquivo.add(jSeparator2);
+
+        jmiSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sair.png"))); // NOI18N
+        jmiSair.setText("Sair");
+        jmiSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSairActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiSair);
+
+        jMenuBar1.add(jmArquivo);
+
+        jmRelatorio.setText("Relatório");
+        jMenuBar1.add(jmRelatorio);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,31 +213,15 @@ public class DCUsuario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
-        DIUsuario iUsuario = new DIUsuario((JFrame) this.getParent(), true,
-                "Incluir - Usuario");
-        iUsuario.setVisible(true);
-        this.atualizarJTable();
+        this.novo();
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        if (this.getUsuarioSelected() != null) {
-            UsuarioDao daoUsuario = new UsuarioDao();
-            daoUsuario.delete(this.getUsuarioSelected().getCodPessoa());
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhum Usuário selecionado!");
-        }
+        this.excluir();
     }//GEN-LAST:event_btExcluirActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
-        if (this.getUsuarioSelected() != null) {
-            DIUsuario iUsuario = new DIUsuario((JFrame) this.getParent(), true,
-                    "Editar - Usuario", this.getUsuarioSelected());
-            iUsuario.setVisible(true);
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhum Usuário selecionado!");
-        }
+        this.editar();
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
@@ -181,6 +231,26 @@ public class DCUsuario extends javax.swing.JDialog {
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
         this.sair();
     }//GEN-LAST:event_btSairActionPerformed
+
+    private void jmiNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNovoActionPerformed
+        this.novo();
+    }//GEN-LAST:event_jmiNovoActionPerformed
+
+    private void jmiEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEditarActionPerformed
+        this.editar();
+    }//GEN-LAST:event_jmiEditarActionPerformed
+
+    private void jmiExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExcluirActionPerformed
+        this.excluir();
+    }//GEN-LAST:event_jmiExcluirActionPerformed
+
+    private void jmiAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAtualizarActionPerformed
+        this.atualizarJTable();
+    }//GEN-LAST:event_jmiAtualizarActionPerformed
+
+    private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
+        this.sair();
+    }//GEN-LAST:event_jmiSairActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -207,6 +277,7 @@ public class DCUsuario extends javax.swing.JDialog {
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 DCUsuario dialog = new DCUsuario(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -220,45 +291,78 @@ public class DCUsuario extends javax.swing.JDialog {
         });
     }
 
-    private Usuario getUsuarioSelected() {
-        if (tbUsuario.getRowCount() <= 0) {
-            return (null);
-        }
-
-        PessoaDao daoPessoa = new PessoaDao();
-        Pessoa pessoa = daoPessoa.getPessoa(Integer.parseInt(this.getTbUsuario().getValueAt(
-                this.getTbUsuario().getSelectedRow(), 0).toString()));
-
-        Usuario usuario = new Usuario(pessoa,
-                this.getTbUsuario().getValueAt(this.getTbUsuario().getSelectedRow(), 1).toString());
-        return (usuario);
-    }
-
-    private void sair() {
-        this.dispose();
-    }
-
-    private void atualizarJTable() {
-        UsuarioDao daoUsuario = new UsuarioDao();
-        this.getTbUsuario().setModel(daoUsuario.getTableModel());
-        this.getTbUsuario().getColumnModel().getColumn(0).setPreferredWidth(10);
-        this.getTbUsuario().getColumnModel().getColumn(1).setPreferredWidth(100);
-        this.getTbUsuario().requestFocus();
-        this.getTbUsuario().setRowSelectionInterval(0, 0);
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAtualizar;
     private javax.swing.JButton btEditar;
     private javax.swing.JButton btExcluir;
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSair;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenu jmArquivo;
+    private javax.swing.JMenu jmRelatorio;
+    private javax.swing.JMenuItem jmiAtualizar;
+    private javax.swing.JMenuItem jmiEditar;
+    private javax.swing.JMenuItem jmiExcluir;
+    private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable tbUsuario;
     // End of variables declaration//GEN-END:variables
 
-    private JTable getTbUsuario() {
-        return (this.tbUsuario);
+    private void sair() {
+        this.dispose();
+    }
+
+    private Usuario getUsuarioSelected() {
+        if (tbUsuario.getRowCount() <= 0) {
+            return (null);
+        }
+
+        Pessoa pessoa = PessoaController.getPessoa(Integer.parseInt(this.tbUsuario.getValueAt(
+                this.tbUsuario.getSelectedRow(), 0).toString()));
+
+        Usuario usuario = new Usuario(pessoa,
+                this.tbUsuario.getValueAt(this.tbUsuario.getSelectedRow(), 2).toString());
+        return (usuario);
+    }
+
+    private void atualizarJTable() {
+        this.tbUsuario.setModel(UsuarioController.getTableModel());
+        this.tbUsuario.getColumnModel().getColumn(0).setPreferredWidth(10);
+        this.tbUsuario.getColumnModel().getColumn(1).setPreferredWidth(100);
+        this.tbUsuario.requestFocus();
+        if (this.tbUsuario.getModel().getRowCount() > 0) {
+            this.tbUsuario.setRowSelectionInterval(0, 0);
+        }
+    }
+
+    private void novo() {
+        DIUsuario iUsuario = new DIUsuario((JFrame) this.getParent(), true,
+                "Incluir - Usuario");
+        iUsuario.setVisible(true);
+        this.atualizarJTable();
+    }
+
+    private void editar() {
+        if (this.getUsuarioSelected() != null) {
+            DIUsuario iUsuario = new DIUsuario((JFrame) this.getParent(), true,
+                    "Editar - Usuario", this.getUsuarioSelected());
+            iUsuario.setVisible(true);
+            this.atualizarJTable();
+        } else {
+            Lib.information("Nenhum Usuário selecionado!");
+        }
+    }
+
+    private void excluir() {
+        if (this.getUsuarioSelected() != null) {
+            UsuarioController.delete(this.getUsuarioSelected().getCodPessoa());
+            this.atualizarJTable();
+        } else {
+            Lib.information("Nenhum Usuário selecionado!");
+        }
     }
 }

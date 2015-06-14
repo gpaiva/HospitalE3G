@@ -119,8 +119,35 @@ public class EnfermeiroDao extends Dao {
             this.close();
         }
     }
+     public Enfermeiro getEnfermeiro(String coren) {
+        String sqlQuery = "SELECT * "
+                + " FROM ENFERMEIRO "
+                + " WHERE COREN LIKE " + Lib.quotedStr(coren);
 
-    public boolean findMedico(String coren) {
+        this.conect(Dao.url);
+        List<Enfermeiro> enfermeiros = new ArrayList<Enfermeiro>();
+        ResultSet resultSet;
+        try {
+            resultSet = this.getComando().executeQuery(sqlQuery);
+            if ((resultSet != null) && (resultSet.next())) {
+                PessoaDao daoPessoa = new PessoaDao();
+                Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(EnfermeiroDao.codPessoa));
+
+                Enfermeiro enfermeiro = new Enfermeiro(pessoa,
+                        resultSet.getString(EnfermeiroDao.coren));
+                return (enfermeiro);
+            }
+            return (null);
+        } catch (SQLException e) {
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
+            return (null);
+        } finally {
+            this.close();
+        }
+    }
+
+    public boolean findEnfermeiro(String coren) {
         this.conect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
@@ -135,9 +162,41 @@ public class EnfermeiroDao extends Dao {
         }
         return (false);
     }
+    
+     public boolean existsEnfermeiro(int codPessoa) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT * "
+                    + " FROM ENFERMEIRO "
+                    + " WHERE CODPESSOA = " + codPessoa + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+     
+     public boolean existsEnfermeiro(String coren) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT * "
+                    + " FROM ENFERMEIRO "
+                    + " WHERE COREN LIKE " + Lib.quotedStr(coren) + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
 
     public String[] getColumns() {
-        String[] aux = {"Código", "COREN"};
+        String[] aux = {"Código", "Nome", "CPF", "COREN", "Sexo"};
         return (aux);
     }
 
@@ -148,15 +207,19 @@ public class EnfermeiroDao extends Dao {
                 return (false);
             }
         };
-        
-        EnfermeiroDao medicoDao = new EnfermeiroDao();
-        for (int i = 0; i <= medicoDao.getColumns().length - 1; i++) {
-            String[] aux = medicoDao.getColumns();
+
+        EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
+        for (int i = 0; i <= enfermeiroDao.getColumns().length - 1; i++) {
+            String[] aux = enfermeiroDao.getColumns();
             model.addColumn(aux[i]);
         }
         model.setNumRows(0);
         for (Enfermeiro enfermeiro : this.select()) {
-            model.addRow(new Object[]{enfermeiro.getCodPessoa(), enfermeiro.getCoren()});
+            model.addRow(new Object[]{enfermeiro.getCodPessoa(),
+                enfermeiro.getNome(),
+                enfermeiro.getCpf(),
+                enfermeiro.getCoren(),
+                Lib.iif(enfermeiro.getSexo() == 'M', "Masculino", "Feminino")});
         }
         return (model);
     }

@@ -1,12 +1,10 @@
 package br.com.hospitale3g.view;
 
-import br.com.hospitale3g.dao.PessoaDao;
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import br.com.hospitale3g.dao.PacienteDao;
-import br.com.hospitale3g.model.Paciente;
 import br.com.hospitale3g.controller.Lib;
+import javax.swing.JFrame;
+import br.com.hospitale3g.model.Paciente;
+import br.com.hospitale3g.controller.PacienteController;
+import br.com.hospitale3g.controller.PessoaController;
 import br.com.hospitale3g.model.Pessoa;
 import javax.swing.JOptionPane;
 
@@ -31,6 +29,16 @@ public class DCPaciente extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btAtualizar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jmArquivo = new javax.swing.JMenu();
+        jmiNovo = new javax.swing.JMenuItem();
+        jmiEditar = new javax.swing.JMenuItem();
+        jmiExcluir = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jmiAtualizar = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jmiSair = new javax.swing.JMenuItem();
+        jmRelatorio = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Paciente");
@@ -51,12 +59,17 @@ public class DCPaciente extends javax.swing.JDialog {
                 ""
             }
         ));
+        jtbPaciente.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jtbPaciente.setAutoscrolls(false);
+        jtbPaciente.setShowHorizontalLines(true);
+        jtbPaciente.setShowVerticalLines(true);
         jScrollPane1.setViewportView(jtbPaciente);
         jtbPaciente.getAccessibleContext().setAccessibleParent(this);
 
         btNovo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/novo.png"))); // NOI18N
         btNovo.setText("Novo");
+        btNovo.setEnabled(false);
         btNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btNovoActionPerformed(evt);
@@ -105,7 +118,7 @@ public class DCPaciente extends javax.swing.JDialog {
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addComponent(btNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -116,7 +129,7 @@ public class DCPaciente extends javax.swing.JDialog {
                         .addComponent(btAtualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btSair)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,9 +141,65 @@ public class DCPaciente extends javax.swing.JDialog {
                     .addComponent(btAtualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btSair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
         );
+
+        jmArquivo.setText("Arquivo");
+
+        jmiNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/novo.png"))); // NOI18N
+        jmiNovo.setText("Novo");
+        jmiNovo.setEnabled(false);
+        jmiNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiNovoActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiNovo);
+
+        jmiEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/editar.png"))); // NOI18N
+        jmiEditar.setText("Editar");
+        jmiEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiEditarActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiEditar);
+
+        jmiExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/excluir.png"))); // NOI18N
+        jmiExcluir.setText("Excluir");
+        jmiExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiExcluirActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiExcluir);
+        jmArquivo.add(jSeparator1);
+
+        jmiAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/atualizar.png"))); // NOI18N
+        jmiAtualizar.setText("Atualizar");
+        jmiAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAtualizarActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiAtualizar);
+        jmArquivo.add(jSeparator2);
+
+        jmiSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sair.png"))); // NOI18N
+        jmiSair.setText("Sair");
+        jmiSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSairActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiSair);
+
+        jMenuBar1.add(jmArquivo);
+
+        jmRelatorio.setText("Relatório");
+        jMenuBar1.add(jmRelatorio);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,31 +216,15 @@ public class DCPaciente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
-        DIPaciente iPaciente = new DIPaciente((JFrame) this.getParent(), true,
-                "Incluir - Paciente");
-        iPaciente.setVisible(true);
-        this.atualizarJTable();
+        this.novo();
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        if (this.getPacienteSelected() != null) {
-            PacienteDao pacienteDao = new PacienteDao();
-            pacienteDao.delete(this.getPacienteSelected().getCodPessoa());
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhum Paciente selecionado!");
-        }
+        this.excluir();
     }//GEN-LAST:event_btExcluirActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
-        if (this.getPacienteSelected() != null) {
-            DIPaciente iPaciente = new DIPaciente((JFrame) this.getParent(), true,
-                    "Editar - Paciente", this.getPacienteSelected());
-            iPaciente.setVisible(true);
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhum Paciente selecionado!");
-        }
+        this.editar();
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
@@ -181,6 +234,26 @@ public class DCPaciente extends javax.swing.JDialog {
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
         this.sair();
     }//GEN-LAST:event_btSairActionPerformed
+
+    private void jmiNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNovoActionPerformed
+        this.novo();
+    }//GEN-LAST:event_jmiNovoActionPerformed
+
+    private void jmiEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEditarActionPerformed
+        this.editar();
+    }//GEN-LAST:event_jmiEditarActionPerformed
+
+    private void jmiExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExcluirActionPerformed
+        this.excluir();
+    }//GEN-LAST:event_jmiExcluirActionPerformed
+
+    private void jmiAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAtualizarActionPerformed
+        this.atualizarJTable();
+    }//GEN-LAST:event_jmiAtualizarActionPerformed
+
+    private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
+        this.sair();
+    }//GEN-LAST:event_jmiSairActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -231,12 +304,11 @@ public class DCPaciente extends javax.swing.JDialog {
             return (null);
         }
 
-        PessoaDao pessoaDao = new PessoaDao();
-        Pessoa pessoa = pessoaDao.getPessoa(Integer.parseInt(this.getTbPaciente().getValueAt(
-                this.getTbPaciente().getSelectedRow(), 0).toString()));
+        Pessoa pessoa = PessoaController.getPessoa(Integer.parseInt(this.jtbPaciente.getValueAt(
+                this.jtbPaciente.getSelectedRow(), 0).toString()));
 
         Paciente paciente = new Paciente(pessoa,
-                Integer.parseInt(this.getTbPaciente().getValueAt(this.getTbPaciente().getSelectedRow(), 1).toString()));
+                Integer.parseInt(this.jtbPaciente.getValueAt(this.jtbPaciente.getSelectedRow(), 3).toString()));
         return (paciente);
     }
 
@@ -245,12 +317,13 @@ public class DCPaciente extends javax.swing.JDialog {
     }
 
     private void atualizarJTable() {
-        PacienteDao pacienteDao = new PacienteDao();
-        this.getTbPaciente().setModel(pacienteDao.getTableModel());
-        this.getTbPaciente().getColumnModel().getColumn(0).setPreferredWidth(10);
-        this.getTbPaciente().getColumnModel().getColumn(1).setPreferredWidth(100);
-        this.getTbPaciente().requestFocus();
-        //this.getTbMedico().setRowSelectionInterval(0, 0);
+        this.jtbPaciente.setModel(PacienteController.getTableModel());
+        this.jtbPaciente.getColumnModel().getColumn(0).setPreferredWidth(10);
+        this.jtbPaciente.getColumnModel().getColumn(1).setPreferredWidth(100);
+        this.jtbPaciente.requestFocus();
+        if (this.jtbPaciente.getModel().getRowCount() > 0) {
+            this.jtbPaciente.setRowSelectionInterval(0, 0);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -259,12 +332,45 @@ public class DCPaciente extends javax.swing.JDialog {
     private javax.swing.JButton btExcluir;
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSair;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenu jmArquivo;
+    private javax.swing.JMenu jmRelatorio;
+    private javax.swing.JMenuItem jmiAtualizar;
+    private javax.swing.JMenuItem jmiEditar;
+    private javax.swing.JMenuItem jmiExcluir;
+    private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable jtbPaciente;
     // End of variables declaration//GEN-END:variables
 
-    private JTable getTbPaciente() {
-        return (this.jtbPaciente);
+    private void novo() {
+        DIPaciente iPaciente = new DIPaciente((JFrame) this.getParent(), true,
+                "Incluir - Paciente");
+        iPaciente.setVisible(true);
+        this.atualizarJTable();
+    }
+
+    private void editar() {
+        if (this.getPacienteSelected() != null) {
+            DIPaciente iPaciente = new DIPaciente((JFrame) this.getParent(), true,
+                    "Editar - Paciente", this.getPacienteSelected());
+            iPaciente.setVisible(true);
+            this.atualizarJTable();
+        } else {
+            Lib.information("Nenhum Paciente selecionado!");
+        }
+    }
+
+    private void excluir() {
+        if (this.getPacienteSelected() != null) {
+            PacienteController.delete(this.getPacienteSelected().getCodPessoa());
+            this.atualizarJTable();
+        } else {
+            Lib.information("Nenhum Paciente selecionado!");
+        }
     }
 }

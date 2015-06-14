@@ -1,13 +1,25 @@
 package br.com.hospitale3g.view;
 
+import br.com.hospitale3g.controller.AtendimentoController;
 import br.com.hospitale3g.dao.PessoaDao;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import br.com.hospitale3g.dao.EnfermeiroDao;
-import br.com.hospitale3g.model.Enfermeiro;
+import br.com.hospitale3g.model.Atendimento;
 import br.com.hospitale3g.controller.Lib;
-import br.com.hospitale3g.model.Pessoa;
+import br.com.hospitale3g.dao.AtendimentoDao;
+import br.com.hospitale3g.dao.MedicoDao;
+import br.com.hospitale3g.dao.PacienteDao;
+import br.com.hospitale3g.model.Medico;
+import br.com.hospitale3g.model.Paciente;
+import br.com.hospitale3g.model.Enfermeiro;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class DCAtendimento extends javax.swing.JDialog {
@@ -25,12 +37,27 @@ public class DCAtendimento extends javax.swing.JDialog {
 
         jpPrincipal = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtbEnfermeiro = new javax.swing.JTable();
+        jtbAtendimento = new javax.swing.JTable();
         btNovo = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btEditar = new javax.swing.JButton();
         btAtualizar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
+        btEnfermeiro = new javax.swing.JButton();
+        btFinalizar = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jmArquivo = new javax.swing.JMenu();
+        jmiNovo = new javax.swing.JMenuItem();
+        jmiEditar = new javax.swing.JMenuItem();
+        jmiExcluir = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jmiAtualizar = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jmiSair = new javax.swing.JMenuItem();
+        jmDados = new javax.swing.JMenu();
+        jmiEnfermeiro = new javax.swing.JMenuItem();
+        jmiFinalizar = new javax.swing.JMenuItem();
+        jmRelatorio = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Atendimentos");
@@ -41,8 +68,8 @@ public class DCAtendimento extends javax.swing.JDialog {
         jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
         jpPrincipal.setBorder(null);
 
-        jtbEnfermeiro.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jtbEnfermeiro.setModel(new javax.swing.table.DefaultTableModel(
+        jtbAtendimento.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jtbAtendimento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null}
@@ -51,13 +78,16 @@ public class DCAtendimento extends javax.swing.JDialog {
                 ""
             }
         ));
-        jScrollPane1.setViewportView(jtbEnfermeiro);
-        jtbEnfermeiro.getAccessibleContext().setAccessibleParent(this);
+        jtbAtendimento.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jtbAtendimento.setAutoscrolls(false);
+        jtbAtendimento.setShowHorizontalLines(true);
+        jtbAtendimento.setShowVerticalLines(true);
+        jScrollPane1.setViewportView(jtbAtendimento);
+        jtbAtendimento.getAccessibleContext().setAccessibleParent(this);
 
         btNovo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/novo.png"))); // NOI18N
         btNovo.setText("Novo");
-        btNovo.setEnabled(false);
         btNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btNovoActionPerformed(evt);
@@ -66,8 +96,7 @@ public class DCAtendimento extends javax.swing.JDialog {
 
         btExcluir.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/excluir.png"))); // NOI18N
-        btExcluir.setText("Excluir");
-        btExcluir.setEnabled(false);
+        btExcluir.setText("Cancelar");
         btExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btExcluirActionPerformed(evt);
@@ -77,7 +106,6 @@ public class DCAtendimento extends javax.swing.JDialog {
         btEditar.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/editar.png"))); // NOI18N
         btEditar.setText("Editar");
-        btEditar.setEnabled(false);
         btEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btEditarActionPerformed(evt);
@@ -87,7 +115,6 @@ public class DCAtendimento extends javax.swing.JDialog {
         btAtualizar.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         btAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/atualizar.png"))); // NOI18N
         btAtualizar.setText("Atualizar");
-        btAtualizar.setEnabled(false);
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAtualizarActionPerformed(evt);
@@ -103,24 +130,44 @@ public class DCAtendimento extends javax.swing.JDialog {
             }
         });
 
+        btEnfermeiro.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btEnfermeiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/enfermeiro.png"))); // NOI18N
+        btEnfermeiro.setText("Enfermeiro");
+        btEnfermeiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEnfermeiroActionPerformed(evt);
+            }
+        });
+
+        btFinalizar.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        btFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/finalizar.png"))); // NOI18N
+        btFinalizar.setText("Finalizar");
+        btFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btFinalizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addComponent(btNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btAtualizar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btSair)))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
+                .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btExcluir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btEnfermeiro)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btFinalizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btAtualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btSair)
+                .addContainerGap())
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,18 +176,97 @@ public class DCAtendimento extends javax.swing.JDialog {
                     .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btEnfermeiro, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        jmArquivo.setText("Arquivo");
+
+        jmiNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/novo.png"))); // NOI18N
+        jmiNovo.setText("Novo");
+        jmiNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiNovoActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiNovo);
+
+        jmiEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/editar.png"))); // NOI18N
+        jmiEditar.setText("Editar");
+        jmiEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiEditarActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiEditar);
+
+        jmiExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/excluir.png"))); // NOI18N
+        jmiExcluir.setText("Excluir");
+        jmiExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiExcluirActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiExcluir);
+        jmArquivo.add(jSeparator1);
+
+        jmiAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/atualizar.png"))); // NOI18N
+        jmiAtualizar.setText("Atualizar");
+        jmiAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAtualizarActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiAtualizar);
+        jmArquivo.add(jSeparator2);
+
+        jmiSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sair.png"))); // NOI18N
+        jmiSair.setText("Sair");
+        jmiSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSairActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiSair);
+
+        jMenuBar1.add(jmArquivo);
+
+        jmDados.setText("Dados");
+
+        jmiEnfermeiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/enfermeiro.png"))); // NOI18N
+        jmiEnfermeiro.setText("Enfermeiro");
+        jmiEnfermeiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiEnfermeiroActionPerformed(evt);
+            }
+        });
+        jmDados.add(jmiEnfermeiro);
+
+        jmiFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/finalizar.png"))); // NOI18N
+        jmiFinalizar.setText("Finalizar");
+        jmiFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiFinalizarActionPerformed(evt);
+            }
+        });
+        jmDados.add(jmiFinalizar);
+
+        jMenuBar1.add(jmDados);
+
+        jmRelatorio.setText("Relatório");
+        jMenuBar1.add(jmRelatorio);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,41 +276,61 @@ public class DCAtendimento extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
-        DIEnfermeiro iEnfermeiro = new DIEnfermeiro((JFrame) this.getParent(), true,
-                "Incluir - Enfermeiro");
-        iEnfermeiro.setVisible(true);
+    private void jmiNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNovoActionPerformed
+        this.novo();
+    }//GEN-LAST:event_jmiNovoActionPerformed
+
+    private void jmiEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEditarActionPerformed
+        this.editar();
+    }//GEN-LAST:event_jmiEditarActionPerformed
+
+    private void jmiExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExcluirActionPerformed
+        this.excluir();
+    }//GEN-LAST:event_jmiExcluirActionPerformed
+
+    private void jmiAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAtualizarActionPerformed
         this.atualizarJTable();
-    }//GEN-LAST:event_btNovoActionPerformed
+    }//GEN-LAST:event_jmiAtualizarActionPerformed
 
-    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        if (this.getEnfermeiroSelected() != null) {
-            EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
-            enfermeiroDao.delete(this.getEnfermeiroSelected().getCodPessoa());
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhum Enfermeiro selecionado!");
-        }
-    }//GEN-LAST:event_btExcluirActionPerformed
+    private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
+        this.sair();
+    }//GEN-LAST:event_jmiSairActionPerformed
 
-    private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
-        if (this.getEnfermeiroSelected() != null) {
-            DIEnfermeiro iEnfermeiro = new DIEnfermeiro((JFrame) this.getParent(), true,
-                    "Editar - Enfermeiro", this.getEnfermeiroSelected());
-            iEnfermeiro.setVisible(true);
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhum Enfermeiro selecionado!");
-        }
-    }//GEN-LAST:event_btEditarActionPerformed
+    private void btFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFinalizarActionPerformed
+        this.finalizar();
+    }//GEN-LAST:event_btFinalizarActionPerformed
+
+    private void btEnfermeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnfermeiroActionPerformed
+        this.enfermeiro();
+    }//GEN-LAST:event_btEnfermeiroActionPerformed
+
+    private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
+        this.sair();
+    }//GEN-LAST:event_btSairActionPerformed
 
     private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
         this.atualizarJTable();
     }//GEN-LAST:event_btAtualizarActionPerformed
 
-    private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
-        this.sair();
-    }//GEN-LAST:event_btSairActionPerformed
+    private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
+        this.editar();
+    }//GEN-LAST:event_btEditarActionPerformed
+
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+        this.excluir();
+    }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
+        this.novo();
+    }//GEN-LAST:event_btNovoActionPerformed
+
+    private void jmiEnfermeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEnfermeiroActionPerformed
+        this.enfermeiro();
+    }//GEN-LAST:event_jmiEnfermeiroActionPerformed
+
+    private void jmiFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiFinalizarActionPerformed
+        this.finalizar();
+    }//GEN-LAST:event_jmiFinalizarActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -208,69 +354,6 @@ public class DCAtendimento extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(DCAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -286,18 +369,39 @@ public class DCAtendimento extends javax.swing.JDialog {
         });
     }
 
-    private Enfermeiro getEnfermeiroSelected() {
-        if (jtbEnfermeiro.getRowCount() == 0) {
+    private Atendimento getAtendimentoSelected() {
+        if (jtbAtendimento.getRowCount() == 0) {
             return (null);
         }
 
-        PessoaDao pessoaDao = new PessoaDao();
-        Pessoa pessoa = pessoaDao.getPessoa(Integer.parseInt(this.getTbMedico().getValueAt(
-                this.getTbMedico().getSelectedRow(), 0).toString()));
+        MedicoDao medicoDao = new MedicoDao();
+        Medico medico = medicoDao.getMedico(Integer.parseInt(this.getTbAtendimento().getValueAt(
+                this.getTbAtendimento().getSelectedRow(), 2).toString()));
+        PacienteDao pacienteDao = new PacienteDao();
+        Paciente paciente = pacienteDao.getPaciente(Integer.parseInt(this.getTbAtendimento().getValueAt(
+                this.getTbAtendimento().getSelectedRow(), 4).toString()));
 
-        Enfermeiro enfermeiro = new Enfermeiro(pessoa,
-                this.getTbMedico().getValueAt(this.getTbMedico().getSelectedRow(), 1).toString());
-        return (enfermeiro);
+        int situacao = -1;
+        if (this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 5).toString().equals("Aberto")) {
+            situacao = 0;
+        } else if (this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 5).toString().equals("Cancelado")) {
+            situacao = 1;
+        } else if (this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 5).toString().equals("Finalizado")) {
+            situacao = 2;
+        }
+
+        Atendimento atendimento;
+        try {
+            atendimento = new Atendimento(Integer.parseInt(this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 0).toString()),
+                    medico.getCrm(),
+                    paciente.getId(),
+                    new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.m").parse(this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 8).toString()),
+                    situacao);
+        } catch (ParseException ex) {
+            DExcecao excecao = new DExcecao((JFrame) this.getParent(), true, ex.getMessage());
+            return (null);
+        }
+        return (atendimento);
     }
 
     private void sair() {
@@ -305,26 +409,122 @@ public class DCAtendimento extends javax.swing.JDialog {
     }
 
     private void atualizarJTable() {
-        EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
-        this.getTbMedico().setModel(enfermeiroDao.getTableModel());
-        this.getTbMedico().getColumnModel().getColumn(0).setPreferredWidth(10);
-        this.getTbMedico().getColumnModel().getColumn(1).setPreferredWidth(100);
-        this.getTbMedico().requestFocus();
-        //this.getTbMedico().setRowSelectionInterval(0, 0);
+        AtendimentoDao atendimentoDao = new AtendimentoDao();
+        this.getTbAtendimento().setModel(atendimentoDao.getTableModel());
+        for (int i = 0; i <= this.jtbAtendimento.getColumnCount() - 1; i++) {
+            this.jtbAtendimento.getColumnModel().getColumn(i).setPreferredWidth(120);
+        }
+        this.getTbAtendimento().requestFocus();
+        if (this.getTbAtendimento().getModel().getRowCount() > 0) {
+            this.getTbAtendimento().setRowSelectionInterval(0, 0);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAtualizar;
     private javax.swing.JButton btEditar;
+    private javax.swing.JButton btEnfermeiro;
     private javax.swing.JButton btExcluir;
+    private javax.swing.JButton btFinalizar;
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSair;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenu jmArquivo;
+    private javax.swing.JMenu jmDados;
+    private javax.swing.JMenu jmRelatorio;
+    private javax.swing.JMenuItem jmiAtualizar;
+    private javax.swing.JMenuItem jmiEditar;
+    private javax.swing.JMenuItem jmiEnfermeiro;
+    private javax.swing.JMenuItem jmiExcluir;
+    private javax.swing.JMenuItem jmiFinalizar;
+    private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
-    private javax.swing.JTable jtbEnfermeiro;
+    private javax.swing.JTable jtbAtendimento;
     // End of variables declaration//GEN-END:variables
 
-    private JTable getTbMedico() {
-        return (this.jtbEnfermeiro);
+    private JTable getTbAtendimento() {
+        return (this.jtbAtendimento);
+    }
+
+    private void novo() {
+        DIAtendimento iAtendimento = new DIAtendimento((JFrame) this.getParent(), true,
+                "Incluir - Atendimento");
+        iAtendimento.setVisible(true);
+        this.atualizarJTable();
+    }
+
+    private void editar() {
+        if (this.getAtendimentoSelected() != null) {
+            Atendimento atendimento = this.getAtendimentoSelected();
+            if (atendimento.getAtenSituacao() == 1) {
+                Lib.information("Não é possível editar Atendimentos cancelados!");
+            } else if (atendimento.getAtenSituacao() == 2) {
+                Lib.information("Não é possível editar Atendimentos finalizados!");
+            } else {
+                DIAtendimento iAtendimento = new DIAtendimento((JFrame) this.getParent(), true,
+                        "Editar - Atendimento", atendimento);
+                iAtendimento.setVisible(true);
+                this.atualizarJTable();
+            }
+        } else {
+            Lib.information("Nenhum Atendimento selecionado!");
+        }
+    }
+
+    private void excluir() {
+        if (this.getAtendimentoSelected() != null) {
+            Atendimento atendimento = this.getAtendimentoSelected();
+            if (atendimento.getAtenSituacao() == 1) {
+                Lib.information("Não é possível cancelar Atendimentos cancelados!");
+            } else if (atendimento.getAtenSituacao() == 2) {
+                Lib.information("Não é possível cancelar Atendimentos finalizados!");
+            } else {
+                AtendimentoDao atendimentoDao = new AtendimentoDao();
+                atendimentoDao.delete(atendimento.getAtenCodigo());
+                this.atualizarJTable();
+            }
+        } else {
+            Lib.information("Nenhum Atendimento selecionado!");
+        }
+    }
+
+    private void enfermeiro() {
+        if (this.getAtendimentoSelected() == null) {
+            Lib.information("Nenhum Atendimento foi selecionado!");
+        } else {
+            Atendimento atendimento = this.getAtendimentoSelected();
+            if (atendimento.getAtenSituacao() == 1) {
+                Lib.information("Não é possível adicionar Enfermeiros em Atendimentos cancelados!");
+            } else if (atendimento.getAtenSituacao() == 2) {
+                Lib.information("Não é possível adicionar Enfermeiros em Atendimentos finalizados!");
+            } else {
+                DIEnfermeiro iEnfermeiro = new DIEnfermeiro((JFrame) this.getParent(),
+                        true, "Atendimento - Inclusão - Enfermeiro", atendimento);
+                iEnfermeiro.setVisible(true);
+                this.atualizarJTable();
+            }
+        }
+    }
+
+    private void finalizar() {
+        if (this.getAtendimentoSelected() == null) {
+            Lib.information("Nenhum Atendimento foi selecionado!");
+        } else {
+            Atendimento atendimento = this.getAtendimentoSelected();
+            if (atendimento.getAtenSituacao() == 1) {
+                Lib.information("Não é possível finalizar Atendimentos cancelados!");
+            } else if (atendimento.getAtenSituacao() == 2) {
+                Lib.information("Não é possível finalizar Atendimentos finalizados!");
+            } else {
+                atendimento.setAtenDataHoraFinalizado(new Date());
+                atendimento.setAtenSituacao(2);
+                AtendimentoController.update(atendimento);
+                this.atualizarJTable();
+            }
+        }
     }
 }

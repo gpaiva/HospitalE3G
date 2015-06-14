@@ -1,14 +1,13 @@
 package br.com.hospitale3g.view;
 
 import br.com.hospitale3g.controller.Lib;
-import br.com.hospitale3g.dao.PessoaDao;
-import javax.swing.JFrame;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import br.com.hospitale3g.model.Pessoa;
-import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.PacienteController;
+import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.model.Paciente;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DIPaciente extends javax.swing.JDialog {
 
@@ -17,7 +16,10 @@ public class DIPaciente extends javax.swing.JDialog {
         tfINCLUSAO, tfEDICAO;
     }
 
+    private boolean isInsertPessoa;
     private tipoFormulario tipo;
+    private List<Pessoa> pessoas = new ArrayList<Pessoa>();
+    private int oldId;
 
     public DIPaciente(java.awt.Frame parent, boolean modal, String title) {
         super(parent, modal);
@@ -25,7 +27,33 @@ public class DIPaciente extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         this.setTitle(title);
 
+        this.setIsInsertPessoa(false);
         this.setTipo(tipoFormulario.tfINCLUSAO);
+        this.setPessoas(PessoaController.select());
+        this.setOldId(-1);
+
+        Iterator<Pessoa> it = getPessoas().iterator();
+        while (it.hasNext()) {
+            Pessoa pessoa = (Pessoa) it.next();
+            this.jcbPessoa.addItem(pessoa.getCodPessoa() + " - " + pessoa.getNome());
+        }
+        this.jsId.setValue(PacienteController.getNextId());
+    }
+
+    public DIPaciente(java.awt.Frame parent, boolean modal, String title, Paciente paciente) {
+        super(parent, modal);
+        this.initComponents();
+        this.setLocationRelativeTo(null);
+        this.setTitle(title);
+
+        this.jcbPessoa.addItem(paciente.getCodPessoa() + " - " + paciente.getNome());
+        this.jcbPessoa.setEnabled(false);
+        this.jsId.setValue(paciente.getId());
+
+        this.setIsInsertPessoa(false);
+        this.setTipo(tipoFormulario.tfEDICAO);
+        this.getPessoas().add(PessoaController.getPessoa(paciente.getCodPessoa()));
+        this.setOldId(paciente.getId());
     }
 
     public DIPaciente(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
@@ -34,8 +62,14 @@ public class DIPaciente extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         this.setTitle(title);
 
-        this.setTipo(tipoFormulario.tfEDICAO);
-        this.jcbPessoas.setEnabled(false);
+        this.jcbPessoa.addItem(pessoa.getCodPessoa() + " - " + pessoa.getNome());
+        this.jcbPessoa.setEnabled(false);
+        this.jsId.setValue(PacienteController.getNextId());
+
+        this.setIsInsertPessoa(true);
+        this.setTipo(tipoFormulario.tfINCLUSAO);
+        this.getPessoas().add(pessoa);
+        this.setOldId(-1);
     }
 
     @SuppressWarnings("unchecked")
@@ -44,7 +78,7 @@ public class DIPaciente extends javax.swing.JDialog {
 
         jpPrincipal = new javax.swing.JPanel();
         jlbId = new javax.swing.JLabel();
-        jcbPessoas = new javax.swing.JComboBox();
+        jcbPessoa = new javax.swing.JComboBox();
         jlbPessoas = new javax.swing.JLabel();
         jpBotoes = new javax.swing.JPanel();
         btSalvar = new javax.swing.JButton();
@@ -62,8 +96,7 @@ public class DIPaciente extends javax.swing.JDialog {
         jlbId.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jlbId.setText("*Id:");
 
-        jcbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jcbPessoas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pessoas..." }));
+        jcbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
         jlbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jlbPessoas.setText("*Pessoa");
@@ -122,13 +155,13 @@ public class DIPaciente extends javax.swing.JDialog {
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcbPessoas, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlbPessoas))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlbId)
                     .addComponent(jsId, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jpBotoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpPrincipalLayout.setVerticalGroup(
@@ -140,7 +173,7 @@ public class DIPaciente extends javax.swing.JDialog {
                     .addComponent(jlbId))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcbPessoas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jsId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -163,20 +196,22 @@ public class DIPaciente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
-        this.sair();
+        if (this.getIsInsertPessoa()) {
+            if (Lib.confirmation("Saindo da Inclusão de Secretários, "
+                    + "a inclusão da Pessoa será cancelada!\n"
+                    + "Deseja Realmente sair?", "Informação") == 0) {
+                Pessoa pessoa = getPessoas().get(this.jcbPessoa.getSelectedIndex());
+                PessoaController.delete(pessoa.getCodPessoa());
+                this.sair();
+            }
+        } else {
+            this.sair();
+        }
     }//GEN-LAST:event_btSairActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         this.salvar();
     }//GEN-LAST:event_btSalvarActionPerformed
-
-    private void salvar() {
-        sair();
-    }
-
-    private void sair() {
-        this.dispose();
-    }
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -246,6 +281,25 @@ public class DIPaciente extends javax.swing.JDialog {
         });
     }
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btSair;
+    private javax.swing.JButton btSalvar;
+    private javax.swing.JComboBox jcbPessoa;
+    private javax.swing.JLabel jlbId;
+    private javax.swing.JLabel jlbPessoas;
+    private javax.swing.JPanel jpBotoes;
+    private javax.swing.JPanel jpPrincipal;
+    private javax.swing.JSpinner jsId;
+    // End of variables declaration//GEN-END:variables
+
+    private boolean getIsInsertPessoa() {
+        return (this.isInsertPessoa);
+    }
+
+    private void setIsInsertPessoa(boolean isInsertPessoa) {
+        this.isInsertPessoa = isInsertPessoa;
+    }
+
     private tipoFormulario getTipo() {
         return (this.tipo);
     }
@@ -254,14 +308,53 @@ public class DIPaciente extends javax.swing.JDialog {
         this.tipo = tipo;
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btSair;
-    private javax.swing.JButton btSalvar;
-    private javax.swing.JComboBox jcbPessoas;
-    private javax.swing.JLabel jlbId;
-    private javax.swing.JLabel jlbPessoas;
-    private javax.swing.JPanel jpBotoes;
-    private javax.swing.JPanel jpPrincipal;
-    private javax.swing.JSpinner jsId;
-    // End of variables declaration//GEN-END:variables
+    private List<Pessoa> getPessoas() {
+        return (this.pessoas);
+    }
+
+    private void setPessoas(List<Pessoa> pessoas) {
+        this.pessoas = pessoas;
+    }
+
+    private int getOldId() {
+        return (this.oldId);
+    }
+
+    private void setOldId(int oldId) {
+        this.oldId = oldId;
+    }
+
+    private void salvar() {
+        int id = Integer.parseInt(this.jsId.getValue().toString());
+        boolean isValid = true;
+        if (this.getTipo() == DIPaciente.tipoFormulario.tfINCLUSAO) {
+            if (PacienteController.existsPaciente(id)) {
+                Lib.information("Id já Cadastro no Sistema!");
+                isValid = false;
+                this.jsId.requestFocus();
+            }
+        } else if (this.getTipo() == DIPaciente.tipoFormulario.tfEDICAO) {
+            if (PacienteController.existsPaciente(id) && (this.getOldId() == id)) {
+                Lib.information("Id já Cadastro no Sistema!");
+                isValid = false;
+                this.jsId.requestFocus();
+            }
+        }
+
+        if (isValid) {
+            Pessoa pessoa = getPessoas().get(this.jcbPessoa.getSelectedIndex());
+            Paciente paciente = new Paciente(pessoa, id);
+
+            if (this.getTipo() == DIPaciente.tipoFormulario.tfINCLUSAO) {
+                PacienteController.insert(paciente);
+            } else if (this.getTipo() == DIPaciente.tipoFormulario.tfEDICAO) {
+                PacienteController.update(paciente);
+            }
+            sair();
+        }
+    }
+
+    private void sair() {
+        this.dispose();
+    }
 }

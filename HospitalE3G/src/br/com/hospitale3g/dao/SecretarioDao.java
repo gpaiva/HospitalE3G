@@ -45,7 +45,7 @@ public class SecretarioDao extends Dao {
     }
 
     public void insert(Secretario secretario) {
-        String sqlQuery = "INSERT INTO MEDICO(CODPESSOA, REGISTRO) "
+        String sqlQuery = "INSERT INTO SECRETARIO(CODPESSOA, REGISTRO) "
                 + "VALUES(" + secretario.getCodPessoa() + ", "
                 + secretario.getRegistro() + ");";
 
@@ -120,12 +120,27 @@ public class SecretarioDao extends Dao {
         }
     }
 
-    public boolean findMedico(int registro) {
+    public boolean findSecretario(int registro) {
         this.conect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM SECRETARIO "
-                    + " WHERE REGISTRO LIKE " + registro;
+                    + " WHERE REGISTRO = " + registro;
+            ResultSet resultSet = this.getComando().executeQuery(sqlQuery);
+            return (resultSet.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+    public boolean existsSecretario(int registro) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT * "
+                    + " FROM SECRETARIO "
+                    + " WHERE REGISTRO = " + registro;
             ResultSet resultSet = this.getComando().executeQuery(sqlQuery);
             return (resultSet.first());
         } catch (SQLException e) {
@@ -136,8 +151,28 @@ public class SecretarioDao extends Dao {
         return (false);
     }
 
+    public int getNextRegistro() {
+        int aux = -1;
+        String sqlQuery = "SELECT COALESCE(MAX(REGISTRO), 0) + 1 AS REGISTRO "
+                + " FROM SECRETARIO ";
+
+        this.conect(Dao.url);
+        try {
+            ResultSet rs = this.getComando().executeQuery(sqlQuery);
+            while (rs.next()) {
+                aux = rs.getInt("REGISTRO");
+            }
+        } catch (SQLException e) {
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
+        } finally {
+            this.close();
+        }
+        return (aux);
+    }
+
     public String[] getColumns() {
-        String[] aux = {"Código", "Registro"};
+        String[] aux = {"Código", "Nome", "CPF", "Registro", "Sexo"};
         return (aux);
     }
 
@@ -156,7 +191,11 @@ public class SecretarioDao extends Dao {
         }
         model.setNumRows(0);
         for (Secretario secretario : this.select()) {
-            model.addRow(new Object[]{secretario.getCodPessoa(), secretario.getRegistro()});
+            model.addRow(new Object[]{secretario.getCodPessoa(),
+                secretario.getNome(),
+                secretario.getCpf(),
+                secretario.getRegistro(),
+                Lib.iif(secretario.getSexo() == 'M', "Masculino", "Feminino")});
         }
         return (model);
     }

@@ -1,50 +1,84 @@
 package br.com.hospitale3g.view;
 
-import br.com.hospitale3g.controller.Lib;
-import br.com.hospitale3g.dao.PessoaDao;
-import javax.swing.JFrame;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.controller.SecretarioController;
+import br.com.hospitale3g.model.Secretario;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DISecretario extends javax.swing.JDialog {
-    
+
     public enum tipoFormulario {
 
         tfINCLUSAO, tfEDICAO;
     }
-    
+
+    private boolean isInsertPessoa;
     private tipoFormulario tipo;
-    
+    private List<Pessoa> pessoas = new ArrayList<Pessoa>();
+    private int oldRegistro;
+
     public DISecretario(java.awt.Frame parent, boolean modal, String title) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
-        
+
+        this.setIsInsertPessoa(false);
         this.setTipo(tipoFormulario.tfINCLUSAO);
+        this.setPessoas(PessoaController.select());
+        this.setOldRegistro(-1);
+
+        Iterator<Pessoa> it = getPessoas().iterator();
+        while (it.hasNext()) {
+            Pessoa pessoa = (Pessoa) it.next();
+            this.jcbPessoa.addItem(pessoa.getCodPessoa() + " - " + pessoa.getNome());
+        }
+        this.jsRegistro.setValue(SecretarioController.getNextRegistro());
     }
-    
+
+    public DISecretario(java.awt.Frame parent, boolean modal, String title, Secretario secretario) {
+        super(parent, modal);
+        this.initComponents();
+        this.setLocationRelativeTo(null);
+        this.setTitle(title);
+
+        this.jcbPessoa.addItem(secretario.getCodPessoa() + " - " + secretario.getNome());
+        this.jcbPessoa.setEnabled(false);
+        this.jsRegistro.setValue(secretario.getRegistro());
+
+        this.setIsInsertPessoa(false);
+        this.setTipo(tipoFormulario.tfEDICAO);
+        this.getPessoas().add(PessoaController.getPessoa(secretario.getCodPessoa()));
+        this.setOldRegistro(secretario.getRegistro());
+    }
+
     public DISecretario(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
-        
-        this.setTipo(tipoFormulario.tfEDICAO);
-        this.jcbPessoas.setEnabled(false);
+
+        this.jcbPessoa.addItem(pessoa.getCodPessoa() + " - " + pessoa.getNome());
+        this.jcbPessoa.setEnabled(false);
+        this.jsRegistro.setValue(SecretarioController.getNextRegistro());
+
+        this.setIsInsertPessoa(true);
+        this.setTipo(tipoFormulario.tfINCLUSAO);
+        this.getPessoas().add(pessoa);
+        this.setOldRegistro(-1);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jpPrincipal = new javax.swing.JPanel();
         jlbRegistro = new javax.swing.JLabel();
-        jcbPessoas = new javax.swing.JComboBox();
+        jcbPessoa = new javax.swing.JComboBox();
         jlbPessoas = new javax.swing.JLabel();
         jpBotoes = new javax.swing.JPanel();
         btSalvar = new javax.swing.JButton();
@@ -62,8 +96,7 @@ public class DISecretario extends javax.swing.JDialog {
         jlbRegistro.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jlbRegistro.setText("*Registro:");
 
-        jcbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jcbPessoas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pessoas..." }));
+        jcbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
         jlbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jlbPessoas.setText("*Pessoa");
@@ -122,13 +155,13 @@ public class DISecretario extends javax.swing.JDialog {
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcbPessoas, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlbPessoas))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlbRegistro)
                     .addComponent(jsRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jpBotoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpPrincipalLayout.setVerticalGroup(
@@ -140,7 +173,7 @@ public class DISecretario extends javax.swing.JDialog {
                     .addComponent(jlbRegistro))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcbPessoas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jsRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -163,21 +196,23 @@ public class DISecretario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
-        this.sair();
+        if (this.getIsInsertPessoa()) {
+            if (Lib.confirmation("Saindo da Inclusão de Secretários, "
+                    + "a inclusão da Pessoa será cancelada!\n"
+                    + "Deseja Realmente sair?", "Informação") == 0) {
+                Pessoa pessoa = getPessoas().get(this.jcbPessoa.getSelectedIndex());
+                PessoaController.delete(pessoa.getCodPessoa());
+                this.sair();
+            }
+        } else {
+            this.sair();
+        }
     }//GEN-LAST:event_btSairActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         this.salvar();
     }//GEN-LAST:event_btSalvarActionPerformed
-    
-    private void salvar() {
-        sair();
-    }
-    
-    private void sair() {
-        this.dispose();
-    }
-    
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -200,22 +235,6 @@ public class DISecretario extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(DISecretario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 DISecretario dialog = new DISecretario(new javax.swing.JFrame(), true, "Pessoa");
@@ -229,23 +248,82 @@ public class DISecretario extends javax.swing.JDialog {
             }
         });
     }
-    
-    private tipoFormulario getTipo() {
-        return (this.tipo);
-    }
-    
-    private void setTipo(tipoFormulario tipo) {
-        this.tipo = tipo;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btSair;
     private javax.swing.JButton btSalvar;
-    private javax.swing.JComboBox jcbPessoas;
+    private javax.swing.JComboBox jcbPessoa;
     private javax.swing.JLabel jlbPessoas;
     private javax.swing.JLabel jlbRegistro;
     private javax.swing.JPanel jpBotoes;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JSpinner jsRegistro;
     // End of variables declaration//GEN-END:variables
+
+    private boolean getIsInsertPessoa() {
+        return (this.isInsertPessoa);
+    }
+
+    private void setIsInsertPessoa(boolean isInsertPessoa) {
+        this.isInsertPessoa = isInsertPessoa;
+    }
+
+    private tipoFormulario getTipo() {
+        return (this.tipo);
+    }
+
+    private void setTipo(tipoFormulario tipo) {
+        this.tipo = tipo;
+    }
+
+    private List<Pessoa> getPessoas() {
+        return (this.pessoas);
+    }
+
+    private void setPessoas(List<Pessoa> pessoas) {
+        this.pessoas = pessoas;
+    }
+
+    private int getOldRegistro() {
+        return (this.oldRegistro);
+    }
+
+    private void setOldRegistro(int oldRegistro) {
+        this.oldRegistro = oldRegistro;
+    }
+
+    private void salvar() {
+        int registro = Integer.parseInt(this.jsRegistro.getValue().toString());
+        boolean isValid = true;
+        if (this.getTipo() == DISecretario.tipoFormulario.tfINCLUSAO) {
+            if (SecretarioController.existsSecretario(registro)) {
+                Lib.information("Registro já Cadastrado no Sistema!");
+                isValid = false;
+                this.jsRegistro.requestFocus();
+            }
+        } else if (this.getTipo() == DISecretario.tipoFormulario.tfEDICAO) {
+            if (SecretarioController.existsSecretario(registro) && (oldRegistro != registro)) {
+                Lib.information("Registro já Cadastrado no Sistema!");
+                isValid = false;
+                this.jsRegistro.requestFocus();
+            }
+        }
+
+        if (isValid) {
+            Pessoa pessoa = getPessoas().get(this.jcbPessoa.getSelectedIndex());
+            Secretario secretario = new Secretario(pessoa, registro);
+
+            if (this.getTipo() == DISecretario.tipoFormulario.tfINCLUSAO) {
+                SecretarioController.insert(secretario);
+            } else if (this.getTipo() == DISecretario.tipoFormulario.tfEDICAO) {
+                SecretarioController.update(secretario);
+            }
+            sair();
+        }
+    }
+
+    private void sair() {
+        this.dispose();
+    }
+
 }

@@ -8,7 +8,13 @@ public class Enfermeiro extends Pessoa {
     }
 
     public Enfermeiro(Pessoa pessoa, String coren) {
+        super();
         this.setCodPessoa(pessoa.getCodPessoa());
+        this.setNome(pessoa.getNome());
+        this.setCpf(pessoa.getCpf());
+        this.setRg(pessoa.getRg());
+        this.setSexo(pessoa.getSexo());
+
         this.setCoren(coren);
     }
 

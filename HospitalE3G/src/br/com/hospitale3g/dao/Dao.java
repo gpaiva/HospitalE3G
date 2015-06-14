@@ -8,6 +8,7 @@ import java.sql.Statement;
 import br.com.hospitale3g.view.DExcecao;
 
 public class Dao {
+
     static final String dataBase = "hospitale3g";
     static final String driver = "com.mysql.jdbc.Driver";
     static final String urlWithoutDB = "jdbc:mysql://localhost/";
@@ -83,6 +84,12 @@ public class Dao {
                     + "cpf varchar(15) not null, "
                     + "rg varchar(15) not null, "
                     + "sexo varchar(15) not null, "
+                    + "rua varchar(30) not null, "
+                    + "numero varchar(10) not null, "
+                    + "complemento varchar(30), "
+                    + "bairro varchar(30) not null, "
+                    + "cidade varchar(30) not null, "
+                    + "cep varchar(15) not null, "
                     + "primary key (codPessoa));");
             this.getCon().commit();
             this.getComando().executeUpdate("create table administrador("
@@ -122,12 +129,31 @@ public class Dao {
                     + "primary key(codPessoa), "
                     + "foreign key(codPessoa) references pessoa(codPessoa));");
             this.getCon().commit();
-            this.getComando().executeUpdate("insert into pessoa(codPessoa, nome, sexo, cpf, rg) "
+            this.getComando().executeUpdate("CREATE TABLE ATENDIMENTO("
+                    + "ATENCODIGO INTEGER PRIMARY KEY, "
+                    + "CRM VARCHAR(15) NOT NULL, "
+                    + "ID INTEGER NOT NULL, "
+                    + "COREN VARCHAR(15), "
+                    + "ATENDATAHORA DATE NOT NULL, "
+                    + "ATENDATAHORAFINALIZADO DATE, "
+                    + "ATENSITUACAO INTEGER NOT NULL, "
+                    + "FOREIGN KEY(CRM) REFERENCES MEDICO(CRM),"
+                    + "FOREIGN KEY(ID) REFERENCES PACIENTE(ID), "
+                    + "FOREIGN KEY(COREN) REFERENCES ENFERMEIRO(COREN));");
+            this.getCon().commit();
+            this.getComando().executeUpdate("insert into pessoa(codPessoa, nome, sexo, cpf, rg,"
+                    + "rua, numero, complemento, bairro, cidade, cep) "
                     + "values(1, "
                     + Lib.quotedStr("Administrador") + ","
                     + Lib.quotedStr('M') + ", "
                     + Lib.quotedStr("111.111.111-11") + ", "
-                    + Lib.quotedStr("1111111111") + ");");
+                    + Lib.quotedStr("1111111111") + ", "
+                    + Lib.quotedStr("Rua") + ", "
+                    + Lib.quotedStr("Número") + ", "
+                    + Lib.quotedStr("Complemento") + ", "
+                    + Lib.quotedStr("Bairro") + ", "
+                    + Lib.quotedStr("Cidade") + ", "
+                    + Lib.quotedStr("CEP") + ");");
             this.getCon().commit();
             this.getComando().executeUpdate("insert into usuario(codPessoa, usuLogin, usuSenha) "
                     + "values(1, "

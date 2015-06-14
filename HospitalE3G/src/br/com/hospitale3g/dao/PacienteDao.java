@@ -120,6 +120,34 @@ public class PacienteDao extends Dao {
         }
     }
 
+    public Paciente getPacienteId(int id) {
+        String sqlQuery = "SELECT * "
+                + " FROM PACIENTE "
+                + " WHERE ID = " + id;
+
+        this.conect(Dao.url);
+        List<Paciente> pacientes = new ArrayList<Paciente>();
+        ResultSet resultSet;
+        try {
+            resultSet = this.getComando().executeQuery(sqlQuery);
+            if ((resultSet != null) && (resultSet.next())) {
+                PessoaDao daoPessoa = new PessoaDao();
+                Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(PacienteDao.codPessoa));
+
+                Paciente paciente = new Paciente(pessoa,
+                        resultSet.getInt(PacienteDao.id));
+                return (paciente);
+            }
+            return (null);
+        } catch (SQLException e) {
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
+            return (null);
+        } finally {
+            this.close();
+        }
+    }
+
     public boolean findPaciente(int id) {
         this.conect(Dao.url);
         try {
@@ -136,8 +164,44 @@ public class PacienteDao extends Dao {
         return (false);
     }
 
+    public boolean existsPaciente(int id) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT * "
+                    + " FROM PACIENTE "
+                    + " WHERE ID = " + id;
+            ResultSet resultSet = this.getComando().executeQuery(sqlQuery);
+            return (resultSet.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
+    public int getNextId() {
+        int aux = -1;
+        String sqlQuery = "SELECT COALESCE(MAX(ID), 0) + 1 AS ID "
+                + " FROM PACIENTE ";
+
+        this.conect(Dao.url);
+        try {
+            ResultSet rs = this.getComando().executeQuery(sqlQuery);
+            while (rs.next()) {
+                aux = rs.getInt("ID");
+            }
+        } catch (SQLException e) {
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
+        } finally {
+            this.close();
+        }
+        return (aux);
+    }
+
     public String[] getColumns() {
-        String[] aux = {"Código", "ID"};
+        String[] aux = {"Código", "Nome", "CPF", "ID", "Sexo"};
         return (aux);
     }
 
@@ -156,7 +220,11 @@ public class PacienteDao extends Dao {
         }
         model.setNumRows(0);
         for (Paciente paciente : this.select()) {
-            model.addRow(new Object[]{paciente.getCodPessoa(), paciente.getId()});
+            model.addRow(new Object[]{paciente.getCodPessoa(),
+                paciente.getNome(),
+                paciente.getCpf(),
+                paciente.getId(),
+                Lib.iif(paciente.getSexo() == 'M', "Masculino", "Feminino")});
         }
         return (model);
     }

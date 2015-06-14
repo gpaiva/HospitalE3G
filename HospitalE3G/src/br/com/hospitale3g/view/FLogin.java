@@ -1,5 +1,6 @@
 package br.com.hospitale3g.view;
 
+import br.com.hospitale3g.controller.UsuarioController;
 import br.com.hospitale3g.dao.UsuarioDao;
 import br.com.hospitale3g.view.DExcecao;
 
@@ -101,9 +102,8 @@ public class FLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        UsuarioDao daoUsuario = new UsuarioDao();
-        if (daoUsuario.findUsuario(this.tfUsuario.getText(), String.valueOf(this.pfSenha.getPassword()))) {
-            FPrincipal principal = new FPrincipal();
+        if (UsuarioController.findUsuario(this.tfUsuario.getText(), String.valueOf(this.pfSenha.getPassword()))) {
+            FPrincipal principal = new FPrincipal(UsuarioController.getUsuario(this.tfUsuario.getText(), String.valueOf(this.pfSenha.getPassword())));
             principal.setVisible(true);
             this.dispose();
         } else {

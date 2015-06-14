@@ -1,43 +1,77 @@
 package br.com.hospitale3g.view;
 
+import br.com.hospitale3g.controller.EnfermeiroController;
 import br.com.hospitale3g.controller.Lib;
-import br.com.hospitale3g.dao.PessoaDao;
-import javax.swing.JFrame;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import br.com.hospitale3g.model.Pessoa;
-import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.MedicoController;
+import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.model.Medico;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DIMedico extends javax.swing.JDialog {
-    
+
     public enum tipoFormulario {
 
         tfINCLUSAO, tfEDICAO;
     }
-    
+
+    private boolean isInsertPessoa;
     private tipoFormulario tipo;
-    
+    private List<Pessoa> pessoas = new ArrayList<Pessoa>();
+    private String oldCrm;
+
     public DIMedico(java.awt.Frame parent, boolean modal, String title) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
-        
+
+        this.setIsInsertPessoa(false);
         this.setTipo(tipoFormulario.tfINCLUSAO);
+        this.setPessoas(PessoaController.select());
+        this.setOldCrm("");
+
+        Iterator<Pessoa> it = getPessoas().iterator();
+        while (it.hasNext()) {
+            Pessoa pessoa = (Pessoa) it.next();
+            this.jcbPessoa.addItem(pessoa.getCodPessoa() + " - " + pessoa.getNome());
+        }
     }
-    
+
+    public DIMedico(java.awt.Frame parent, boolean modal, String title, Medico medico) {
+        super(parent, modal);
+        this.initComponents();
+        this.setLocationRelativeTo(null);
+        this.setTitle(title);
+
+        this.jcbPessoa.addItem(medico.getCodPessoa() + " - " + medico.getNome());
+        this.jcbPessoa.setEnabled(false);
+        this.jtfCRM.setText(medico.getCrm());
+
+        this.setIsInsertPessoa(false);
+        this.setTipo(tipoFormulario.tfEDICAO);
+        this.getPessoas().add(PessoaController.getPessoa(medico.getCodPessoa()));
+        this.setOldCrm(medico.getCrm());
+    }
+
     public DIMedico(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
-        
-        this.setTipo(tipoFormulario.tfEDICAO);
-        this.jcbPessoas.setEnabled(false);
+
+        this.jcbPessoa.addItem(pessoa.getCodPessoa() + " - " + pessoa.getNome());
+        this.jcbPessoa.setEnabled(false);
+        this.jlbCRM.setText("");
+
+        this.setIsInsertPessoa(true);
+        this.setTipo(tipoFormulario.tfINCLUSAO);
+        this.getPessoas().add(pessoa);
+        this.setOldCrm("");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -45,7 +79,7 @@ public class DIMedico extends javax.swing.JDialog {
         jpPrincipal = new javax.swing.JPanel();
         jlbCRM = new javax.swing.JLabel();
         jtfCRM = new javax.swing.JTextField();
-        jcbPessoas = new javax.swing.JComboBox();
+        jcbPessoa = new javax.swing.JComboBox();
         jlbPessoas = new javax.swing.JLabel();
         jpBotoes = new javax.swing.JPanel();
         btSalvar = new javax.swing.JButton();
@@ -64,8 +98,8 @@ public class DIMedico extends javax.swing.JDialog {
 
         jtfCRM.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
-        jcbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jcbPessoas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pessoas..." }));
+        jcbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jcbPessoa.setToolTipText("");
 
         jlbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jlbPessoas.setText("*Pessoa");
@@ -123,7 +157,7 @@ public class DIMedico extends javax.swing.JDialog {
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jlbPessoas)
                     .addComponent(jlbCRM)
-                    .addComponent(jcbPessoas, 0, 258, Short.MAX_VALUE)
+                    .addComponent(jcbPessoa, 0, 258, Short.MAX_VALUE)
                     .addComponent(jtfCRM))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jpBotoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -131,16 +165,16 @@ public class DIMedico extends javax.swing.JDialog {
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jlbPessoas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jcbPessoas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jcbPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jlbCRM)
                 .addGap(2, 2, 2)
                 .addComponent(jtfCRM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jpBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jpBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,28 +185,30 @@ public class DIMedico extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
-        this.sair();
+        if (this.getIsInsertPessoa()) {
+            if (Lib.confirmation("Saindo da Inclusão de Médicos, "
+                    + "a inclusão da Pessoa será cancelada!\n"
+                    + "Deseja Realmente sair?", "Informação") == 0) {
+                Pessoa pessoa = getPessoas().get(this.jcbPessoa.getSelectedIndex());
+                PessoaController.delete(pessoa.getCodPessoa());
+                this.sair();
+            }
+        } else {
+            this.sair();
+        }
     }//GEN-LAST:event_btSairActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         this.salvar();
     }//GEN-LAST:event_btSalvarActionPerformed
-    
-    private void salvar() {
-        sair();
-    }
-    
-    private void sair() {
-        this.dispose();
-    }
-    
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -195,9 +231,6 @@ public class DIMedico extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(DIMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -212,23 +245,80 @@ public class DIMedico extends javax.swing.JDialog {
             }
         });
     }
-    
-    private tipoFormulario getTipo() {
-        return (this.tipo);
-    }
-    
-    private void setTipo(tipoFormulario tipo) {
-        this.tipo = tipo;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btSair;
     private javax.swing.JButton btSalvar;
-    private javax.swing.JComboBox jcbPessoas;
+    private javax.swing.JComboBox jcbPessoa;
     private javax.swing.JLabel jlbCRM;
     private javax.swing.JLabel jlbPessoas;
     private javax.swing.JPanel jpBotoes;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTextField jtfCRM;
     // End of variables declaration//GEN-END:variables
+
+    private boolean getIsInsertPessoa() {
+        return (this.isInsertPessoa);
+    }
+
+    private void setIsInsertPessoa(boolean isInsertPessoa) {
+        this.isInsertPessoa = isInsertPessoa;
+    }
+
+    private tipoFormulario getTipo() {
+        return (this.tipo);
+    }
+
+    private void setTipo(tipoFormulario tipo) {
+        this.tipo = tipo;
+    }
+
+    private List<Pessoa> getPessoas() {
+        return (this.pessoas);
+    }
+
+    private void setPessoas(List<Pessoa> pessoas) {
+        this.pessoas = pessoas;
+    }
+
+    private String getOldCrm() {
+        return (this.oldCrm);
+    }
+
+    private void setOldCrm(String oldCrm) {
+        this.oldCrm = oldCrm;
+    }
+
+    private void salvar() {
+        boolean isValid = true;
+        if (this.getTipo() == DIMedico.tipoFormulario.tfINCLUSAO) {
+            if (MedicoController.existsMedico(this.jtfCRM.getText())) {
+                Lib.information("CRM já Cadastrado no Sistema!");
+                isValid = false;
+                this.jtfCRM.requestFocus();
+            }
+        } else if (this.getTipo() == DIMedico.tipoFormulario.tfEDICAO) {
+            if ((MedicoController.existsMedico(this.jtfCRM.getText()) && (!this.getOldCrm().equals(this.jtfCRM.getText())))) {
+                Lib.information("CRM já Cadastrado no Sistema!");
+                isValid = false;
+                this.jtfCRM.requestFocus();
+            }
+        }
+
+        if (isValid) {
+            Pessoa pessoa = getPessoas().get(this.jcbPessoa.getSelectedIndex());
+            Medico medico = new Medico(pessoa, this.jtfCRM.getText());
+
+            if (this.getTipo() == DIMedico.tipoFormulario.tfINCLUSAO) {
+                MedicoController.insert(medico);
+            } else if (this.getTipo() == DIMedico.tipoFormulario.tfEDICAO) {
+                MedicoController.update(medico);
+            }
+            sair();
+        }
+    }
+
+    private void sair() {
+        this.dispose();
+    }
 }

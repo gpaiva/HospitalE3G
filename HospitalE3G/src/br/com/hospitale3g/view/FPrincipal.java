@@ -1,13 +1,31 @@
 package br.com.hospitale3g.view;
 
-import java.awt.Dialog;
+import br.com.hospitale3g.controller.UsuarioController;
+import br.com.hospitale3g.model.Usuario;
 
 public class FPrincipal extends javax.swing.JFrame {
+
+    Usuario usuario;
 
     public FPrincipal() {
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(FPrincipal.MAXIMIZED_BOTH);
+        this.jlbUsuario.setText("");
+        this.jlbPrivilegio.setText("");
+
+        this.setUsuario(null);
+    }
+
+    public FPrincipal(Usuario usuario) {
+        this.initComponents();
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(FPrincipal.MAXIMIZED_BOTH);
+        this.jlbUsuario.setText(this.jlbUsuario.getText() + " " + usuario.getUsuLogin());
+        this.jlbPrivilegio.setText(this.jlbPrivilegio.getText() + " "
+                + UsuarioController.getPrivilegio(usuario));
+
+        this.setUsuario(usuario);
     }
 
     @SuppressWarnings("unchecked")
@@ -15,23 +33,38 @@ public class FPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jpPrincipal = new javax.swing.JPanel();
+        jbtSair = new javax.swing.JButton();
         jbtPessoa = new javax.swing.JButton();
         jbtUsuario = new javax.swing.JButton();
-        jbtMedico = new javax.swing.JButton();
         jbtEnfermeiro = new javax.swing.JButton();
-        jbtSecretario = new javax.swing.JButton();
+        jbtMedico = new javax.swing.JButton();
         jbtPaciente = new javax.swing.JButton();
-        jbtSair = new javax.swing.JButton();
+        jbtSecretario = new javax.swing.JButton();
         jbtAtendimento = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jbtSobre = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jlbUsuario = new javax.swing.JLabel();
+        jlbPrivilegio = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hospital E3G");
 
         jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
 
+        jbtSair.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jbtSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sair.png"))); // NOI18N
+        jbtSair.setText("Sair");
+        jbtSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtSairActionPerformed(evt);
+            }
+        });
+
         jbtPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jbtPessoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/pessoa.png"))); // NOI18N
-        jbtPessoa.setText("Pessoas");
+        jbtPessoa.setText("Pessoas       ");
         jbtPessoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtPessoaActionPerformed(evt);
@@ -40,19 +73,10 @@ public class FPrincipal extends javax.swing.JFrame {
 
         jbtUsuario.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jbtUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/usuario.png"))); // NOI18N
-        jbtUsuario.setText("Usuários");
+        jbtUsuario.setText("Usuários      ");
         jbtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtUsuarioActionPerformed(evt);
-            }
-        });
-
-        jbtMedico.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jbtMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/medico.png"))); // NOI18N
-        jbtMedico.setText("Médicos");
-        jbtMedico.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtMedicoActionPerformed(evt);
             }
         });
 
@@ -65,30 +89,30 @@ public class FPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jbtSecretario.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jbtSecretario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/secretario.png"))); // NOI18N
-        jbtSecretario.setText("Secretários");
-        jbtSecretario.addActionListener(new java.awt.event.ActionListener() {
+        jbtMedico.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jbtMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/medico.png"))); // NOI18N
+        jbtMedico.setText("Médicos      ");
+        jbtMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtSecretarioActionPerformed(evt);
+                jbtMedicoActionPerformed(evt);
             }
         });
 
         jbtPaciente.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jbtPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/paciente.png"))); // NOI18N
-        jbtPaciente.setText("Pacientes");
+        jbtPaciente.setText("Pacientes   ");
         jbtPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtPacienteActionPerformed(evt);
             }
         });
 
-        jbtSair.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jbtSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sair.png"))); // NOI18N
-        jbtSair.setText("Sair");
-        jbtSair.addActionListener(new java.awt.event.ActionListener() {
+        jbtSecretario.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jbtSecretario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/secretario.png"))); // NOI18N
+        jbtSecretario.setText("Secretários");
+        jbtSecretario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtSairActionPerformed(evt);
+                jbtSecretarioActionPerformed(evt);
             }
         });
 
@@ -101,52 +125,104 @@ public class FPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        jLabel1.setText("      CADASTROS");
+
+        jLabel2.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        jLabel2.setText("          HOSPITAL");
+
+        jbtSobre.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jbtSobre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sobre.png"))); // NOI18N
+        jbtSobre.setText("Sobre");
+        jbtSobre.setEnabled(false);
+        jbtSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtSobreActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        jLabel3.setText("           SISTEMA");
+
+        jlbUsuario.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        jlbUsuario.setText("USUÁRIO:");
+
+        jlbPrivilegio.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        jlbPrivilegio.setText("PRIVILÉGIO:");
+
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jbtMedico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbtPessoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbtEnfermeiro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbtUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbtPessoa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbtMedico, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbtPaciente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbtSecretario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jbtEnfermeiro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbtSecretario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbtPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addComponent(jbtAtendimento)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtSair, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtSobre, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtSair)
-                    .addComponent(jbtAtendimento))
-                .addContainerGap(128, Short.MAX_VALUE))
+                    .addComponent(jlbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlbPrivilegio, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(166, Short.MAX_VALUE))
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(13, 13, 13)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtPessoa)
-                    .addComponent(jbtEnfermeiro)
-                    .addComponent(jbtAtendimento))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jlbUsuario))
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbtPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtSobre, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jlbPrivilegio)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtUsuario)
-                    .addComponent(jbtSecretario))
+                    .addComponent(jbtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtSair, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtMedico)
-                    .addComponent(jbtPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbtSair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(jbtEnfermeiro, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbtMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbtSecretario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,11 +231,6 @@ public class FPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jbtPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtPessoaActionPerformed
-        DCPessoa cPessoa = new DCPessoa(this, true);
-        cPessoa.setVisible(true);
-    }//GEN-LAST:event_jbtPessoaActionPerformed
 
     private void jbtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUsuarioActionPerformed
         DCUsuario cUsuario = new DCUsuario(this, true);
@@ -195,6 +266,15 @@ public class FPrincipal extends javax.swing.JFrame {
         cAtendimento.setVisible(true);
     }//GEN-LAST:event_jbtAtendimentoActionPerformed
 
+    private void jbtPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtPessoaActionPerformed
+        DCPessoa cPessoa = new DCPessoa(this, true);
+        cPessoa.setVisible(true);
+    }//GEN-LAST:event_jbtPessoaActionPerformed
+
+    private void jbtSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSobreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtSobreActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -226,6 +306,9 @@ public class FPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JButton jbtAtendimento;
     private javax.swing.JButton jbtEnfermeiro;
     private javax.swing.JButton jbtMedico;
@@ -233,9 +316,20 @@ public class FPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jbtPessoa;
     private javax.swing.JButton jbtSair;
     private javax.swing.JButton jbtSecretario;
+    private javax.swing.JButton jbtSobre;
     private javax.swing.JButton jbtUsuario;
+    private javax.swing.JLabel jlbPrivilegio;
+    private javax.swing.JLabel jlbUsuario;
     private javax.swing.JPanel jpPrincipal;
     // End of variables declaration//GEN-END:variables
+
+    public Usuario getUsuario() {
+        return (this.usuario);
+    }
+
+    public final void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     public void sair() {
         this.dispose();

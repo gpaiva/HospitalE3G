@@ -8,7 +8,12 @@ public class Medico extends Pessoa {
     }
 
     public Medico(Pessoa pessoa, String crm) {
+        super();
         this.setCodPessoa(pessoa.getCodPessoa());
+        this.setNome(pessoa.getNome());
+        this.setCpf(pessoa.getCpf());
+        this.setRg(pessoa.getRg());
+        this.setSexo(pessoa.getSexo());
         this.setCrm(crm);
     }
 

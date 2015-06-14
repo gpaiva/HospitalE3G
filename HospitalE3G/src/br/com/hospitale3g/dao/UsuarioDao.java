@@ -1,6 +1,10 @@
 package br.com.hospitale3g.dao;
 
+import br.com.hospitale3g.controller.EnfermeiroController;
 import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.MedicoController;
+import br.com.hospitale3g.controller.PacienteController;
+import br.com.hospitale3g.controller.SecretarioController;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -8,6 +12,10 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.model.Usuario;
+import br.com.hospitale3g.model.Enfermeiro;
+import br.com.hospitale3g.model.Medico;
+import br.com.hospitale3g.model.Paciente;
+import br.com.hospitale3g.model.Secretario;
 import br.com.hospitale3g.view.DExcecao;
 
 public class UsuarioDao extends Dao {
@@ -125,6 +133,56 @@ public class UsuarioDao extends Dao {
         }
     }
 
+    public Usuario getUsuario(String usuLogin, String usuSenha) {
+        String sqlQuery = "SELECT * "
+                + " FROM USUARIO "
+                + " WHERE USULOGIN LIKE " + Lib.quotedStr(usuLogin) + " AND "
+                + "       USUSENHA LIKE " + Lib.quotedStr(usuSenha) + ";";
+
+        this.conect(Dao.url);
+        List<Usuario> usuarios = new ArrayList<Usuario>();
+        ResultSet rs;
+        try {
+            rs = this.getComando().executeQuery(sqlQuery);
+            if ((rs != null) && (rs.next())) {
+                PessoaDao daoPessoa = new PessoaDao();
+                Pessoa pessoa = daoPessoa.getPessoa(rs.getInt(UsuarioDao.codPessoa));
+
+                Usuario usuario = new Usuario(pessoa,
+                        rs.getString(UsuarioDao.usuLogin),
+                        rs.getString(UsuarioDao.usuSenha));
+                return (usuario);
+            }
+            return (null);
+        } catch (SQLException e) {
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
+            return (null);
+        } finally {
+            this.close();
+        }
+    }
+
+    public String getPrivilegio(Usuario usuario) {
+        Enfermeiro enfermeiro = EnfermeiroController.getEnfermeiro(usuario.getCodPessoa());
+        if (enfermeiro != null) {
+            return ("Enfermeiro");
+        }
+        Medico medico = MedicoController.getMedico(usuario.getCodPessoa());
+        if (medico != null) {
+            return ("Médico");
+        }
+        Paciente paciente = PacienteController.getPaciente(usuario.getCodPessoa());
+        if (paciente != null) {
+            return ("Paciente");
+        }
+        Secretario secretario = SecretarioController.getSecretario(usuario.getCodPessoa());
+        if (secretario != null) {
+            return ("Secretário");
+        }
+        return ("Desconhecido");
+    }
+
     public boolean findUsuario(String usuLogin, String usuSenha) {
         this.conect(Dao.url);
         try {
@@ -142,8 +200,24 @@ public class UsuarioDao extends Dao {
         return (false);
     }
 
+    public boolean existsUsuarioCodPessoa(int codPessoa) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT * "
+                    + " FROM USUARIO "
+                    + " WHERE CODPESSOA = " + codPessoa + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
     public String[] getColumns() {
-        String[] aux = {"Código", "Login"};
+        String[] aux = {"Código", "Nome", "Login", "Sexo"};
         return (aux);
     }
 
@@ -161,7 +235,10 @@ public class UsuarioDao extends Dao {
         }
         model.setNumRows(0);
         for (Usuario usuario : this.select()) {
-            model.addRow(new Object[]{usuario.getCodPessoa(), usuario.getUsuLogin()});
+            model.addRow(new Object[]{usuario.getCodPessoa(),
+                usuario.getNome(),
+                usuario.getUsuLogin(),
+                Lib.iif(usuario.getSexo() == 'M', "Masculino", "Feminino")});
         }
         return (model);
     }

@@ -1,11 +1,8 @@
 package br.com.hospitale3g.view;
 
-import br.com.hospitale3g.dao.PessoaDao;
 import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import br.com.hospitale3g.model.Pessoa;
-import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.PessoaController;
 import javax.swing.JOptionPane;
 
 public class DCPessoa extends javax.swing.JDialog {
@@ -30,6 +27,16 @@ public class DCPessoa extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btAtualizar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jmArquivo = new javax.swing.JMenu();
+        jmiNovo = new javax.swing.JMenuItem();
+        jmiEditar = new javax.swing.JMenuItem();
+        jmiExcluir = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jmiAtualizar = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jmiSair = new javax.swing.JMenuItem();
+        jmRelatorio = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Pessoa");
@@ -51,6 +58,10 @@ public class DCPessoa extends javax.swing.JDialog {
                 ""
             }
         ));
+        tbPessoa.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbPessoa.setAutoscrolls(false);
+        tbPessoa.setShowHorizontalLines(true);
+        tbPessoa.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tbPessoa);
         tbPessoa.getAccessibleContext().setAccessibleParent(this);
 
@@ -104,19 +115,16 @@ public class DCPessoa extends javax.swing.JDialog {
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addComponent(btNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btAtualizar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btSair)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(btNovo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btExcluir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btAtualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btSair))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,9 +136,64 @@ public class DCPessoa extends javax.swing.JDialog {
                     .addComponent(btAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
         );
+
+        jmArquivo.setText("Arquivo");
+
+        jmiNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/novo.png"))); // NOI18N
+        jmiNovo.setText("Novo");
+        jmiNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiNovoActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiNovo);
+
+        jmiEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/editar.png"))); // NOI18N
+        jmiEditar.setText("Editar");
+        jmiEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiEditarActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiEditar);
+
+        jmiExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/excluir.png"))); // NOI18N
+        jmiExcluir.setText("Excluir");
+        jmiExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiExcluirActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiExcluir);
+        jmArquivo.add(jSeparator1);
+
+        jmiAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/atualizar.png"))); // NOI18N
+        jmiAtualizar.setText("Atualizar");
+        jmiAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAtualizarActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiAtualizar);
+        jmArquivo.add(jSeparator2);
+
+        jmiSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sair.png"))); // NOI18N
+        jmiSair.setText("Sair");
+        jmiSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSairActionPerformed(evt);
+            }
+        });
+        jmArquivo.add(jmiSair);
+
+        jMenuBar1.add(jmArquivo);
+
+        jmRelatorio.setText("Relatório");
+        jMenuBar1.add(jmRelatorio);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -140,40 +203,22 @@ public class DCPessoa extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
-        DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
-                "Incluir - Pessoa");
-        iPessoa.setVisible(true);
-        this.atualizarJTable();
+        this.novo();
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        if (this.getPessoaSelecionada() != null) {
-            PessoaDao daoPessoa = new PessoaDao();
-            daoPessoa.delete(this.getPessoaSelecionada().getCodPessoa());
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhuma Pessoa selecionada!");
-        }
+        this.excluir();
     }//GEN-LAST:event_btExcluirActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
-        if (this.getPessoaSelecionada() != null) {
-            DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
-                    "Editar - Pessoa", this.getPessoaSelecionada());
-            iPessoa.setVisible(true);
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(null, "Nenhuma Pessoa selecionada!");
-        }
-
-
+        this.editar();
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
@@ -183,6 +228,26 @@ public class DCPessoa extends javax.swing.JDialog {
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
         this.sair();
     }//GEN-LAST:event_btSairActionPerformed
+
+    private void jmiNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNovoActionPerformed
+        this.novo();
+    }//GEN-LAST:event_jmiNovoActionPerformed
+
+    private void jmiEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEditarActionPerformed
+        this.editar();
+    }//GEN-LAST:event_jmiEditarActionPerformed
+
+    private void jmiExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExcluirActionPerformed
+        this.excluir();
+    }//GEN-LAST:event_jmiExcluirActionPerformed
+
+    private void jmiAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAtualizarActionPerformed
+        this.atualizarJTable();
+    }//GEN-LAST:event_jmiAtualizarActionPerformed
+
+    private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
+        this.sair();
+    }//GEN-LAST:event_jmiSairActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -196,18 +261,14 @@ public class DCPessoa extends javax.swing.JDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DCPessoa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DCPessoa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DCPessoa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(DCPessoa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
+        //</editor-fold>
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 DCPessoa dialog = new DCPessoa(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -227,12 +288,18 @@ public class DCPessoa extends javax.swing.JDialog {
         }
 
         Pessoa pessoa = new Pessoa(
-                Integer.parseInt(this.getTbPessoa().getValueAt(
-                                this.getTbPessoa().getSelectedRow(), 0).toString()),
-                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 1).toString(),
-                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 2).toString().charAt(0),
-                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 3).toString(),
-                this.getTbPessoa().getValueAt(this.getTbPessoa().getSelectedRow(), 4).toString());
+                Integer.parseInt(this.tbPessoa.getValueAt(
+                                this.tbPessoa.getSelectedRow(), 0).toString()),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 1).toString(),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 2).toString().charAt(0),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 3).toString(),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 4).toString(),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 5).toString(),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 6).toString(),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 7).toString(),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 8).toString(),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 9).toString(),
+                this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 10).toString());
         return (pessoa);
     }
 
@@ -241,12 +308,14 @@ public class DCPessoa extends javax.swing.JDialog {
     }
 
     private void atualizarJTable() {
-        PessoaDao daoPessoa = new PessoaDao();
-        this.getTbPessoa().setModel(daoPessoa.getTableModel());
-        this.getTbPessoa().getColumnModel().getColumn(0).setPreferredWidth(10);
-        this.getTbPessoa().getColumnModel().getColumn(1).setPreferredWidth(100);
-        this.getTbPessoa().requestFocus();
-        this.getTbPessoa().setRowSelectionInterval(0, 0);
+        this.tbPessoa.setModel(PessoaController.getTableModel());
+        for (int i = 0; i <= this.tbPessoa.getColumnCount() - 1; i++) {
+            this.tbPessoa.getColumnModel().getColumn(i).setPreferredWidth(120);
+        }
+        this.tbPessoa.requestFocus();
+        if (this.tbPessoa.getModel().getRowCount() > 0) {
+            this.tbPessoa.setRowSelectionInterval(0, 0);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -255,12 +324,45 @@ public class DCPessoa extends javax.swing.JDialog {
     private javax.swing.JButton btExcluir;
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSair;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenu jmArquivo;
+    private javax.swing.JMenu jmRelatorio;
+    private javax.swing.JMenuItem jmiAtualizar;
+    private javax.swing.JMenuItem jmiEditar;
+    private javax.swing.JMenuItem jmiExcluir;
+    private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable tbPessoa;
     // End of variables declaration//GEN-END:variables
 
-    private JTable getTbPessoa() {
-        return (this.tbPessoa);
+    private void novo() {
+        DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
+                "Incluir - Pessoa");
+        iPessoa.setVisible(true);
+        this.atualizarJTable();
+    }
+
+    private void editar() {
+        if (this.getPessoaSelecionada() != null) {
+            DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
+                    "Editar - Pessoa", this.getPessoaSelecionada());
+            iPessoa.setVisible(true);
+            this.atualizarJTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhuma Pessoa selecionada!");
+        }
+    }
+
+    private void excluir() {
+        if (this.getPessoaSelecionada() != null) {
+            PessoaController.delete(this.getPessoaSelecionada().getCodPessoa());
+            this.atualizarJTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhuma Pessoa selecionada!");
+        }
     }
 }

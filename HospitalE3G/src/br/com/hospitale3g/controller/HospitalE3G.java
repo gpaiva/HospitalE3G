@@ -5,7 +5,7 @@ import br.com.hospitale3g.view.FLogin;
 
 public class HospitalE3G {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         Dao dao = new Dao();
         if (!dao.existsDataBase())
             dao.createDataBase();

@@ -1,14 +1,13 @@
 package br.com.hospitale3g.view;
 
-import br.com.hospitale3g.controller.Lib;
-import br.com.hospitale3g.dao.PessoaDao;
-import javax.swing.JFrame;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.controller.UsuarioController;
+import br.com.hospitale3g.model.Usuario;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DIUsuario extends javax.swing.JDialog {
 
@@ -18,6 +17,7 @@ public class DIUsuario extends javax.swing.JDialog {
     }
 
     private tipoFormulario tipo;
+    private List<Pessoa> pessoas = new ArrayList<Pessoa>();
 
     public DIUsuario(java.awt.Frame parent, boolean modal, String title) {
         super(parent, modal);
@@ -26,16 +26,29 @@ public class DIUsuario extends javax.swing.JDialog {
         this.setTitle(title);
 
         this.setTipo(tipoFormulario.tfINCLUSAO);
+
+        setPessoas(PessoaController.select());
+        Iterator<Pessoa> it = getPessoas().iterator();
+        while (it.hasNext()) {
+            Pessoa pessoa = (Pessoa) it.next();
+            this.jcbPessoa.addItem(pessoa.getCodPessoa() + " - " + pessoa.getNome());
+        }
     }
 
-    public DIUsuario(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
+    public DIUsuario(java.awt.Frame parent, boolean modal, String title, Usuario usuario) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
 
         this.setTipo(tipoFormulario.tfEDICAO);
-        this.jcbPessoa.setEnabled(false);
+        this.getPessoas().add(new Pessoa(usuario.getCodPessoa(), usuario.getNome(),
+                usuario.getSexo(), usuario.getCpf(), usuario.getRg(), usuario.getRua(),
+                usuario.getNumero(), usuario.getComplemento(), usuario.getBairro(),
+                usuario.getCidade(), usuario.getCep()));
+
+        this.jcbPessoa.addItem(usuario.getCodPessoa() + " - " + usuario.getNome());
+        this.jtfUsuario.setText(usuario.getUsuLogin());
         this.jtfSenhaAntiga.setEnabled(true);
     }
 
@@ -202,9 +215,54 @@ public class DIUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_btSalvarActionPerformed
 
     private void salvar() {
-        char sexo = Lib.iif(jcbPessoa.getSelectedIndex() == 0, 'M', 'F');
+        boolean isValid = true;
 
-        sair();
+        Pessoa pessoa = getPessoas().get(this.jcbPessoa.getSelectedIndex());
+        Usuario usuario = new Usuario(pessoa, this.jtfUsuario.getText(), this.jtfSenha.getText());
+        Usuario usuarioAux = UsuarioController.getUsuario(pessoa.getCodPessoa());
+
+        if (this.getTipo() == DIUsuario.tipoFormulario.tfINCLUSAO) {
+            if (UsuarioController.existsUsuarioCodPessoa(pessoa.getCodPessoa())) {
+                Lib.information("Usuário já Cadastrado no Sistema!");
+                isValid = false;
+                this.jcbPessoa.requestFocus();
+            }
+        } else if (this.jtfUsuario.getText().isEmpty()) {
+            Lib.information("*Usuário.\nPreenchimento Obrigatório!");
+            isValid = false;
+            this.jtfUsuario.requestFocus();
+        } else if (this.jtfSenha.getText().isEmpty()) {
+            Lib.information("*Senha.\nPreenchimento Obrigatório!");
+            isValid = false;
+            this.jtfSenha.requestFocus();
+        }
+        if (isValid) {
+            if (this.jtfSenhaAntiga.isEnabled()) {
+                if (this.jtfSenhaAntiga.getText().isEmpty()) {
+                    Lib.information("*Senha Antiga.\nPreenchimento Obrigatório!");
+                    isValid = false;
+                    this.jtfSenhaAntiga.requestFocus();
+                }
+            }
+        }
+        if (isValid) {
+            if (this.jtfSenhaAntiga.isEnabled()) {
+                if (!this.jtfSenhaAntiga.getText().equals(usuarioAux.getUsuSenha())) {
+                    Lib.information("Senha Antiga inválida!");
+                    isValid = false;
+                    this.jtfSenhaAntiga.requestFocus();
+                }
+            }
+        }
+
+        if (isValid) {
+            if (this.getTipo() == tipoFormulario.tfINCLUSAO) {
+                UsuarioController.insert(usuario);
+            } else if (this.getTipo() == tipoFormulario.tfEDICAO) {
+                UsuarioController.update(usuario);
+            }
+            sair();
+        }
     }
 
     private void sair() {
@@ -221,16 +279,21 @@ public class DIUsuario extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIUsuario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIUsuario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIUsuario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DIUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DIUsuario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -255,6 +318,14 @@ public class DIUsuario extends javax.swing.JDialog {
 
     private void setTipo(tipoFormulario tipo) {
         this.tipo = tipo;
+    }
+
+    private List<Pessoa> getPessoas() {
+        return (this.pessoas);
+    }
+
+    private void setPessoas(List<Pessoa> pessoas) {
+        this.pessoas = pessoas;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

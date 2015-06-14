@@ -8,7 +8,13 @@ public class Paciente extends Pessoa {
     }
 
     public Paciente(Pessoa pessoa, Integer id) {
+        super();
         this.setCodPessoa(pessoa.getCodPessoa());
+        this.setNome(pessoa.getNome());
+        this.setCpf(pessoa.getCpf());
+        this.setRg(pessoa.getRg());
+        this.setSexo(pessoa.getSexo());
+        
         this.setId(id);
     }
 

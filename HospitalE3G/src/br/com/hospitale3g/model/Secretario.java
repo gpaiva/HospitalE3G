@@ -8,7 +8,12 @@ public class Secretario extends Pessoa {
     }
 
     public Secretario(Pessoa pessoa, int registro) {
+        super();
         this.setCodPessoa(pessoa.getCodPessoa());
+        this.setNome(pessoa.getNome());
+        this.setCpf(pessoa.getCpf());
+        this.setRg(pessoa.getRg());
+        this.setSexo(pessoa.getSexo());
         this.setRegistro(registro);
     }
 
