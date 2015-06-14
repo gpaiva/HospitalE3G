@@ -1,14 +1,24 @@
 package br.com.hospitale3g.view;
 
+import br.com.hospitale3g.controller.Lib;
 import br.com.hospitale3g.controller.UsuarioController;
 import br.com.hospitale3g.dao.UsuarioDao;
 import br.com.hospitale3g.view.DExcecao;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 public class FLogin extends javax.swing.JFrame {
 
     public FLogin() {
         this.initComponents();
         this.setLocationRelativeTo(null);
+
+        ImageIcon icon = (ImageIcon) this.jlbLogo.getIcon();
+        Image img = ((Image) icon.getImage());
+        this.setIconImage(img);
     }
 
     @SuppressWarnings("unchecked")
@@ -25,6 +35,7 @@ public class FLogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hospital E3G");
+        setIconImage(new ImageIcon("imagem.png").getImage());
         setName("jfLogin"); // NOI18N
         setResizable(false);
 

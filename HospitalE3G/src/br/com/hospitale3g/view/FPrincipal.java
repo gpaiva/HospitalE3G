@@ -2,12 +2,15 @@ package br.com.hospitale3g.view;
 
 import br.com.hospitale3g.controller.UsuarioController;
 import br.com.hospitale3g.model.Usuario;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class FPrincipal extends javax.swing.JFrame {
 
     Usuario usuario;
 
     public FPrincipal() {
+        
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(FPrincipal.MAXIMIZED_BOTH);
@@ -15,6 +18,10 @@ public class FPrincipal extends javax.swing.JFrame {
         this.jlbPrivilegio.setText("");
 
         this.setUsuario(null);
+        
+        ImageIcon icon = (ImageIcon) this.jlbLogo.getIcon();
+        Image img = ((Image) icon.getImage());
+        this.setIconImage(img);
     }
 
     public FPrincipal(Usuario usuario) {
@@ -26,6 +33,10 @@ public class FPrincipal extends javax.swing.JFrame {
                 + UsuarioController.getPrivilegio(usuario));
 
         this.setUsuario(usuario);
+        
+        ImageIcon icon = (ImageIcon) this.jlbLogo.getIcon();
+        Image img = ((Image) icon.getImage());
+        this.setIconImage(img);
     }
 
     @SuppressWarnings("unchecked")
@@ -47,6 +58,7 @@ public class FPrincipal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jlbUsuario = new javax.swing.JLabel();
         jlbPrivilegio = new javax.swing.JLabel();
+        jlbLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hospital E3G");
@@ -150,6 +162,10 @@ public class FPrincipal extends javax.swing.JFrame {
         jlbPrivilegio.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         jlbPrivilegio.setText("PRIVILÉGIO:");
 
+        jlbLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/logo_129x65.png"))); // NOI18N
+        jlbLogo.setEnabled(false);
+        jlbLogo.setFocusable(false);
+
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
@@ -180,27 +196,31 @@ public class FPrincipal extends javax.swing.JFrame {
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlbPrivilegio, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(166, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jlbLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jlbUsuario))
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jlbLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jbtPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbtAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbtSobre, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jlbPrivilegio)))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jlbUsuario))
+                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jbtPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jbtAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jbtSobre, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(jlbPrivilegio)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -318,6 +338,7 @@ public class FPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jbtSecretario;
     private javax.swing.JButton jbtSobre;
     private javax.swing.JButton jbtUsuario;
+    private javax.swing.JLabel jlbLogo;
     private javax.swing.JLabel jlbPrivilegio;
     private javax.swing.JLabel jlbUsuario;
     private javax.swing.JPanel jpPrincipal;
