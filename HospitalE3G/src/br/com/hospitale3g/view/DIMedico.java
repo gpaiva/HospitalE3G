@@ -64,7 +64,7 @@ public class DIMedico extends javax.swing.JDialog {
 
         this.jcbPessoa.addItem(pessoa.getCodPessoa() + " - " + pessoa.getNome());
         this.jcbPessoa.setEnabled(false);
-        this.jlbCRM.setText("");
+        this.jtfCRM.setText("");
 
         this.setIsInsertPessoa(true);
         this.setTipo(tipoFormulario.tfINCLUSAO);
@@ -77,13 +77,13 @@ public class DIMedico extends javax.swing.JDialog {
     private void initComponents() {
 
         jpPrincipal = new javax.swing.JPanel();
-        jlbCRM = new javax.swing.JLabel();
-        jtfCRM = new javax.swing.JTextField();
-        jcbPessoa = new javax.swing.JComboBox();
-        jlbPessoas = new javax.swing.JLabel();
         jpBotoes = new javax.swing.JPanel();
         btSalvar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
+        jlbCRM = new javax.swing.JLabel();
+        jtfCRM = new javax.swing.JTextField();
+        jlbPessoas = new javax.swing.JLabel();
+        jcbPessoa = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Incluir - Médico");
@@ -92,17 +92,6 @@ public class DIMedico extends javax.swing.JDialog {
         setType(java.awt.Window.Type.UTILITY);
 
         jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
-
-        jlbCRM.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbCRM.setText("*CRM");
-
-        jtfCRM.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-
-        jcbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jcbPessoa.setToolTipText("");
-
-        jlbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbPessoas.setText("*Pessoa");
 
         jpBotoes.setBackground(new java.awt.Color(204, 204, 255));
         jpBotoes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -136,7 +125,7 @@ public class DIMedico extends javax.swing.JDialog {
                 .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpBotoesLayout.setVerticalGroup(
             jpBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,17 +137,29 @@ public class DIMedico extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        jlbCRM.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jlbCRM.setText("*CRM");
+
+        jtfCRM.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+
+        jlbPessoas.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jlbPessoas.setText("*Pessoa");
+
+        jcbPessoa.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jcbPessoa.setToolTipText("");
+
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jlbPessoas)
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlbCRM)
-                    .addComponent(jcbPessoa, 0, 258, Short.MAX_VALUE)
-                    .addComponent(jtfCRM))
+                    .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jlbPessoas)
+                        .addComponent(jcbPessoa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jtfCRM, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jpBotoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -171,10 +172,10 @@ public class DIMedico extends javax.swing.JDialog {
                 .addComponent(jcbPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jlbCRM)
-                .addGap(2, 2, 2)
-                .addComponent(jtfCRM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jpBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jtfCRM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jpBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -291,6 +292,11 @@ public class DIMedico extends javax.swing.JDialog {
 
     private void salvar() {
         boolean isValid = true;
+        if(this.jtfCRM.getText().isEmpty()){
+                Lib.information("*CRM. Preenchimento Obrigatório!");
+                isValid = false;
+                this.jtfCRM.requestFocus();
+        }
         if (this.getTipo() == DIMedico.tipoFormulario.tfINCLUSAO) {
             if (MedicoController.existsMedico(this.jtfCRM.getText())) {
                 Lib.information("CRM já Cadastrado no Sistema!");

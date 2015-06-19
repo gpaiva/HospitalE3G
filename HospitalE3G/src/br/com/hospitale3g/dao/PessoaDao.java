@@ -1,11 +1,20 @@
 package br.com.hospitale3g.dao;
 
+import br.com.hospitale3g.controller.EnfermeiroController;
 import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.MedicoController;
+import br.com.hospitale3g.controller.PacienteController;
+import br.com.hospitale3g.controller.SecretarioController;
+import br.com.hospitale3g.model.Enfermeiro;
+import br.com.hospitale3g.model.Medico;
+import br.com.hospitale3g.model.Paciente;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 import br.com.hospitale3g.model.Pessoa;
+import br.com.hospitale3g.model.Secretario;
+import br.com.hospitale3g.model.Usuario;
 import br.com.hospitale3g.view.DExcecao;
 import javax.swing.table.DefaultTableModel;
 
@@ -211,6 +220,29 @@ public class PessoaDao extends Dao {
             this.close();
         }
         return (false);
+    }
+    
+    public String getPessoa(Pessoa pessoa) {
+        if (pessoa.getCodPessoa() == 1) {
+            return ("Administrador");
+        }
+        Enfermeiro enfermeiro = EnfermeiroController.getEnfermeiro(pessoa.getCodPessoa());
+        if (enfermeiro != null) {
+            return ("Enfermeiro");
+        }
+        Medico medico = MedicoController.getMedico(pessoa.getCodPessoa());
+        if (medico != null) {
+            return ("Médico");
+        }
+        Paciente paciente = PacienteController.getPaciente(pessoa.getCodPessoa());
+        if (paciente != null) {
+            return ("Paciente");
+        }
+        Secretario secretario = SecretarioController.getSecretario(pessoa.getCodPessoa());
+        if (secretario != null) {
+            return ("Secretário");
+        }
+        return ("Desconhecido");
     }
 
     public String[] getColumns() {

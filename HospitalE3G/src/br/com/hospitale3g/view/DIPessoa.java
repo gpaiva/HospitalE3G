@@ -3,38 +3,45 @@ package br.com.hospitale3g.view;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.Lib;
 import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.controller.UsuarioController;
+import br.com.hospitale3g.model.Usuario;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 
 public class DIPessoa extends javax.swing.JDialog {
-    
+
     public enum tipoFormulario {
-        
+
         tfINCLUSAO, tfEDICAO;
     }
-    
+
     private tipoFormulario tipo;
     private String oldCpf;
     private String oldRg;
-    
-    public DIPessoa(java.awt.Frame parent, boolean modal, String title) {
+
+    public DIPessoa(java.awt.Frame parent, boolean modal, String title, Usuario usuario) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
-        
+
         this.sCodigo.setValue(PessoaController.getNextCodPessoa());
         this.setTipo(tipoFormulario.tfINCLUSAO);
         this.setOldCpf("");
         this.setOldRg("");
+        
+        if(UsuarioController.getPrivilegio(usuario) == "Secretário"){
+        this.cbTipoPessoa.removeAllItems();
+        this.cbTipoPessoa.addItem("Paciente");
+        }
     }
-    
+
     public DIPessoa(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
         super(parent, modal);
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle(title);
-        
+
         this.sCodigo.setValue(pessoa.getCodPessoa());
         this.tNome.setText(pessoa.getNome());
         this.cbSexo.setSelectedIndex(Lib.iif(pessoa.getSexo() == 'M', 0, 1));
@@ -49,8 +56,11 @@ public class DIPessoa extends javax.swing.JDialog {
         this.setTipo(tipoFormulario.tfEDICAO);
         this.setOldCpf(pessoa.getCpf());
         this.setOldRg(pessoa.getRg());
+
+        this.cbTipoPessoa.removeAllItems();
+        this.cbTipoPessoa.addItem(PessoaController.getPessoa(pessoa));
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -86,6 +96,7 @@ public class DIPessoa extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Incluir - Pessoa");
+        setName("IPessoa"); // NOI18N
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
@@ -290,7 +301,6 @@ public class DIPessoa extends javax.swing.JDialog {
                             .addComponent(lbTipoPessoa))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbTipoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addGap(22, 22, 22)
@@ -302,7 +312,6 @@ public class DIPessoa extends javax.swing.JDialog {
                         .addComponent(jlbNumero1)
                         .addComponent(jlbNumero)
                         .addComponent(jlbRua)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jpPrincipalLayout.createSequentialGroup()
@@ -385,7 +394,7 @@ public class DIPessoa extends javax.swing.JDialog {
             isValid = false;
             this.jtfCep.requestFocus();
         }
-        
+
         if (isValid) {
             try {
                 this.salvar();
@@ -394,50 +403,52 @@ public class DIPessoa extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btSalvarActionPerformed
-    
+
     private void salvar() throws SQLException {
         char sexo = Lib.iif(cbSexo.getSelectedIndex() == 0, 'M', 'F');
-        
+
         Pessoa pessoa = new Pessoa(Integer.parseInt(this.sCodigo.getValue().toString()),
                 this.tNome.getText(), sexo, tCPF.getText(), tRG.getText(),
                 this.jtfRua.getText(), this.jtfNumero.getText(), this.jtfComplemento.getText(),
                 this.jtfBairro.getText(), this.jtfCidade.getText(), this.jtfCep.getText());
-        
+
         if (this.getTipo() == tipoFormulario.tfINCLUSAO) {
             PessoaController.insert(pessoa);
         } else if (this.getTipo() == tipoFormulario.tfEDICAO) {
             PessoaController.update(pessoa);
         }
-        
-        switch (this.cbTipoPessoa.getSelectedIndex()) {
-            case 0:
-                DIEnfermeiro iEnfermeiro = new DIEnfermeiro((JFrame) this.getParent(),
-                        true, "Inclusão - Enfermeiro", pessoa);
-                iEnfermeiro.setVisible(true);
-                break;
-            case 1:
-                DIMedico iMedico = new DIMedico((JFrame) this.getParent(),
-                        true, "Inclusão - Médico", pessoa);
-                iMedico.setVisible(true);
-                break;
-            case 2:
-                DIPaciente iPaciente = new DIPaciente((JFrame) this.getParent(),
-                        true, "Inclusão - Paciente", pessoa);
-                iPaciente.setVisible(true);
-                break;
-            case 3:
-                DISecretario iSecretario = new DISecretario((JFrame) this.getParent(),
-                        true, "Inclusão - Secretário", pessoa);
-                iSecretario.setVisible(true);
-                break;
+
+        if (this.getTipo() == tipoFormulario.tfINCLUSAO) {
+            switch (this.cbTipoPessoa.getSelectedIndex()) {
+                case 0:
+                    DIEnfermeiro iEnfermeiro = new DIEnfermeiro((JFrame) this.getParent(),
+                            true, "Inclusão - Enfermeiro", pessoa);
+                    iEnfermeiro.setVisible(true);
+                    break;
+                case 1:
+                    DIMedico iMedico = new DIMedico((JFrame) this.getParent(),
+                            true, "Inclusão - Médico", pessoa);
+                    iMedico.setVisible(true);
+                    break;
+                case 2:
+                    DIPaciente iPaciente = new DIPaciente((JFrame) this.getParent(),
+                            true, "Inclusão - Paciente", pessoa);
+                    iPaciente.setVisible(true);
+                    break;
+                case 3:
+                    DISecretario iSecretario = new DISecretario((JFrame) this.getParent(),
+                            true, "Inclusão - Secretário", pessoa);
+                    iSecretario.setVisible(true);
+                    break;
+            }
         }
         sair();
     }
-    
+
     private void sair() {
         this.dispose();
     }
-    
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -464,7 +475,7 @@ public class DIPessoa extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                DIPessoa dialog = new DIPessoa(new javax.swing.JFrame(), true, "Pessoa");
+                DIPessoa dialog = new DIPessoa(new javax.swing.JFrame(), true, "Pessoa", null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -475,11 +486,11 @@ public class DIPessoa extends javax.swing.JDialog {
             }
         });
     }
-    
+
     private tipoFormulario getTipo() {
         return (this.tipo);
     }
-    
+
     private void setTipo(tipoFormulario tipo) {
         this.tipo = tipo;
     }
@@ -518,17 +529,17 @@ public class DIPessoa extends javax.swing.JDialog {
     private String getOldCpf() {
         return (this.oldCpf);
     }
-    
+
     private void setOldCpf(String oldCpf) {
         this.oldCpf = oldCpf;
     }
-    
+
     private String getOldRg() {
         return (this.oldRg);
     }
-    
+
     private void setOldRg(String oldRg) {
         this.oldRg = oldRg;
     }
-    
+
 }

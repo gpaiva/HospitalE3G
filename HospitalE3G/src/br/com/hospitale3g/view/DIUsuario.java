@@ -226,6 +226,10 @@ public class DIUsuario extends javax.swing.JDialog {
                 Lib.information("Usuário já Cadastrado no Sistema!");
                 isValid = false;
                 this.jcbPessoa.requestFocus();
+            } else if (PessoaController.getPessoa(PessoaController.getPessoa(pessoa.getCodPessoa())) == "Paciente") {
+                Lib.information("Não é possível adicionar um Paciente como Usuário!");
+                isValid = false;
+                this.jcbPessoa.requestFocus();
             }
         } else if (this.jtfUsuario.getText().isEmpty()) {
             Lib.information("*Usuário.\nPreenchimento Obrigatório!");

@@ -342,6 +342,11 @@ public class DIEnfermeiro extends javax.swing.JDialog {
 
     private void salvar() {
         boolean isValid = true;
+        if (this.jtfCOREN.getText().isEmpty()) {
+            Lib.information("*COREN. Preenchimento Obrigatório!");
+            isValid = false;
+            this.jtfCOREN.requestFocus();
+        }
         if (this.getTipo() == DIEnfermeiro.tipoFormulario.tfINCLUSAO) {
             if (EnfermeiroController.existsEnfermeiro(this.jtfCOREN.getText())) {
                 Lib.information("COREN já Cadastrado no Sistema!");

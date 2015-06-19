@@ -12,6 +12,7 @@ import br.com.hospitale3g.model.Enfermeiro;
 import br.com.hospitale3g.model.Atendimento;
 import br.com.hospitale3g.view.DExcecao;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AtendimentoDao extends Dao {
 
@@ -22,6 +23,7 @@ public class AtendimentoDao extends Dao {
     static final String atendatahora = "atendatahora";
     static final String atendatahorafinalizado = "atendatahorafinalizado";
     static final String atensituacao = "atensituacao";
+    static final String atenobservacao = "atenobservacao";
 
     public List<Atendimento> select() {
         String sqlQuery = "SELECT * "
@@ -38,9 +40,12 @@ public class AtendimentoDao extends Dao {
                         resultSet.getString(AtendimentoDao.crm),
                         resultSet.getInt(AtendimentoDao.id),
                         resultSet.getString(AtendimentoDao.coren),
-                        resultSet.getTimestamp(AtendimentoDao.atendatahora),
-                        resultSet.getTimestamp(AtendimentoDao.atendatahorafinalizado),
-                        resultSet.getInt(AtendimentoDao.atensituacao));
+                        new SimpleDateFormat("dd/MM/yyyy").format(resultSet.getDate(AtendimentoDao.atendatahora)),
+                        resultSet.getTime(AtendimentoDao.atendatahora).toString(),
+                        Lib.iif(resultSet.getInt(AtendimentoDao.atensituacao) == 2, new SimpleDateFormat("dd/MM/yyyy").format(resultSet.getDate(AtendimentoDao.atendatahorafinalizado)), ""),
+                        Lib.iif(resultSet.getInt(AtendimentoDao.atensituacao) == 2, resultSet.getTime(AtendimentoDao.atendatahorafinalizado).toString(), ""),
+                        resultSet.getInt(AtendimentoDao.atensituacao),
+                        resultSet.getString(AtendimentoDao.atenobservacao));
                 atendimentos.add(atendimento);
             }
             return (atendimentos);
@@ -55,12 +60,13 @@ public class AtendimentoDao extends Dao {
 
     public void insert(Atendimento atendimento) {
         String sqlQuery = "INSERT INTO ATENDIMENTO(ATENCODIGO, CRM, ID, "
-                + "ATENDATAHORA, ATENSITUACAO)"
+                + "ATENDATAHORA, ATENDATAHORAFINALIZADO, ATENSITUACAO, ATENOBSERVACAO)"
                 + "VALUES(" + atendimento.getAtenCodigo() + ", "
                 + Lib.quotedStr(atendimento.getCrm()) + ", "
                 + atendimento.getId() + ", "
-                + Lib.quotedStr(new SimpleDateFormat("yyyy.MM.dd hh:mm").format(atendimento.getAtenDataHora())) + ", "
-                + atendimento.getAtenSituacao() + ");";
+                + "CURRENT_TIMESTAMP(), NULL,"
+                + atendimento.getAtenSituacao() + ", "
+                + Lib.quotedStr(atendimento.getAtenObservacao()) + ");";
 
         this.conect(Dao.url);
         try {
@@ -78,8 +84,8 @@ public class AtendimentoDao extends Dao {
                 + "SET ATENCODIGO = " + atendimento.getAtenCodigo() + ", "
                 + " CRM = " + Lib.quotedStr(atendimento.getCrm()) + ", "
                 + " ID = " + atendimento.getId() + ", "
-                + " ATENDATAHORA = " + Lib.quotedStr(new SimpleDateFormat("yyyy.MM.dd hh:mm").format(atendimento.getAtenDataHora())) + ", "
-                + " ATENSITUACAO = " + atendimento.getAtenSituacao() + " "
+                + " ATENSITUACAO = " + atendimento.getAtenSituacao() + ", "
+                + " ATENOBSERVACAO = " + Lib.quotedStr(atendimento.getAtenObservacao()) + " "
                 + "WHERE ATENCODIGO = " + atendimento.getAtenCodigo() + ";";
         String sqlQueryCoren = "";
         if (atendimento.getCoren() != null) {
@@ -88,9 +94,9 @@ public class AtendimentoDao extends Dao {
                     + "WHERE ATENCODIGO = " + atendimento.getAtenCodigo() + ";";
         }
         String sqlQueryFinalizado = "";
-        if (atendimento.getAtenDataHoraFinalizado() != null) {
+        if (!atendimento.getAtenDataFinalizado().isEmpty()) {
             sqlQueryFinalizado = "UPDATE ATENDIMENTO "
-                    + "SET ATENDATAHORAFINALIZADO = " + Lib.quotedStr(new SimpleDateFormat("yyyy.MM.dd hh:mm").format(atendimento.getAtenDataHoraFinalizado()))
+                    + "SET ATENDATAHORAFINALIZADO = CURRENT_TIMESTAMP() "
                     + "WHERE ATENCODIGO = " + atendimento.getAtenCodigo() + ";";
         }
         this.conect(Dao.url);
@@ -142,9 +148,12 @@ public class AtendimentoDao extends Dao {
                         resultSet.getString(AtendimentoDao.crm),
                         resultSet.getInt(AtendimentoDao.id),
                         resultSet.getString(AtendimentoDao.coren),
-                        resultSet.getTimestamp(AtendimentoDao.atendatahora),
-                        resultSet.getTimestamp(AtendimentoDao.atendatahorafinalizado),
-                        resultSet.getInt(AtendimentoDao.atensituacao));
+                        resultSet.getDate(AtendimentoDao.atendatahora).toString(),
+                        resultSet.getTime(AtendimentoDao.atendatahora).toString(),
+                        resultSet.getDate(AtendimentoDao.atendatahorafinalizado).toString(),
+                        resultSet.getTime(AtendimentoDao.atendatahorafinalizado).toString(),
+                        resultSet.getInt(AtendimentoDao.atensituacao),
+                        resultSet.getString(AtendimentoDao.atenobservacao));
                 return (atendimento);
             }
             return (null);
@@ -196,10 +205,8 @@ public class AtendimentoDao extends Dao {
 
     public String[] getColumns() {
         String[] aux = {"Código", "Médico", "Código Médico", "Paciente", "Código Paciente",
-            "Situação", "Enfermeiro", "Código Enfermeiro", "Data", "Hora"/*,"Data Finalização",
-         "Hora Finalização"*/
-
-        };
+            "Situação", "Enfermeiro", "Código Enfermeiro", "Data", "Hora", "Data Finalização",
+            "Hora Finalização", "Observação"};
         return (aux);
     }
 
@@ -255,9 +262,14 @@ public class AtendimentoDao extends Dao {
                 situacao,
                 enfermeiroNome,
                 enfermeiroCodPessoa,
-                atendimento.getAtenDataHora().toString(),
-                atendimento.getAtenDataHora().toString() /*atendimento.getAtenDataHoraFinalizado().toString(),
-             atendimento.getAtenDataHoraFinalizado().toString(),*/});
+                atendimento.getAtenData(),
+                atendimento.getAtenHora(),
+                atendimento.getAtenDataFinalizado(),
+                atendimento.getAtenHoraFinalizado(),
+                atendimento.getAtenObservacao()/*atendimento.getAtenDataHoraFinalizado().toString(),
+             atendimento.getAtenDataHoraFinalizado().toString(),*/
+
+            });
         }
         return (model);
     }

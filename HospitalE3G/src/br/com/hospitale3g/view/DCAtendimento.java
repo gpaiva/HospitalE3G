@@ -24,11 +24,25 @@ import javax.swing.JOptionPane;
 
 public class DCAtendimento extends javax.swing.JDialog {
 
-    public DCAtendimento(java.awt.Frame parent, boolean modal) {
+    public DCAtendimento(java.awt.Frame parent, boolean modal, String privilegio) {
         super(parent, modal);
         this.initComponents();
         this.atualizarJTable();
         this.setLocationRelativeTo(null);
+
+        if (privilegio == "Secretário") {
+            this.btEnfermeiro.setEnabled(false);
+            this.btFinalizar.setEnabled(false);
+        } else if (privilegio == "Enfermeiro") {
+            this.btNovo.setEnabled(false);
+            this.btEditar.setEnabled(false);
+            this.btExcluir.setEnabled(false);
+            this.btEnfermeiro.setEnabled(false);
+            this.btFinalizar.setEnabled(false);
+        } else if (privilegio == "Médico") {
+            this.btNovo.setEnabled(false);
+            this.btEditar.setEnabled(false);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -357,7 +371,7 @@ public class DCAtendimento extends javax.swing.JDialog {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DCAtendimento dialog = new DCAtendimento(new javax.swing.JFrame(), true);
+                DCAtendimento dialog = new DCAtendimento(new javax.swing.JFrame(), true, "");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -390,17 +404,18 @@ public class DCAtendimento extends javax.swing.JDialog {
             situacao = 2;
         }
 
-        Atendimento atendimento;
-        try {
-            atendimento = new Atendimento(Integer.parseInt(this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 0).toString()),
-                    medico.getCrm(),
-                    paciente.getId(),
-                    new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.m").parse(this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 8).toString()),
-                    situacao);
-        } catch (ParseException ex) {
-            DExcecao excecao = new DExcecao((JFrame) this.getParent(), true, ex.getMessage());
-            return (null);
+        String observacao = "";
+        if (this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 12) != null) {
+            observacao = this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 10).toString();
         }
+
+        Atendimento atendimento;
+        atendimento = new Atendimento(Integer.parseInt(this.getTbAtendimento().getValueAt(this.getTbAtendimento().getSelectedRow(), 0).toString()),
+                medico.getCrm(),
+                paciente.getId(),
+                "", "", "", "",
+                situacao,
+                observacao);
         return (atendimento);
     }
 
@@ -520,7 +535,6 @@ public class DCAtendimento extends javax.swing.JDialog {
             } else if (atendimento.getAtenSituacao() == 2) {
                 Lib.information("Não é possível finalizar Atendimentos finalizados!");
             } else {
-                atendimento.setAtenDataHoraFinalizado(new Date());
                 atendimento.setAtenSituacao(2);
                 AtendimentoController.update(atendimento);
                 this.atualizarJTable();

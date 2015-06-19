@@ -3,9 +3,12 @@ package br.com.hospitale3g.view;
 import javax.swing.JFrame;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.model.Usuario;
 import javax.swing.JOptionPane;
 
 public class DCPessoa extends javax.swing.JDialog {
+
+    Usuario usuario;
 
     public DCPessoa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -13,6 +16,18 @@ public class DCPessoa extends javax.swing.JDialog {
 
         this.atualizarJTable();
         this.setLocationRelativeTo(null);
+
+        this.setUsuario(null);
+    }
+
+    public DCPessoa(java.awt.Frame parent, boolean modal, Usuario usuario) {
+        super(parent, modal);
+        this.initComponents();
+
+        this.atualizarJTable();
+        this.setLocationRelativeTo(null);
+
+        this.setUsuario(usuario);
     }
 
     @SuppressWarnings("unchecked")
@@ -339,9 +354,17 @@ public class DCPessoa extends javax.swing.JDialog {
     private javax.swing.JTable tbPessoa;
     // End of variables declaration//GEN-END:variables
 
+    private Usuario getUsuario() {
+        return (this.usuario);
+    }
+
+    private void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     private void novo() {
         DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
-                "Incluir - Pessoa");
+                "Incluir - Pessoa", this.getUsuario());
         iPessoa.setVisible(true);
         this.atualizarJTable();
     }

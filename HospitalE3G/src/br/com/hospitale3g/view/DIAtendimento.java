@@ -75,8 +75,6 @@ public class DIAtendimento extends javax.swing.JDialog {
         this.jcbMedico.setEnabled(false);
         this.jcbPaciente.addItem(paciente.getCodPessoa() + " - " + paciente.getNome());
         this.jcbPaciente.setEnabled(false);
-        this.jtfData.setText(new SimpleDateFormat("dd/mm/yyyy").format(atendimento.getAtenDataHora()));
-        this.jtfHora.setText(new SimpleDateFormat("hh:mm:ss").format(atendimento.getAtenDataHora()));
     }
 
     @SuppressWarnings("unchecked")
@@ -84,19 +82,18 @@ public class DIAtendimento extends javax.swing.JDialog {
     private void initComponents() {
 
         jpPrincipal = new javax.swing.JPanel();
-        jlbData = new javax.swing.JLabel();
-        jtfData = new javax.swing.JTextField();
         jcbMedico = new javax.swing.JComboBox();
         jlbMedico = new javax.swing.JLabel();
         jcbPaciente = new javax.swing.JComboBox();
         jlbPaciente = new javax.swing.JLabel();
         jsCodigo = new javax.swing.JSpinner();
         lbCodigo = new javax.swing.JLabel();
-        jtfHora = new javax.swing.JTextField();
-        jlbHora = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtpObservacao = new javax.swing.JTextPane();
         jpBotoes = new javax.swing.JPanel();
         btSalvar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
+        jlbMedico1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Incluir - Enfermeiro");
@@ -105,12 +102,6 @@ public class DIAtendimento extends javax.swing.JDialog {
         setType(java.awt.Window.Type.UTILITY);
 
         jpPrincipal.setBackground(new java.awt.Color(204, 204, 255));
-
-        jlbData.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbData.setText("*Data");
-
-        jtfData.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jtfData.setEnabled(false);
 
         jcbMedico.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
@@ -129,11 +120,7 @@ public class DIAtendimento extends javax.swing.JDialog {
         lbCodigo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         lbCodigo.setText("*Código:");
 
-        jtfHora.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jtfHora.setEnabled(false);
-
-        jlbHora.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jlbHora.setText("*Hora");
+        jScrollPane1.setViewportView(jtpObservacao);
 
         jpBotoes.setBackground(new java.awt.Color(204, 204, 255));
         jpBotoes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -179,35 +166,37 @@ public class DIAtendimento extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        jlbMedico1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jlbMedico1.setText("Observação");
+
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jsCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbCodigo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbMedico)
-                            .addComponent(jcbMedico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbPaciente)
-                            .addComponent(jcbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbData)
-                            .addComponent(jtfData, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbHora)
-                            .addComponent(jtfHora, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jpBotoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jsCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbCodigo))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                        .addComponent(jlbMedico)
+                                        .addGap(162, 162, 162))
+                                    .addComponent(jcbMedico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jcbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jlbPaciente)))
+                            .addComponent(jlbMedico1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,26 +205,18 @@ public class DIAtendimento extends javax.swing.JDialog {
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addComponent(lbCodigo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jsCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jsCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jlbMedico)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcbMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addComponent(jlbPaciente)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbHora, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jlbData))
-                        .addGap(2, 2, 2)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtfData)
-                            .addComponent(jtfHora))))
-                .addGap(8, 8, 8)
+                        .addComponent(jlbPaciente)))
+                .addGap(16, 16, 16)
+                .addComponent(jlbMedico1)
+                .addGap(5, 5, 5)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -301,17 +282,16 @@ public class DIAtendimento extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btSair;
     private javax.swing.JButton btSalvar;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox jcbMedico;
     private javax.swing.JComboBox jcbPaciente;
-    private javax.swing.JLabel jlbData;
-    private javax.swing.JLabel jlbHora;
     private javax.swing.JLabel jlbMedico;
+    private javax.swing.JLabel jlbMedico1;
     private javax.swing.JLabel jlbPaciente;
     private javax.swing.JPanel jpBotoes;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JSpinner jsCodigo;
-    private javax.swing.JTextField jtfData;
-    private javax.swing.JTextField jtfHora;
+    private javax.swing.JTextPane jtpObservacao;
     private javax.swing.JLabel lbCodigo;
     // End of variables declaration//GEN-END:variables
 
@@ -354,8 +334,7 @@ public class DIAtendimento extends javax.swing.JDialog {
         Atendimento atendimento;
         atendimento = new Atendimento(Integer.parseInt(this.jsCodigo.getValue().toString()),
                 medico.getCrm(), paciente.getId(), null,
-                new Date(),
-                null, 0);
+                "", "", "", "", 0, this.jtpObservacao.getText());
 
         if (this.getTipo() == DIAtendimento.tipoFormulario.tfINCLUSAO) {
             AtendimentoController.insert(atendimento);

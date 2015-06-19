@@ -8,33 +8,44 @@ public final class Atendimento {
     private String crm;
     private int id;
     private String coren;
-    private Date atenDataHora;
-    private Date atenDataHoraFinalizado;
+    private String atenData;
+    private String atenHora;
+    private String atenDataFinalizado;
+    private String atenHoraFinalizado;
     private int atenSituacao;
+    private String atenObservacao;
 
     public Atendimento() {
     }
 
     public Atendimento(int atenCodigo, String crm, int id, String coren,
-            Date atenDataHora, Date atenDataHoraFinalizado, int atenSituacao) {
+            String atenData, String atenHora, String atenDataFinalizado,
+            String atenHoraFinalizado, int atenSituacao, String atenObservacao) {
         this.setAtenCodigo(atenCodigo);
         this.setCrm(crm);
         this.setId(id);
         this.setCoren(coren);
-        this.setAtenDataHora(atenDataHora);
-        this.setAtenDataHoraFinalizado(atenDataHoraFinalizado);
+        this.setAtenData(atenData);
+        this.setAtenHora(atenHora);
+        this.setAtenDataFinalizado(atenDataFinalizado);
+        this.setAtenHoraFinalizado(atenHoraFinalizado);
         this.setAtenSituacao(atenSituacao);
+        this.setAtenObservacao(atenObservacao);
     }
 
-    public Atendimento(int atenCodigo, String crm, int id, Date atenDataHora,
-            int atenSituacao) {
+    public Atendimento(int atenCodigo, String crm, int id, String atenData, String atenHora, String atenDataFinalizado,
+            String atenHoraFinalizado,
+            int atenSituacao, String atenObservacao) {
         this.setAtenCodigo(atenCodigo);
         this.setCrm(crm);
         this.setId(id);
         this.setCoren(coren);
-        this.setAtenDataHora(atenDataHora);
-        this.setAtenDataHoraFinalizado(atenDataHoraFinalizado);
+        this.setAtenData(atenData);
+        this.setAtenHora(atenHora);
+        this.setAtenDataFinalizado(atenDataFinalizado);
+        this.setAtenHoraFinalizado(atenHoraFinalizado);
         this.setAtenSituacao(atenSituacao);
+        this.setAtenObservacao(atenObservacao);
     }
 
     public int getAtenCodigo() {
@@ -69,20 +80,36 @@ public final class Atendimento {
         this.coren = coren;
     }
 
-    public Date getAtenDataHora() {
-        return (this.atenDataHora);
+    public String getAtenData() {
+        return (this.atenData);
     }
 
-    public void setAtenDataHora(Date atenDataHora) {
-        this.atenDataHora = atenDataHora;
+    public void setAtenData(String atenData) {
+        this.atenData = atenData;
     }
 
-    public Date getAtenDataHoraFinalizado() {
-        return (this.atenDataHoraFinalizado);
+    public String getAtenHora() {
+        return (this.atenHora);
     }
 
-    public void setAtenDataHoraFinalizado(Date atenDataHoraFinalizado) {
-        this.atenDataHoraFinalizado = atenDataHoraFinalizado;
+    public void setAtenHora(String atenHora) {
+        this.atenHora = atenHora;
+    }
+
+    public String getAtenDataFinalizado() {
+        return (this.atenDataFinalizado);
+    }
+
+    public void setAtenDataFinalizado(String atenDataFinalizado) {
+        this.atenDataFinalizado = atenDataFinalizado;
+    }
+
+    public String getAtenHoraFinalizado() {
+        return (this.atenHoraFinalizado);
+    }
+
+    public void setAtenHoraFinalizado(String atenHoraFinalizado) {
+        this.atenHoraFinalizado = atenHoraFinalizado;
     }
 
     public int getAtenSituacao() {
@@ -93,4 +120,11 @@ public final class Atendimento {
         this.atenSituacao = atenSituacao;
     }
 
+    public String getAtenObservacao() {
+        return (this.atenObservacao);
+    }
+
+    public void setAtenObservacao(String atenObservacao) {
+        this.atenObservacao = atenObservacao;
+    }
 }

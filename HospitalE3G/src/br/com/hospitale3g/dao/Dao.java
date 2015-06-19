@@ -137,6 +137,7 @@ public class Dao {
                     + "ATENDATAHORA DATE NOT NULL, "
                     + "ATENDATAHORAFINALIZADO DATE, "
                     + "ATENSITUACAO INTEGER NOT NULL, "
+                    + "ATENOBSERVACAO VARCHAR(500), "
                     + "FOREIGN KEY(CRM) REFERENCES MEDICO(CRM),"
                     + "FOREIGN KEY(ID) REFERENCES PACIENTE(ID), "
                     + "FOREIGN KEY(COREN) REFERENCES ENFERMEIRO(COREN));");

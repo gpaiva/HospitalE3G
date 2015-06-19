@@ -53,6 +53,12 @@ public class PessoaController {
         return (pessoaDao.existsPessoaRg(rg));
     }
 
+    public static String getPessoa(Pessoa pessoa) {
+        PessoaDao pessoaDao = new PessoaDao();
+        return (pessoaDao.getPessoa(pessoa));
+
+    }
+
     public static String[] getColumns() {
         PessoaDao pessoaDao = new PessoaDao();
         return (pessoaDao.getColumns());

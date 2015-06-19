@@ -9,8 +9,7 @@ public class FPrincipal extends javax.swing.JFrame {
 
     Usuario usuario;
 
-    public FPrincipal() {
-        
+    public FPrincipal() {        
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(FPrincipal.MAXIMIZED_BOTH);
@@ -37,6 +36,19 @@ public class FPrincipal extends javax.swing.JFrame {
         ImageIcon icon = (ImageIcon) this.jlbLogo.getIcon();
         Image img = ((Image) icon.getImage());
         this.setIconImage(img);
+        
+        String privilegio = UsuarioController.getPrivilegio(usuario);
+        if(privilegio == "Médico"){
+            this.jbtPessoa.setEnabled(false);
+            this.jbtUsuario.setEnabled(false);
+            this.jbtEnfermeiro.setEnabled(false);
+            this.jbtSecretario.setEnabled(false);
+        }else if(privilegio == "Enfermeiro"){
+            this.jbtPessoa.setEnabled(false);
+            this.jbtUsuario.setEnabled(false);
+            this.jbtMedico.setEnabled(false);
+            this.jbtSecretario.setEnabled(false);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -282,12 +294,12 @@ public class FPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtSairActionPerformed
 
     private void jbtAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAtendimentoActionPerformed
-        DCAtendimento cAtendimento = new DCAtendimento(this, true);
+        DCAtendimento cAtendimento = new DCAtendimento(this, true, UsuarioController.getPrivilegio(usuario));
         cAtendimento.setVisible(true);
     }//GEN-LAST:event_jbtAtendimentoActionPerformed
 
     private void jbtPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtPessoaActionPerformed
-        DCPessoa cPessoa = new DCPessoa(this, true);
+        DCPessoa cPessoa = new DCPessoa(this, true, this.getUsuario());
         cPessoa.setVisible(true);
     }//GEN-LAST:event_jbtPessoaActionPerformed
 
