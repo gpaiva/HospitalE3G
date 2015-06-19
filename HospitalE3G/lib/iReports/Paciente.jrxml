@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Paciente" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="787fd75c-e630-4d43-b112-4e7621db630c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT PA.*, P.*,
+             CASE P.SEXO
+                WHEN 'M' THEN 'Masculino'
+                WHEN 'F' THEN 'Feminino'
+             END AS PSEXO
+FROM PACIENTE PA
+JOIN PESSOA P ON P.CODPESSOA = PA.CODPESSOA]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codPessoa" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cpf" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rg" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rua" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="complemento" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bairro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cidade" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cep" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PSEXO" class="java.lang.String"/>
+	<group name="codPessoa">
+		<groupExpression><![CDATA[$F{codPessoa}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="54" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="52" width="555" height="1" uuid="138b3c24-da7d-4c0d-8679-0adc16091794"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="32" width="129" height="20" uuid="efe7d22d-3e15-4319-b60a-e20edf6306d9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Empresa: Hospital E3G"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="11" width="555" height="20" uuid="d587b4ba-f5a9-450d-98ac-5871026379a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PACIENTES"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="32" width="555" height="1" uuid="18358ad8-4e24-422f-bd97-d56fc6a07318"/>
+			</line>
+			<line>
+				<reportElement x="0" y="11" width="555" height="1" uuid="676ae9c2-1c2a-4bf6-b158-55fc3a6251c6"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="55" y="0" width="140" height="20" uuid="1175b37a-b9cf-4e82-9c82-ecc6953b9d18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nome"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="0" width="96" height="20" uuid="2b6aa94a-9b4c-4d58-8f12-847639612b8f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sexo"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="367" y="0" width="87" height="20" uuid="81deba87-cd2a-4012-bf8c-fd5d0db13191"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["RG"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="77" height="20" uuid="87a4173f-c1bd-45a8-afb0-d1122398da2f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CPF"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="56" height="20" uuid="b182e61c-f4dc-40f9-8fda-22138f991701"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Código"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="19" width="555" height="1" uuid="cec25eff-f0ef-4de8-ba47-2da51f3b7542"/>
+			</line>
+			<textField>
+				<reportElement x="195" y="0" width="83" height="20" uuid="85302d64-1749-457f-bf46-0b8d02c6986c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ID"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="56" height="20" uuid="2e3826c9-50f5-45c1-9f88-2e29149ed58e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codPessoa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="0" width="140" height="20" uuid="7851297e-c5f4-4cb4-b16c-d7f9428fe2e0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="367" y="0" width="87" height="20" uuid="18de218d-4351-400a-b519-0e1b4d10b017"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rg}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="0" width="96" height="20" uuid="daddaebc-f529-4607-bd4a-501284a86aa4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PSEXO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="77" height="20" uuid="0a14e48d-63a6-4862-9828-49aa9c052afc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cpf}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="195" y="0" width="83" height="20" uuid="684e8542-b95b-4bf7-9c3a-568d94abdcd8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="Calibri" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="3" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="fc58e685-43bc-4093-9fac-6b673f9d2521"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="62" splitType="Stretch">
+			<image>
+				<reportElement x="443" y="3" width="96" height="43" uuid="0c13ec91-9f6e-45bb-9d31-e4ff44f9444e"/>
+				<imageExpression><![CDATA["C:\\Users\\Guilherme\\SI\\UFV-CRP\\5-15\\SIN 143 - LABORATÓRIO DE PROGRAMAÇÃO\\HospitalE3G\\HospitalE3G\\build\\classes\\br\\com\\hospitale3g\\icons\\logo_129x65.png"]]></imageExpression>
+			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="224" y="17" width="100" height="20" uuid="3d1bb3d0-4442-4a25-ab39-30450d9bd8af"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="17" width="80" height="20" uuid="ac829d0c-6413-4876-96eb-91c6ea78703f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="89" y="17" width="40" height="20" uuid="31dc5764-b94f-48bf-924a-efe4a5d88aa0"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="12" splitType="Stretch"/>
+	</summary>
+</jasperReport>

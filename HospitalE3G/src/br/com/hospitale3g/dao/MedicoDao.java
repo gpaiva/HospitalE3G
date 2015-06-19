@@ -1,6 +1,7 @@
 package br.com.hospitale3g.dao;
 
 import br.com.hospitale3g.controller.Lib;
+import static br.com.hospitale3g.dao.Dao.url;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -9,6 +10,12 @@ import javax.swing.table.DefaultTableModel;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.model.Medico;
 import br.com.hospitale3g.view.DExcecao;
+import java.util.HashMap;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class MedicoDao extends Dao {
 
@@ -223,5 +230,25 @@ public class MedicoDao extends Dao {
                 Lib.iif(medico.getSexo() == 'M', "Masculino", "Feminino"),});
         }
         return (model);
+    }
+
+    public JasperViewer getIReport() {
+        this.conect(url);
+        try {
+            this.getComando().execute("SELECT M.*, P.*, "
+                    + "             CASE P.SEXO "
+                    + "                WHEN 'M' THEN 'Masculino' "
+                    + "                WHEN 'F' THEN 'Feminino' "
+                    + "             END AS PSEXO "
+                    + "FROM MEDICO M "
+                    + "JOIN PESSOA P ON P.CODPESSOA = M.CODPESSOA");
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Medico.jasper", new HashMap(), relResult);
+            return (new JasperViewer(jpPrint, true));
+        } catch (SQLException | JRException ex) {
+            DExcecao excecao = new DExcecao(null, true, ex.getMessage());
+            excecao.setVisible(true);
+        }
+        return (null);
     }
 }

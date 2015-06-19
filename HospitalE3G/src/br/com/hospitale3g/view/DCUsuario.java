@@ -6,6 +6,8 @@ import br.com.hospitale3g.controller.Lib;
 import br.com.hospitale3g.controller.PessoaController;
 import br.com.hospitale3g.controller.UsuarioController;
 import br.com.hospitale3g.model.Pessoa;
+import javax.swing.JDialog;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class DCUsuario extends javax.swing.JDialog {
 
@@ -38,6 +40,7 @@ public class DCUsuario extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jmiSair = new javax.swing.JMenuItem();
         jmRelatorio = new javax.swing.JMenu();
+        jmiRelatorioUsuario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Usuário");
@@ -194,6 +197,15 @@ public class DCUsuario extends javax.swing.JDialog {
         jMenuBar1.add(jmArquivo);
 
         jmRelatorio.setText("Relatório");
+
+        jmiRelatorioUsuario.setText("Relatório de Usuários");
+        jmiRelatorioUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiRelatorioUsuarioActionPerformed(evt);
+            }
+        });
+        jmRelatorio.add(jmiRelatorioUsuario);
+
         jMenuBar1.add(jmRelatorio);
 
         setJMenuBar(jMenuBar1);
@@ -252,6 +264,10 @@ public class DCUsuario extends javax.swing.JDialog {
         this.sair();
     }//GEN-LAST:event_jmiSairActionPerformed
 
+    private void jmiRelatorioUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRelatorioUsuarioActionPerformed
+        this.iReport();
+    }//GEN-LAST:event_jmiRelatorioUsuarioActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -307,6 +323,7 @@ public class DCUsuario extends javax.swing.JDialog {
     private javax.swing.JMenuItem jmiEditar;
     private javax.swing.JMenuItem jmiExcluir;
     private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiRelatorioUsuario;
     private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable tbUsuario;
@@ -364,5 +381,16 @@ public class DCUsuario extends javax.swing.JDialog {
         } else {
             Lib.information("Nenhum Usuário selecionado!");
         }
+    }
+
+    private void iReport() {
+        JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+        viewer.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        viewer.setLocationRelativeTo(null);
+        viewer.setAlwaysOnTop(true);
+
+        JasperViewer jv = UsuarioController.getIReport();
+        viewer.getContentPane().add(jv.getContentPane());
+        viewer.setVisible(true);
     }
 }

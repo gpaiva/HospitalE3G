@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class AtendimentoController {
 
@@ -57,5 +58,10 @@ public class AtendimentoController {
     public static DefaultTableModel getTableModel() {
         AtendimentoDao atendimentoDao = new AtendimentoDao();
         return (atendimentoDao.getTableModel());
+    }
+
+    public static JasperViewer getIReport() {
+        AtendimentoDao atendimentoDao = new AtendimentoDao();
+        return (atendimentoDao.getIReport());
     }
 }

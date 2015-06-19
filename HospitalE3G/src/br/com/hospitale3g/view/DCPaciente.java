@@ -1,12 +1,15 @@
 package br.com.hospitale3g.view;
 
 import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.MedicoController;
 import javax.swing.JFrame;
 import br.com.hospitale3g.model.Paciente;
 import br.com.hospitale3g.controller.PacienteController;
 import br.com.hospitale3g.controller.PessoaController;
 import br.com.hospitale3g.model.Pessoa;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class DCPaciente extends javax.swing.JDialog {
 
@@ -39,6 +42,7 @@ public class DCPaciente extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jmiSair = new javax.swing.JMenuItem();
         jmRelatorio = new javax.swing.JMenu();
+        jmiRelatorioPaciente = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Paciente");
@@ -197,6 +201,15 @@ public class DCPaciente extends javax.swing.JDialog {
         jMenuBar1.add(jmArquivo);
 
         jmRelatorio.setText("Relatório");
+
+        jmiRelatorioPaciente.setText("Relatório de Pacientes");
+        jmiRelatorioPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiRelatorioPacienteActionPerformed(evt);
+            }
+        });
+        jmRelatorio.add(jmiRelatorioPaciente);
+
         jMenuBar1.add(jmRelatorio);
 
         setJMenuBar(jMenuBar1);
@@ -254,6 +267,10 @@ public class DCPaciente extends javax.swing.JDialog {
     private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
         this.sair();
     }//GEN-LAST:event_jmiSairActionPerformed
+
+    private void jmiRelatorioPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRelatorioPacienteActionPerformed
+        this.iReport();
+    }//GEN-LAST:event_jmiRelatorioPacienteActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -342,6 +359,7 @@ public class DCPaciente extends javax.swing.JDialog {
     private javax.swing.JMenuItem jmiEditar;
     private javax.swing.JMenuItem jmiExcluir;
     private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiRelatorioPaciente;
     private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable jtbPaciente;
@@ -372,5 +390,16 @@ public class DCPaciente extends javax.swing.JDialog {
         } else {
             Lib.information("Nenhum Paciente selecionado!");
         }
+    }
+
+    private void iReport() {
+        JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+        viewer.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        viewer.setLocationRelativeTo(null);
+        viewer.setAlwaysOnTop(true);
+
+        JasperViewer jv = PacienteController.getIReport();
+        viewer.getContentPane().add(jv.getContentPane());
+        viewer.setVisible(true);
     }
 }

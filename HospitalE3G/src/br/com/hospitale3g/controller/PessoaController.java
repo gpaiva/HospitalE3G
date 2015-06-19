@@ -5,6 +5,7 @@ import br.com.hospitale3g.model.Pessoa;
 import java.sql.Connection;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class PessoaController {
 
@@ -67,5 +68,10 @@ public class PessoaController {
     public static DefaultTableModel getTableModel() {
         PessoaDao pessoaDao = new PessoaDao();
         return (pessoaDao.getTableModel());
+    }
+    
+    public static JasperViewer getIReport(){
+        PessoaDao pessoaDao = new PessoaDao();
+        return(pessoaDao.getIReport());
     }
 }

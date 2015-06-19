@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class EnfermeiroController {
 
@@ -34,7 +35,7 @@ public class EnfermeiroController {
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         return (enfermeiroDao.getEnfermeiro(codPessoa));
     }
-    
+
     public static Enfermeiro getEnfermeiro(String coren) {
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         return (enfermeiroDao.getEnfermeiro(coren));
@@ -44,12 +45,13 @@ public class EnfermeiroController {
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         return (enfermeiroDao.findEnfermeiro(coren));
     }
-     public static boolean existsEnfermeiro(int codPessoa) {
+
+    public static boolean existsEnfermeiro(int codPessoa) {
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         return (enfermeiroDao.existsEnfermeiro(codPessoa));
     }
-     
-     public static boolean existsEnfermeiro(String coren) {
+
+    public static boolean existsEnfermeiro(String coren) {
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         return (enfermeiroDao.existsEnfermeiro(coren));
     }
@@ -62,5 +64,10 @@ public class EnfermeiroController {
     public static DefaultTableModel getTableModel() {
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         return (enfermeiroDao.getTableModel());
+    }
+
+    public static JasperViewer getIReport() {
+        EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
+        return (enfermeiroDao.getIReport());
     }
 }

@@ -5,6 +5,7 @@ import br.com.hospitale3g.controller.Lib;
 import br.com.hospitale3g.controller.MedicoController;
 import br.com.hospitale3g.controller.PacienteController;
 import br.com.hospitale3g.controller.SecretarioController;
+import static br.com.hospitale3g.dao.Dao.url;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,6 +18,12 @@ import br.com.hospitale3g.model.Medico;
 import br.com.hospitale3g.model.Paciente;
 import br.com.hospitale3g.model.Secretario;
 import br.com.hospitale3g.view.DExcecao;
+import java.util.HashMap;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class UsuarioDao extends Dao {
 
@@ -244,5 +251,23 @@ public class UsuarioDao extends Dao {
                 Lib.iif(usuario.getSexo() == 'M', "Masculino", "Feminino")});
         }
         return (model);
+    }
+
+    public JasperViewer getIReport() {
+        this.conect(url);
+        try {
+            this.getComando().execute("SELECT U.CODPESSOA, U.USULOGIN, "
+                    + "       (SELECT P.NOME "
+                    + "        FROM PESSOA P "
+                    + "        WHERE P.CODPESSOA = U.CODPESSOA) AS NOME "
+                    + "FROM USUARIO U");
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Usuario.jasper", new HashMap(), relResult);
+            return (new JasperViewer(jpPrint, true));
+        } catch (SQLException | JRException ex) {
+            DExcecao excecao = new DExcecao(null, true, ex.getMessage());
+            excecao.setVisible(true);
+        }
+        return (null);
     }
 }

@@ -4,8 +4,11 @@ import br.com.hospitale3g.controller.EnfermeiroController;
 import javax.swing.JFrame;
 import br.com.hospitale3g.model.Enfermeiro;
 import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.controller.UsuarioController;
 import br.com.hospitale3g.model.Pessoa;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class DCEnfermeiro extends javax.swing.JDialog {
 
@@ -38,6 +41,7 @@ public class DCEnfermeiro extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jmiSair = new javax.swing.JMenuItem();
         jmRelatorio = new javax.swing.JMenu();
+        jmiRelatorioEnfermeiro = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Enfermeiro");
@@ -196,6 +200,15 @@ public class DCEnfermeiro extends javax.swing.JDialog {
         jMenuBar1.add(jmArquivo);
 
         jmRelatorio.setText("Relatório");
+
+        jmiRelatorioEnfermeiro.setText("Relatório de Enfermeiros");
+        jmiRelatorioEnfermeiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiRelatorioEnfermeiroActionPerformed(evt);
+            }
+        });
+        jmRelatorio.add(jmiRelatorioEnfermeiro);
+
         jMenuBar1.add(jmRelatorio);
 
         setJMenuBar(jMenuBar1);
@@ -253,6 +266,10 @@ public class DCEnfermeiro extends javax.swing.JDialog {
     private void jmiNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNovoActionPerformed
         this.novo();
     }//GEN-LAST:event_jmiNovoActionPerformed
+
+    private void jmiRelatorioEnfermeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRelatorioEnfermeiroActionPerformed
+        this.iReport();
+    }//GEN-LAST:event_jmiRelatorioEnfermeiroActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -341,6 +358,7 @@ public class DCEnfermeiro extends javax.swing.JDialog {
     private javax.swing.JMenuItem jmiEditar;
     private javax.swing.JMenuItem jmiExcluir;
     private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiRelatorioEnfermeiro;
     private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable jtbEnfermeiro;
@@ -371,5 +389,16 @@ public class DCEnfermeiro extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum Enfermeiro selecionado!");
         }
+    }
+
+    private void iReport() {
+        JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+        viewer.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        viewer.setLocationRelativeTo(null);
+        viewer.setAlwaysOnTop(true);
+
+        JasperViewer jv = EnfermeiroController.getIReport();
+        viewer.getContentPane().add(jv.getContentPane());
+        viewer.setVisible(true);
     }
 }

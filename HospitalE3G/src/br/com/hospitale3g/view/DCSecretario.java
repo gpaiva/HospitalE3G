@@ -1,11 +1,14 @@
 package br.com.hospitale3g.view;
 
+import br.com.hospitale3g.controller.PacienteController;
 import javax.swing.JFrame;
 import br.com.hospitale3g.model.Secretario;
 import br.com.hospitale3g.controller.PessoaController;
 import br.com.hospitale3g.controller.SecretarioController;
 import br.com.hospitale3g.model.Pessoa;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class DCSecretario extends javax.swing.JDialog {
 
@@ -38,6 +41,7 @@ public class DCSecretario extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jmiSair = new javax.swing.JMenuItem();
         jmRelatorio = new javax.swing.JMenu();
+        jmiRelatorioSecretario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Secretário");
@@ -196,6 +200,15 @@ public class DCSecretario extends javax.swing.JDialog {
         jMenuBar1.add(jmArquivo);
 
         jmRelatorio.setText("Relatório");
+
+        jmiRelatorioSecretario.setText("Relatório de Secretários");
+        jmiRelatorioSecretario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiRelatorioSecretarioActionPerformed(evt);
+            }
+        });
+        jmRelatorio.add(jmiRelatorioSecretario);
+
         jMenuBar1.add(jmRelatorio);
 
         setJMenuBar(jMenuBar1);
@@ -253,6 +266,10 @@ public class DCSecretario extends javax.swing.JDialog {
     private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
         this.sair();
     }//GEN-LAST:event_jmiSairActionPerformed
+
+    private void jmiRelatorioSecretarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRelatorioSecretarioActionPerformed
+        this.iReport();
+    }//GEN-LAST:event_jmiRelatorioSecretarioActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -341,6 +358,7 @@ public class DCSecretario extends javax.swing.JDialog {
     private javax.swing.JMenuItem jmiEditar;
     private javax.swing.JMenuItem jmiExcluir;
     private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiRelatorioSecretario;
     private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable jtbSecretario;
@@ -371,5 +389,16 @@ public class DCSecretario extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum Secretário selecionado!");
         }
+    }
+
+    private void iReport() {
+        JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+        viewer.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        viewer.setLocationRelativeTo(null);
+        viewer.setAlwaysOnTop(true);
+
+        JasperViewer jv = SecretarioController.getIReport();
+        viewer.getContentPane().add(jv.getContentPane());
+        viewer.setVisible(true);
     }
 }

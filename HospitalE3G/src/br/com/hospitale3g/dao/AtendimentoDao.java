@@ -1,6 +1,7 @@
 package br.com.hospitale3g.dao;
 
 import br.com.hospitale3g.controller.Lib;
+import static br.com.hospitale3g.dao.Dao.url;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -13,6 +14,12 @@ import br.com.hospitale3g.model.Atendimento;
 import br.com.hospitale3g.view.DExcecao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class AtendimentoDao extends Dao {
 
@@ -272,5 +279,46 @@ public class AtendimentoDao extends Dao {
             });
         }
         return (model);
+    }
+
+    public JasperViewer getIReport() {
+        this.conect(url);
+        try {
+            this.getComando().execute("SELECT A.*, "
+                    + "        CASE A.ATENSITUACAO "
+                    + "        WHEN 0 THEN ' ' "
+                    + "        WHEN 1 THEN ' ' "
+                    + "        ELSE A.ATENDATAHORAFINALIZADO "
+                    + "        END AS DATAHORAFINALIZADO, "
+                    + "        CASE A.ATENSITUACAO "
+                    + "        WHEN 0 THEN 'Aberto' "
+                    + "        WHEN 1 THEN 'Cancelado' "
+                    + "        WHEN 2 THEN 'Finalizado' "
+                    + "        ELSE 'Desconhecido' "
+                    + "        END AS SITUACAO, "
+                    + "       (SELECT PE.NOME "
+                    + "        FROM PESSOA PE "
+                    + "        WHERE PE.CODPESSOA = M.CODPESSOA) AS NOMEMEDICO, "
+                    + "       (SELECT CASE PE.NOME "
+                    + "               WHEN NULL THEN ' ' "
+                    + "               ELSE PE.NOME "
+                    + "               END "
+                    + "        FROM PESSOA PE "
+                    + "        WHERE PE.CODPESSOA = E.CODPESSOA) AS NOMEENFERMEIRO, "
+                    + "       (SELECT PE.NOME "
+                    + "        FROM PESSOA PE "
+                    + "        WHERE PE.CODPESSOA = P.CODPESSOA) AS NOMEPACIENTE "
+                    + "FROM ATENDIMENTO A "
+                    + "JOIN MEDICO M ON M.CRM = A.CRM "
+                    + "JOIN PACIENTE P ON P.ID = A.ID "
+                    + "LEFT JOIN ENFERMEIRO E ON E.COREN = A.COREN");
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Atendimento.jasper", new HashMap(), relResult);
+            return (new JasperViewer(jpPrint, true));
+        } catch (SQLException | JRException ex) {
+            DExcecao excecao = new DExcecao(null, true, ex.getMessage());
+            excecao.setVisible(true);
+        }
+        return (null);
     }
 }

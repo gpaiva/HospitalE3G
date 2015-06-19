@@ -1,11 +1,14 @@
 package br.com.hospitale3g.view;
 
+import br.com.hospitale3g.controller.EnfermeiroController;
 import br.com.hospitale3g.controller.Lib;
 import javax.swing.JFrame;
 import br.com.hospitale3g.model.Medico;
 import br.com.hospitale3g.controller.MedicoController;
 import br.com.hospitale3g.controller.PessoaController;
 import br.com.hospitale3g.model.Pessoa;
+import javax.swing.JDialog;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class DCMedico extends javax.swing.JDialog {
 
@@ -38,6 +41,7 @@ public class DCMedico extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jmiSair = new javax.swing.JMenuItem();
         jmRelatorio = new javax.swing.JMenu();
+        jmiRelatorioMedico = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Médico");
@@ -196,6 +200,15 @@ public class DCMedico extends javax.swing.JDialog {
         jMenuBar1.add(jmArquivo);
 
         jmRelatorio.setText("Relatório");
+
+        jmiRelatorioMedico.setText("Relatório de Médicos");
+        jmiRelatorioMedico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiRelatorioMedicoActionPerformed(evt);
+            }
+        });
+        jmRelatorio.add(jmiRelatorioMedico);
+
         jMenuBar1.add(jmRelatorio);
 
         setJMenuBar(jMenuBar1);
@@ -254,6 +267,10 @@ public class DCMedico extends javax.swing.JDialog {
         this.sair();
     }//GEN-LAST:event_jmiSairActionPerformed
 
+    private void jmiRelatorioMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRelatorioMedicoActionPerformed
+        this.iReport();
+    }//GEN-LAST:event_jmiRelatorioMedicoActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -308,6 +325,7 @@ public class DCMedico extends javax.swing.JDialog {
     private javax.swing.JMenuItem jmiEditar;
     private javax.swing.JMenuItem jmiExcluir;
     private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiRelatorioMedico;
     private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable tbMedico;
@@ -365,5 +383,16 @@ public class DCMedico extends javax.swing.JDialog {
         if (this.tbMedico.getModel().getRowCount() > 0) {
             this.tbMedico.setRowSelectionInterval(0, 0);
         }
+    }
+
+    private void iReport() {
+        JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+        viewer.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        viewer.setLocationRelativeTo(null);
+        viewer.setAlwaysOnTop(true);
+
+        JasperViewer jv = MedicoController.getIReport();
+        viewer.getContentPane().add(jv.getContentPane());
+        viewer.setVisible(true);
     }
 }

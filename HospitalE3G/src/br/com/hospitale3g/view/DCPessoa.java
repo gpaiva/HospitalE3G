@@ -4,7 +4,10 @@ import javax.swing.JFrame;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.PessoaController;
 import br.com.hospitale3g.model.Usuario;
+import java.awt.Toolkit;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class DCPessoa extends javax.swing.JDialog {
 
@@ -51,7 +54,8 @@ public class DCPessoa extends javax.swing.JDialog {
         jmiAtualizar = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jmiSair = new javax.swing.JMenuItem();
-        jmRelatorio = new javax.swing.JMenu();
+        jmiRelatorioPessoa = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Pessoa");
@@ -205,8 +209,17 @@ public class DCPessoa extends javax.swing.JDialog {
 
         jMenuBar1.add(jmArquivo);
 
-        jmRelatorio.setText("Relatório");
-        jMenuBar1.add(jmRelatorio);
+        jmiRelatorioPessoa.setText("Relatório");
+
+        jMenuItem1.setText("Relatório de Pessoas");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jmiRelatorioPessoa.add(jMenuItem1);
+
+        jMenuBar1.add(jmiRelatorioPessoa);
 
         setJMenuBar(jMenuBar1);
 
@@ -263,6 +276,10 @@ public class DCPessoa extends javax.swing.JDialog {
     private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
         this.sair();
     }//GEN-LAST:event_jmiSairActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        this.iReport();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -340,15 +357,16 @@ public class DCPessoa extends javax.swing.JDialog {
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSair;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenu jmArquivo;
-    private javax.swing.JMenu jmRelatorio;
     private javax.swing.JMenuItem jmiAtualizar;
     private javax.swing.JMenuItem jmiEditar;
     private javax.swing.JMenuItem jmiExcluir;
     private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenu jmiRelatorioPessoa;
     private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable tbPessoa;
@@ -387,5 +405,16 @@ public class DCPessoa extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(this, "Nenhuma Pessoa selecionada!");
         }
+    }
+
+    private void iReport() {
+        JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+        viewer.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        viewer.setLocationRelativeTo(null);
+        viewer.setAlwaysOnTop(true);
+
+        JasperViewer jv = PessoaController.getIReport();
+        viewer.getContentPane().add(jv.getContentPane());
+        viewer.setVisible(true);
     }
 }

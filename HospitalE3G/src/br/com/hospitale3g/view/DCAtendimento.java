@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import br.com.hospitale3g.dao.EnfermeiroDao;
 import br.com.hospitale3g.model.Atendimento;
 import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.SecretarioController;
 import br.com.hospitale3g.dao.AtendimentoDao;
 import br.com.hospitale3g.dao.MedicoDao;
 import br.com.hospitale3g.dao.PacienteDao;
@@ -20,7 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class DCAtendimento extends javax.swing.JDialog {
 
@@ -72,6 +75,7 @@ public class DCAtendimento extends javax.swing.JDialog {
         jmiEnfermeiro = new javax.swing.JMenuItem();
         jmiFinalizar = new javax.swing.JMenuItem();
         jmRelatorio = new javax.swing.JMenu();
+        jmiRelatorioAtendimento = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - Atendimentos");
@@ -272,6 +276,15 @@ public class DCAtendimento extends javax.swing.JDialog {
         jMenuBar1.add(jmDados);
 
         jmRelatorio.setText("Relatório");
+
+        jmiRelatorioAtendimento.setText("Relatório de Atendimentos");
+        jmiRelatorioAtendimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiRelatorioAtendimentoActionPerformed(evt);
+            }
+        });
+        jmRelatorio.add(jmiRelatorioAtendimento);
+
         jMenuBar1.add(jmRelatorio);
 
         setJMenuBar(jMenuBar1);
@@ -345,6 +358,10 @@ public class DCAtendimento extends javax.swing.JDialog {
     private void jmiFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiFinalizarActionPerformed
         this.finalizar();
     }//GEN-LAST:event_jmiFinalizarActionPerformed
+
+    private void jmiRelatorioAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRelatorioAtendimentoActionPerformed
+        this.iReport();
+    }//GEN-LAST:event_jmiRelatorioAtendimentoActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -456,6 +473,7 @@ public class DCAtendimento extends javax.swing.JDialog {
     private javax.swing.JMenuItem jmiExcluir;
     private javax.swing.JMenuItem jmiFinalizar;
     private javax.swing.JMenuItem jmiNovo;
+    private javax.swing.JMenuItem jmiRelatorioAtendimento;
     private javax.swing.JMenuItem jmiSair;
     private javax.swing.JPanel jpPrincipal;
     private javax.swing.JTable jtbAtendimento;
@@ -540,5 +558,16 @@ public class DCAtendimento extends javax.swing.JDialog {
                 this.atualizarJTable();
             }
         }
+    }
+
+    private void iReport() {
+        JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+        viewer.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        viewer.setLocationRelativeTo(null);
+        viewer.setAlwaysOnTop(true);
+
+        JasperViewer jv = AtendimentoController.getIReport();
+        viewer.getContentPane().add(jv.getContentPane());
+        viewer.setVisible(true);
     }
 }

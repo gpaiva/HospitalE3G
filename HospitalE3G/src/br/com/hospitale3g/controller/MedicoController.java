@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class MedicoController {
 
@@ -63,5 +64,10 @@ public class MedicoController {
     public static DefaultTableModel getTableModel() {
         MedicoDao medicoDao = new MedicoDao();
         return (medicoDao.getTableModel());
+    }
+
+    public static JasperViewer getIReport() {
+        MedicoDao medicoDao = new MedicoDao();
+        return (medicoDao.getIReport());
     }
 }

@@ -1,5 +1,6 @@
 package br.com.hospitale3g.controller;
 
+import br.com.hospitale3g.dao.PessoaDao;
 import br.com.hospitale3g.dao.UsuarioDao;
 import br.com.hospitale3g.model.Enfermeiro;
 import br.com.hospitale3g.model.Medico;
@@ -8,6 +9,7 @@ import br.com.hospitale3g.model.Secretario;
 import br.com.hospitale3g.model.Usuario;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class UsuarioController {
 
@@ -64,5 +66,10 @@ public class UsuarioController {
     public static DefaultTableModel getTableModel() {
         UsuarioDao usuarioDao = new UsuarioDao();
         return (usuarioDao.getTableModel());
+    }
+
+    public static JasperViewer getIReport() {
+        UsuarioDao usuarioDao = new UsuarioDao();
+        return (usuarioDao.getIReport());
     }
 }

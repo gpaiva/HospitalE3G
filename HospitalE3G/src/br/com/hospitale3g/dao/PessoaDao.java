@@ -16,7 +16,16 @@ import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.model.Secretario;
 import br.com.hospitale3g.model.Usuario;
 import br.com.hospitale3g.view.DExcecao;
+import java.io.File;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class PessoaDao extends Dao {
 
@@ -205,7 +214,7 @@ public class PessoaDao extends Dao {
         }
         return (false);
     }
-    
+
     public boolean existsPessoaRg(String rg) {
         this.conect(Dao.url);
         try {
@@ -221,7 +230,7 @@ public class PessoaDao extends Dao {
         }
         return (false);
     }
-    
+
     public String getPessoa(Pessoa pessoa) {
         if (pessoa.getCodPessoa() == 1) {
             return ("Administrador");
@@ -279,5 +288,25 @@ public class PessoaDao extends Dao {
                 pessoa.getCep()});
         }
         return (model);
+    }
+
+    public JasperViewer getIReport() {
+        this.conect(url);
+        try {
+            this.getComando().execute("SELECT P.*, "
+                    + "CASE P.SEXO "
+                    + "WHEN 'M' THEN 'Masculino' "
+                    + "WHEN 'F' THEN 'Feminino' "
+                    + " END AS PSEXO "
+                    + "FROM PESSOA P");
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Pessoa.jasper", new HashMap(), relResult);
+            return (new JasperViewer(jpPrint, true));
+
+        } catch (SQLException | JRException ex) {
+            DExcecao excecao = new DExcecao(null, true, ex.getMessage());
+            excecao.setVisible(true);
+        }
+        return (null);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.hospitale3g.dao;
 
 import br.com.hospitale3g.controller.Lib;
+import static br.com.hospitale3g.dao.Dao.url;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -9,6 +10,12 @@ import javax.swing.table.DefaultTableModel;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.model.Enfermeiro;
 import br.com.hospitale3g.view.DExcecao;
+import java.util.HashMap;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class EnfermeiroDao extends Dao {
 
@@ -119,7 +126,8 @@ public class EnfermeiroDao extends Dao {
             this.close();
         }
     }
-     public Enfermeiro getEnfermeiro(String coren) {
+
+    public Enfermeiro getEnfermeiro(String coren) {
         String sqlQuery = "SELECT * "
                 + " FROM ENFERMEIRO "
                 + " WHERE COREN LIKE " + Lib.quotedStr(coren);
@@ -162,8 +170,8 @@ public class EnfermeiroDao extends Dao {
         }
         return (false);
     }
-    
-     public boolean existsEnfermeiro(int codPessoa) {
+
+    public boolean existsEnfermeiro(int codPessoa) {
         this.conect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
@@ -178,8 +186,8 @@ public class EnfermeiroDao extends Dao {
         }
         return (false);
     }
-     
-     public boolean existsEnfermeiro(String coren) {
+
+    public boolean existsEnfermeiro(String coren) {
         this.conect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
@@ -222,5 +230,25 @@ public class EnfermeiroDao extends Dao {
                 Lib.iif(enfermeiro.getSexo() == 'M', "Masculino", "Feminino")});
         }
         return (model);
+    }
+
+    public JasperViewer getIReport() {
+        this.conect(url);
+        try {
+            this.getComando().execute("SELECT E.*, P.*, "
+                    + "             CASE P.SEXO "
+                    + "                WHEN 'M' THEN 'Masculino' "
+                    + "                WHEN 'F' THEN 'Feminino' "
+                    + "             END AS PSEXO "
+                    + "FROM ENFERMEIRO E "
+                    + "JOIN PESSOA P ON P.CODPESSOA = E.CODPESSOA");
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Enfermeiro.jasper", new HashMap(), relResult);
+            return (new JasperViewer(jpPrint, true));
+        } catch (SQLException | JRException ex) {
+            DExcecao excecao = new DExcecao(null, true, ex.getMessage());
+            excecao.setVisible(true);
+        }
+        return (null);
     }
 }

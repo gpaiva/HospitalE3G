@@ -1,9 +1,11 @@
 package br.com.hospitale3g.controller;
 
+import br.com.hospitale3g.dao.PacienteDao;
 import br.com.hospitale3g.dao.SecretarioDao;
 import br.com.hospitale3g.model.Secretario;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class SecretarioController {
 
@@ -36,12 +38,11 @@ public class SecretarioController {
         SecretarioDao secretarioDao = new SecretarioDao();
         return (secretarioDao.findSecretario(registro));
     }
-    
+
     public static boolean existsSecretario(int registro) {
         SecretarioDao secretarioDao = new SecretarioDao();
         return (secretarioDao.existsSecretario(registro));
     }
-
 
     public static int getNextRegistro() {
         SecretarioDao secretarioDao = new SecretarioDao();
@@ -56,5 +57,10 @@ public class SecretarioController {
     public static DefaultTableModel getTableModel() {
         SecretarioDao secretarioDao = new SecretarioDao();
         return (secretarioDao.getTableModel());
+    }
+
+    public static JasperViewer getIReport() {
+        SecretarioDao secretarioDao = new SecretarioDao();
+        return (secretarioDao.getIReport());
     }
 }

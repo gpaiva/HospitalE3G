@@ -4,6 +4,7 @@ import br.com.hospitale3g.dao.PacienteDao;
 import br.com.hospitale3g.model.Paciente;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class PacienteController {
 
@@ -41,7 +42,7 @@ public class PacienteController {
         PacienteDao pacienteDao = new PacienteDao();
         return (pacienteDao.findPaciente(id));
     }
-    
+
     public static boolean existsPaciente(int id) {
         PacienteDao pacienteDao = new PacienteDao();
         return (pacienteDao.findPaciente(id));
@@ -60,5 +61,10 @@ public class PacienteController {
     public static DefaultTableModel getTableModel() {
         PacienteDao pacienteDao = new PacienteDao();
         return (pacienteDao.getTableModel());
+    }
+
+    public static JasperViewer getIReport() {
+        PacienteDao pacienteDao = new PacienteDao();
+        return (pacienteDao.getIReport());
     }
 }
