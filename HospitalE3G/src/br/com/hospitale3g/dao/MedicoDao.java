@@ -203,6 +203,40 @@ public class MedicoDao extends Dao {
         return (false);
     }
 
+    public boolean hasDependenceAtendimento(String crm) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT A.* "
+                    + " FROM ATENDIMENTO A "
+                    + " WHERE A.CRM LIKE " + Lib.quotedStr(crm) + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
+    public boolean hasDependenceUsuario(String crm) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT U.* "
+                    + " FROM USUARIO U "
+                    + " WHERE U.CODPESSOA = (SELECT M.CODPESSOA"
+                    + " FROM MEDICO M "
+                    + " WHERE M.CRM LIKE " + Lib.quotedStr(crm) + ");";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
     public String[] getColumns() {
         String[] aux = {"Código", "Nome", "CPF", "CRM", "Sexo"};
         return (aux);

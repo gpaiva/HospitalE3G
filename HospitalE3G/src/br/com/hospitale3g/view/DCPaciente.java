@@ -385,8 +385,20 @@ public class DCPaciente extends javax.swing.JDialog {
 
     private void excluir() {
         if (this.getPacienteSelected() != null) {
-            PacienteController.delete(this.getPacienteSelected().getCodPessoa());
-            this.atualizarJTable();
+            boolean isValid = true;
+            if (PacienteController.hasDependenceAtendimento(this.getPacienteSelected().getId())) {
+                Lib.information("Não é possível excluir o Paciente, pois ele tem um Atendimento!");
+                isValid = false;
+            } else if (Lib.confirmation("Excluindo esse Paciente, a Pessoa também será excluída.\n"
+                    + "Deseja realmente Excluír?", "Excluir Pessoa") != 0) {
+                isValid = false;
+            }
+            if (isValid) {
+                int codPessoa = this.getPacienteSelected().getCodPessoa();
+                PacienteController.delete(codPessoa);
+                PessoaController.delete(codPessoa);
+                this.atualizarJTable();
+            }
         } else {
             Lib.information("Nenhum Paciente selecionado!");
         }

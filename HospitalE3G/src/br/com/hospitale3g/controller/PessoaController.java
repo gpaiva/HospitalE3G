@@ -54,6 +54,16 @@ public class PessoaController {
         return (pessoaDao.existsPessoaRg(rg));
     }
 
+    public static boolean hasDependenceAtendimento(int codPessoa) {
+        PessoaDao pessoaDao = new PessoaDao();
+        return (pessoaDao.hasDependenceAtendimento(codPessoa));
+    }
+
+    public static boolean hasDependenceUsuario(int codPessoa) {
+        PessoaDao pessoaDao = new PessoaDao();
+        return (pessoaDao.hasDependenceUsuario(codPessoa));
+    }
+
     public static String getPessoa(Pessoa pessoa) {
         PessoaDao pessoaDao = new PessoaDao();
         return (pessoaDao.getPessoa(pessoa));
@@ -69,9 +79,9 @@ public class PessoaController {
         PessoaDao pessoaDao = new PessoaDao();
         return (pessoaDao.getTableModel());
     }
-    
-    public static JasperViewer getIReport(){
+
+    public static JasperViewer getIReport() {
         PessoaDao pessoaDao = new PessoaDao();
-        return(pessoaDao.getIReport());
+        return (pessoaDao.getIReport());
     }
 }

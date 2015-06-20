@@ -1,8 +1,13 @@
 package br.com.hospitale3g.view;
 
+import br.com.hospitale3g.controller.EnfermeiroController;
+import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.MedicoController;
+import br.com.hospitale3g.controller.PacienteController;
 import javax.swing.JFrame;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.controller.SecretarioController;
 import br.com.hospitale3g.model.Usuario;
 import java.awt.Toolkit;
 import javax.swing.JDialog;
@@ -399,11 +404,57 @@ public class DCPessoa extends javax.swing.JDialog {
     }
 
     private void excluir() {
+        boolean isValid = true;
         if (this.getPessoaSelecionada() != null) {
-            PessoaController.delete(this.getPessoaSelecionada().getCodPessoa());
-            this.atualizarJTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhuma Pessoa selecionada!");
+            int codPessoa = this.getPessoaSelecionada().getCodPessoa();
+            if (codPessoa == 1) {
+                Lib.information("Não é possível excluir o Administrador!");
+                isValid = false;
+            } else if (PessoaController.hasDependenceAtendimento(codPessoa)) {
+                Lib.information("Não é possível excluir a Pessoa, pois ela tem um Atendimento!");
+                isValid = false;
+            } else if (PessoaController.hasDependenceUsuario(codPessoa)) {
+                Lib.information("Não é possível excluir a Pessoa, pois é um Usuário!");
+                isValid = false;
+            }
+
+            String tipoPessoa = PessoaController.getPessoa(PessoaController.getPessoa(codPessoa));
+            if (tipoPessoa.equals("Enfermeiro")) {
+                if (Lib.confirmation("Essa Pessoa tem vínculo com Enfermeiro.\n"
+                        + "Deseja realmente Excluír?", "Excluir Pessoa") == 0) {
+                    EnfermeiroController.delete(codPessoa);
+                } else {
+                    isValid = false;
+                }
+            } else if (tipoPessoa.equals("Médico")) {
+                if (Lib.confirmation("Essa Pessoa tem vínculo com Médico.\n"
+                        + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
+                    MedicoController.delete(codPessoa);
+                } else {
+                    isValid = false;
+                }
+            } else if (tipoPessoa.equals("Paciente")) {
+                if (Lib.confirmation("Essa Pessoa tem vínculo com Paciente.\n"
+                        + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
+                    PacienteController.delete(codPessoa);
+                } else {
+                    isValid = false;
+                }
+            } else if (tipoPessoa.equals("Secretário")) {
+                if (Lib.confirmation("Essa Pessoa tem vínculo com Secretário.\n"
+                        + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
+                    SecretarioController.delete(codPessoa);
+                } else {
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                PessoaController.delete(this.getPessoaSelecionada().getCodPessoa());
+                this.atualizarJTable();
+            } else {
+                JOptionPane.showMessageDialog(this, "Nenhuma Pessoa selecionada!");
+            }
         }
     }
 

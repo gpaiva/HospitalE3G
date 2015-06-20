@@ -52,6 +52,11 @@ public class PacienteController {
         PacienteDao pacienteDao = new PacienteDao();
         return (pacienteDao.getNextId());
     }
+    
+   public static boolean hasDependenceAtendimento(int id){
+       PacienteDao pacienteDao = new PacienteDao();
+       return(pacienteDao.hasDependenceAtendimento(id));
+   }
 
     public static String[] getColumns() {
         PacienteDao pacienteDao = new PacienteDao();

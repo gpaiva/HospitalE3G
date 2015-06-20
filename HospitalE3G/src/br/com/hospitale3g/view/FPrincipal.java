@@ -9,7 +9,7 @@ public class FPrincipal extends javax.swing.JFrame {
 
     Usuario usuario;
 
-    public FPrincipal() {        
+    public FPrincipal() {
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(FPrincipal.MAXIMIZED_BOTH);
@@ -17,7 +17,7 @@ public class FPrincipal extends javax.swing.JFrame {
         this.jlbPrivilegio.setText("");
 
         this.setUsuario(null);
-        
+
         ImageIcon icon = (ImageIcon) this.jlbLogo.getIcon();
         Image img = ((Image) icon.getImage());
         this.setIconImage(img);
@@ -32,18 +32,17 @@ public class FPrincipal extends javax.swing.JFrame {
                 + UsuarioController.getPrivilegio(usuario));
 
         this.setUsuario(usuario);
-        
+
         ImageIcon icon = (ImageIcon) this.jlbLogo.getIcon();
         Image img = ((Image) icon.getImage());
         this.setIconImage(img);
-        
+
         String privilegio = UsuarioController.getPrivilegio(usuario);
-        if(privilegio == "Médico"){
+        if (privilegio == "Médico") {
             this.jbtPessoa.setEnabled(false);
             this.jbtUsuario.setEnabled(false);
-            this.jbtEnfermeiro.setEnabled(false);
             this.jbtSecretario.setEnabled(false);
-        }else if(privilegio == "Enfermeiro"){
+        } else if (privilegio == "Enfermeiro") {
             this.jbtPessoa.setEnabled(false);
             this.jbtUsuario.setEnabled(false);
             this.jbtMedico.setEnabled(false);
@@ -265,7 +264,7 @@ public class FPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUsuarioActionPerformed
-        DCUsuario cUsuario = new DCUsuario(this, true);
+        DCUsuario cUsuario = new DCUsuario(this, true, this.getUsuario());
         cUsuario.setVisible(true);
     }//GEN-LAST:event_jbtUsuarioActionPerformed
 

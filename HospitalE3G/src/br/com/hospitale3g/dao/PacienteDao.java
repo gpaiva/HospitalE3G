@@ -207,6 +207,21 @@ public class PacienteDao extends Dao {
         return (aux);
     }
 
+    public boolean hasDependenceAtendimento(int id) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT A.* "
+                    + " FROM ATENDIMENTO A "
+                    + " WHERE A.ID = " + id + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
     public String[] getColumns() {
         String[] aux = {"Código", "Nome", "CPF", "ID", "Sexo"};
         return (aux);

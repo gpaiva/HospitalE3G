@@ -1,5 +1,6 @@
 package br.com.hospitale3g.view;
 
+import br.com.hospitale3g.controller.Lib;
 import br.com.hospitale3g.controller.PacienteController;
 import javax.swing.JFrame;
 import br.com.hospitale3g.model.Secretario;
@@ -384,8 +385,20 @@ public class DCSecretario extends javax.swing.JDialog {
 
     private void excluir() {
         if (this.getSecretarioSelected() != null) {
-            SecretarioController.delete(this.getSecretarioSelected().getCodPessoa());
-            this.atualizarJTable();
+            boolean isValid = true;
+            if (SecretarioController.hasDependenceUsuario(this.getSecretarioSelected().getRegistro())) {
+                Lib.information("Não é possível excluir o Secretário, pois ele é um Usuário!");
+                isValid = false;
+            } else if (Lib.confirmation("Excluindo esse Secretário, a Pessoa também será excluída.\n"
+                    + "Deseja realmente Excluír?", "Excluir Pessoa") != 0) {
+                isValid = false;
+            }
+            if (isValid) {
+                int codPessoa = this.getSecretarioSelected().getCodPessoa();
+                SecretarioController.delete(codPessoa);
+                PessoaController.delete(codPessoa);
+                this.atualizarJTable();
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum Secretário selecionado!");
         }

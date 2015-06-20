@@ -1,6 +1,5 @@
 package br.com.hospitale3g.controller;
 
-import br.com.hospitale3g.dao.Dao;
 import br.com.hospitale3g.dao.EnfermeiroDao;
 import br.com.hospitale3g.model.Enfermeiro;
 import java.sql.ResultSet;
@@ -54,6 +53,16 @@ public class EnfermeiroController {
     public static boolean existsEnfermeiro(String coren) {
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         return (enfermeiroDao.existsEnfermeiro(coren));
+    }
+    
+    public static boolean hasDependenceAtendimento(String coren){
+        EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
+        return(enfermeiroDao.hasDependenceAtendimento(coren));
+    }
+    
+    public static boolean hasDependenceUsuario(String coren){
+        EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
+        return(enfermeiroDao.hasDependenceUsuario(coren));
     }
 
     public static String[] getColumns() {

@@ -203,6 +203,40 @@ public class EnfermeiroDao extends Dao {
         return (false);
     }
 
+    public boolean hasDependenceAtendimento(String coren) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT A.* "
+                    + " FROM ATENDIMENTO A "
+                    + " WHERE A.COREN LIKE " + Lib.quotedStr(coren) + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
+    public boolean hasDependenceUsuario(String coren) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT U.* "
+                    + " FROM USUARIO U "
+                    + " WHERE U.CODPESSOA = (SELECT E.CODPESSOA"
+                    + " FROM ENFERMEIRO E "
+                    + " WHERE E.COREN LIKE " + Lib.quotedStr(coren) + ");";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
     public String[] getColumns() {
         String[] aux = {"Código", "Nome", "CPF", "COREN", "Sexo"};
         return (aux);

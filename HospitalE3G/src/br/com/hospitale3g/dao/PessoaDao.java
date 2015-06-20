@@ -254,6 +254,61 @@ public class PessoaDao extends Dao {
         return ("Desconhecido");
     }
 
+    public boolean hasDependenceAtendimento(int codPessoa) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT A.* "
+                    + "FROM ATENDIMENTO A "
+                    + "LEFT JOIN ENFERMEIRO E ON E.COREN = A.COREN "
+                    + "LEFT JOIN MEDICO M ON M.CRM = A.CRM "
+                    + "LEFT JOIN PACIENTE P ON P.ID = A.ID "
+                    + "WHERE (E.CODPESSOA = " + codPessoa + ") OR  "
+                    + "      (M.CODPESSOA = " + codPessoa + ") OR "
+                    + "      (P.CODPESSOA = " + codPessoa + ");";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
+    public boolean hasDependenceUsuario(String crm) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT U.* "
+                    + " FROM USUARIO U "
+                    + " WHERE U.CODPESSOA = (SELECT M.CODPESSOA"
+                    + " FROM MEDICO M "
+                    + " WHERE M.CRM LIKE " + Lib.quotedStr(crm) + ");";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
+    public boolean hasDependenceUsuario(int codPessoa) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT U.* "
+                    + " FROM USUARIO U "
+                    + " WHERE U.CODPESSOA = " + codPessoa + ";";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
     public String[] getColumns() {
         String[] aux = {"Código", "Nome", "Sexo", "CPF", "RG",
             "Rua", "Número", "Complemento", "Bairro", "Cidade", "CEP"};

@@ -231,14 +231,17 @@ public class DIUsuario extends javax.swing.JDialog {
                 isValid = false;
                 this.jcbPessoa.requestFocus();
             }
-        } else if (this.jtfUsuario.getText().isEmpty()) {
-            Lib.information("*Usuário.\nPreenchimento Obrigatório!");
-            isValid = false;
-            this.jtfUsuario.requestFocus();
-        } else if (this.jtfSenha.getText().isEmpty()) {
-            Lib.information("*Senha.\nPreenchimento Obrigatório!");
-            isValid = false;
-            this.jtfSenha.requestFocus();
+        }
+        if (isValid) {
+            if (this.jtfUsuario.getText().isEmpty()) {
+                Lib.information("*Usuário.\nPreenchimento Obrigatório!");
+                isValid = false;
+                this.jtfUsuario.requestFocus();
+            } else if (this.jtfSenha.getText().isEmpty()) {
+                Lib.information("*Senha.\nPreenchimento Obrigatório!");
+                isValid = false;
+                this.jtfSenha.requestFocus();
+            }
         }
         if (isValid) {
             if (this.jtfSenhaAntiga.isEnabled()) {

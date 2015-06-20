@@ -11,11 +11,22 @@ import net.sf.jasperreports.view.JasperViewer;
 
 public class DCUsuario extends javax.swing.JDialog {
 
+    Usuario usuario;
+
     public DCUsuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.initComponents();
         this.atualizarJTable();
         this.setLocationRelativeTo(null);
+    }
+
+    public DCUsuario(java.awt.Frame parent, boolean modal, Usuario usuario) {
+        super(parent, modal);
+        this.initComponents();
+        this.atualizarJTable();
+        this.setLocationRelativeTo(null);
+
+        this.setUsuario(usuario);
     }
 
     @SuppressWarnings("unchecked")
@@ -329,6 +340,14 @@ public class DCUsuario extends javax.swing.JDialog {
     private javax.swing.JTable tbUsuario;
     // End of variables declaration//GEN-END:variables
 
+    private Usuario getUsuario() {
+        return (this.usuario);
+    }
+
+    private void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     private void sair() {
         this.dispose();
     }
@@ -376,8 +395,14 @@ public class DCUsuario extends javax.swing.JDialog {
 
     private void excluir() {
         if (this.getUsuarioSelected() != null) {
-            UsuarioController.delete(this.getUsuarioSelected().getCodPessoa());
-            this.atualizarJTable();
+            if (this.getUsuarioSelected().getCodPessoa() == 1) {
+                Lib.information("Não é possível excluir o Usuário do Administrador!");
+            } else if (this.getUsuario().getCodPessoa() != 1) {
+                Lib.information("Somente o Administrador tem a permissão para excluir Usuários!");
+            } else {
+                UsuarioController.delete(this.getUsuarioSelected().getCodPessoa());
+                this.atualizarJTable();
+            }
         } else {
             Lib.information("Nenhum Usuário selecionado!");
         }

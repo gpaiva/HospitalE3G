@@ -142,6 +142,7 @@ public class SecretarioDao extends Dao {
         }
         return (false);
     }
+
     public boolean existsSecretario(int registro) {
         this.conect(Dao.url);
         try {
@@ -178,6 +179,24 @@ public class SecretarioDao extends Dao {
         return (aux);
     }
 
+    public boolean hasDependenceUsuario(int registro) {
+        this.conect(Dao.url);
+        try {
+            String sqlQuery = "SELECT U.* "
+                    + " FROM USUARIO U "
+                    + " WHERE U.CODPESSOA = (SELECT S.CODPESSOA"
+                    + " FROM SECRETARIO S "
+                    + " WHERE S.REGISTRO = " + registro + ");";
+            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            return (result.first());
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+        } finally {
+            this.close();
+        }
+        return (false);
+    }
+
     public String[] getColumns() {
         String[] aux = {"Código", "Nome", "CPF", "Registro", "Sexo"};
         return (aux);
@@ -206,8 +225,8 @@ public class SecretarioDao extends Dao {
         }
         return (model);
     }
-    
-     public JasperViewer getIReport() {
+
+    public JasperViewer getIReport() {
         this.conect(url);
         try {
             this.getComando().execute("SELECT S.*, P.*, "

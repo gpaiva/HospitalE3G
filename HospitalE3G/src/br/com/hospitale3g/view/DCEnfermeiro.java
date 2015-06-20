@@ -1,9 +1,13 @@
 package br.com.hospitale3g.view;
 
 import br.com.hospitale3g.controller.EnfermeiroController;
+import br.com.hospitale3g.controller.Lib;
+import br.com.hospitale3g.controller.MedicoController;
+import br.com.hospitale3g.controller.PacienteController;
 import javax.swing.JFrame;
 import br.com.hospitale3g.model.Enfermeiro;
 import br.com.hospitale3g.controller.PessoaController;
+import br.com.hospitale3g.controller.SecretarioController;
 import br.com.hospitale3g.controller.UsuarioController;
 import br.com.hospitale3g.model.Pessoa;
 import javax.swing.JDialog;
@@ -383,9 +387,25 @@ public class DCEnfermeiro extends javax.swing.JDialog {
     }
 
     private void excluir() {
+        boolean isValid = true;
         if (this.getEnfermeiroSelected() != null) {
-            EnfermeiroController.delete(this.getEnfermeiroSelected().getCodPessoa());
-            this.atualizarJTable();
+            if (EnfermeiroController.hasDependenceUsuario(this.getEnfermeiroSelected().getCoren())) {
+                Lib.information("Não é possível excluir o Enfermeiro, pois ele é um Usuario!");
+                isValid = false;
+            } else if (EnfermeiroController.hasDependenceAtendimento(this.getEnfermeiroSelected().getCoren())) {
+                Lib.information("Não é possível excluir o Enfermeiro, pois ele tem um Atendimento!");
+                isValid = false;
+            } else if (Lib.confirmation("Excluindo esse Enfermeiro, a Pessoa também será excluída.\n"
+                    + "Deseja realmente Excluír?", "Excluir Pessoa") != 0) {
+                isValid = false;
+            }
+
+            if (isValid) {
+                int codPessoa = this.getEnfermeiroSelected().getCodPessoa();
+                EnfermeiroController.delete(codPessoa);
+                PessoaController.delete(codPessoa);
+                this.atualizarJTable();
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum Enfermeiro selecionado!");
         }

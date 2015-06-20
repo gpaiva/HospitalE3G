@@ -356,9 +356,24 @@ public class DCMedico extends javax.swing.JDialog {
     }
 
     private void excluir() {
+        boolean isValid = true;
         if (this.getMedicoSelected() != null) {
-            MedicoController.delete(this.getMedicoSelected().getCodPessoa());
-            this.atualizarJTable();
+            if (MedicoController.hasDependenceUsuario(this.getMedicoSelected().getCrm())) {
+                Lib.information("Não é possível excluir o Médico, pois ele é um Usuario!");
+                isValid = false;
+            } else if (MedicoController.hasDependenceAtendimento(this.getMedicoSelected().getCrm())) {
+                Lib.information("Não é possível excluir o Médico, pois ele tem um Atendimento!");
+                isValid = false;
+            } else if (Lib.confirmation("Excluindo esse Médico, a Pessoa também será excluída.\n"
+                    + "Deseja realmente Excluír?", "Excluir Pessoa") != 0) {
+                isValid = false;
+            }
+            if (isValid) {
+                int codPessoa = this.getMedicoSelected().getCodPessoa();
+                MedicoController.delete(codPessoa);
+                PessoaController.delete(codPessoa);
+                this.atualizarJTable();
+            }
         } else {
             Lib.information("Nenhum Médico selecionado!");
         }

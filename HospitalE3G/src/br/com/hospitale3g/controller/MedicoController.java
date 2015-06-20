@@ -56,6 +56,16 @@ public class MedicoController {
         return (medicoDao.existsMedico(crm));
     }
 
+    public static boolean hasDependenceAtendimento(String crm) {
+        MedicoDao medicoDao = new MedicoDao();
+        return (medicoDao.hasDependenceAtendimento(crm));
+    }
+
+    public static boolean hasDependenceUsuario(String crm) {
+        MedicoDao medicoDao = new MedicoDao();
+        return (medicoDao.hasDependenceUsuario(crm));
+    }
+
     public static String[] getColumns() {
         MedicoDao medicoDao = new MedicoDao();
         return (medicoDao.getColumns());
