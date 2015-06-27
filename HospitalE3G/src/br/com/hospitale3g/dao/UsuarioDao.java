@@ -26,21 +26,26 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class UsuarioDao extends Dao {
-
+    //constantes com os nomes de cada atributo no banco de dados
     static final String codPessoa = "codPessoa";
     static final String usuLogin = "usuLogin";
     static final String usuSenha = "usuSenha";
-
+    //função que retorna em uma lista, os dados que estão no banco de dados
     public List<Usuario> select() {
         String sqlQuery = "SELECT * "
                 + "FROM USUARIO";
-
+        //conecta no banco de dados
         this.connect(Dao.url);
+        //instancia uma lista de usuarios
         List<Usuario> usuarios = new ArrayList<Usuario>();
         ResultSet rs1;
         try {
+            //recebe os dados retornados da query
             rs1 = this.getStatement().executeQuery(sqlQuery);
+            //caso ainda houver proximo no rs1
             while (rs1.next()) {
+                //é criado uma nova instancia de pessoa de acordo com os dados
+                //do rs1
                 int codPessoa = rs1.getInt(UsuarioDao.codPessoa);
 
                 PessoaDao daoPessoa = new PessoaDao();
@@ -49,14 +54,16 @@ public class UsuarioDao extends Dao {
                 Usuario usuario = new Usuario(pessoa,
                         rs1.getString(UsuarioDao.usuLogin),
                         rs1.getString(UsuarioDao.usuSenha));
+                //adiciona o usuario na lista de usuarios
                 usuarios.add(usuario);
             }
+            //retorna a lista de usuarios
             return (usuarios);
-        } catch (SQLException e) {
+        } catch (SQLException e) {//tratamento de exceções
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
             return (null);
-        } finally {
+        } finally {//fecha o banco de dados
             this.close();
         }
     }
@@ -77,7 +84,7 @@ public class UsuarioDao extends Dao {
             this.close();
         }
     }
-
+    //função que atualiza um usuario no banco de dados
     public void update(Usuario usuario) {
         String sqlQuery = "UPDATE USUARIO "
                 + "SET CODPESSOA = " + usuario.getCodPessoa() + ", "
@@ -85,17 +92,20 @@ public class UsuarioDao extends Dao {
                 + " USUSENHA = " + Lib.quotedStr(usuario.getUsuSenha()) + " "
                 + "WHERE CODPESSOA = " + usuario.getCodPessoa();
 
+        //conecta com o banco de dados
         this.connect(Dao.url);
         try {
+            //executa a query
             this.getStatement().executeUpdate(sqlQuery);
-        } catch (SQLException e) {
+        } catch (SQLException e) {//tratamento de exceção
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
-        } finally {
+        } finally {//fecha a conexão
             this.close();
         }
     }
 
+    //função que delete uma pessoa de acordo com o código passado por parametro
     public void delete(int codPessoa) {
         String sqlQuery = "DELETE FROM USUARIO "
                 + " WHERE CODPESSOA = " + codPessoa;
@@ -111,6 +121,7 @@ public class UsuarioDao extends Dao {
         }
     }
 
+    //função que retorna o proximo código da pessoa
     public Usuario getUsuario(int codPessoa) {
         String sqlQuery = "SELECT * "
                 + " FROM USUARIO "
@@ -139,7 +150,7 @@ public class UsuarioDao extends Dao {
             this.close();
         }
     }
-
+    //função que retorna um usuario de acordo com o login e senha passado como parametro
     public Usuario getUsuario(String usuLogin, String usuSenha) {
         String sqlQuery = "SELECT * "
                 + " FROM USUARIO "
@@ -169,7 +180,7 @@ public class UsuarioDao extends Dao {
             this.close();
         }
     }
-
+    //atribui o privilegio ao usuario
     public String getPrivilegio(Usuario usuario) {
         if (usuario.getCodPessoa() == 1) {
             return ("Administrador");
@@ -192,7 +203,7 @@ public class UsuarioDao extends Dao {
         }
         return ("Desconhecido");
     }
-
+    //encontra o usuario com login e senha passados no parametro
     public boolean findUsuario(String usuLogin, String usuSenha) {
         this.connect(Dao.url);
         try {
@@ -209,7 +220,7 @@ public class UsuarioDao extends Dao {
         }
         return (false);
     }
-
+    //
     public boolean existsUsuarioCodPessoa(int codPessoa) {
         this.connect(Dao.url);
         try {

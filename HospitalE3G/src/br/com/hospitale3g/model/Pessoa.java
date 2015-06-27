@@ -1,7 +1,7 @@
 package br.com.hospitale3g.model;
 
 public class Pessoa {
-
+    //atributos da classe Pessoa
     private int codPessoa;
     private String nome;
     private String cpf;
@@ -16,7 +16,7 @@ public class Pessoa {
 
     public Pessoa() {
     }
-
+    //construtor completo da classe Pessoa
     public Pessoa(int codPessoa, String nome, char sexo, String cpf, String rg,
             String rua, String numero, String complemento, String bairro,
             String cidade, String cep) {
@@ -32,7 +32,7 @@ public class Pessoa {
         this.setCidade(cidade);
         this.setCep(cep);
     }
-
+    //Sets e Gets
     public int getCodPessoa() {
         return (this.codPessoa);
     }

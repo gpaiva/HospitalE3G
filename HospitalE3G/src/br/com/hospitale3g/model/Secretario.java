@@ -1,12 +1,12 @@
 package br.com.hospitale3g.model;
 
 public class Secretario extends Pessoa {
-
+    //atributo de secretário
     private int registro;
-
+    
     public Secretario() {
     }
-
+    //construtor completo de Secretário
     public Secretario(Pessoa pessoa, int registro) {
         super();
         this.setCodPessoa(pessoa.getCodPessoa());

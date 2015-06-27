@@ -3,7 +3,7 @@ package br.com.hospitale3g.model;
 import java.util.Date;
 
 public final class Atendimento {
-
+    //atributos de atendimento
     private int atenCodigo;
     private String crm;
     private int id;
@@ -17,7 +17,7 @@ public final class Atendimento {
 
     public Atendimento() {
     }
-
+    //construtor completo de atendimento
     public Atendimento(int atenCodigo, String crm, int id, String coren,
             String atenData, String atenHora, String atenDataFinalizado,
             String atenHoraFinalizado, int atenSituacao, String atenObservacao) {
@@ -47,7 +47,7 @@ public final class Atendimento {
         this.setAtenSituacao(atenSituacao);
         this.setAtenObservacao(atenObservacao);
     }
-
+    //sets e gets
     public int getAtenCodigo() {
         return atenCodigo;
     }

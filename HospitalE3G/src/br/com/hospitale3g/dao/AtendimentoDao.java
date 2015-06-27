@@ -21,7 +21,7 @@ import br.com.hospitale3g.model.Atendimento;
 import br.com.hospitale3g.view.DExcecao;
 
 public class AtendimentoDao extends Dao {
-
+    //constantes com os nomes de cada atributo no banco de dados
     static final String atencodigo = "atencodigo";
     static final String crm = "crm";
     static final String id = "id";
@@ -30,15 +30,17 @@ public class AtendimentoDao extends Dao {
     static final String atendatahorafinalizado = "atendatahorafinalizado";
     static final String atensituacao = "atensituacao";
     static final String atenobservacao = "atenobservacao";
-
+    //função que retorna em uma lista, os dados que estão no banco de dados
     public List<Atendimento> select() {
         String sqlQuery = "SELECT * "
                 + " FROM ATENDIMENTO ";
-
+        //conecta no banco de dados
         this.connect(Dao.url);//conecta com o banco de dados
+        //instancia uma lista de pessoas
         List<Atendimento> atendimentos = new ArrayList<Atendimento>();//cria um list de atendimento
         ResultSet resultSet;//cria um novo resultSet
         try {
+            //resultSet recebe os dados retornados da query
             resultSet = this.getStatement().executeQuery(sqlQuery);//resultSet recebe os dados retornado da query
             while (resultSet.next()) {//caso ainda exista proximo no resultset
                 //passa as informações para as variaveis

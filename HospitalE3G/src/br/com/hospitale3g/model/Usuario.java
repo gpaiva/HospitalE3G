@@ -1,12 +1,13 @@
 package br.com.hospitale3g.model;
 
 public class Usuario extends Pessoa{
+    //declaração de atributos
     private String usuLogin;
     private String usuSenha;
     
     public Usuario(){
     }
-    
+    //construtor completo da clase usuario
     public Usuario(Pessoa pessoa, String usuLogin, String usuSenha){
         this.setCodPessoa(pessoa.getCodPessoa());
         this.setNome(pessoa.getNome());
