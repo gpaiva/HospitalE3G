@@ -292,12 +292,15 @@ public class DIMedico extends javax.swing.JDialog {
 
     private void salvar() {
         boolean isValid = true;
-        if(this.jtfCRM.getText().isEmpty()){
-                Lib.information("*CRM. Preenchimento Obrigatório!");
-                isValid = false;
-                this.jtfCRM.requestFocus();
-        }
-        if (this.getTipo() == DIMedico.tipoFormulario.tfINCLUSAO) {
+        if (this.jtfCRM.getText().isEmpty()) {
+            Lib.information("*CRM. Preenchimento Obrigatório!");
+            isValid = false;
+            this.jtfCRM.requestFocus();
+        } else if (this.jtfCRM.getText().length() > 15) {
+            Lib.information("CRM.\nSomente é permitido até 15 caracteres!");
+            isValid = false;
+            this.jtfCRM.requestFocus();
+        } else if (this.getTipo() == DIMedico.tipoFormulario.tfINCLUSAO) {
             if (MedicoController.existsMedico(this.jtfCRM.getText())) {
                 Lib.information("CRM já Cadastrado no Sistema!");
                 isValid = false;

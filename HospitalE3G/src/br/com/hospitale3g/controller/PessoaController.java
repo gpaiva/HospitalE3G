@@ -11,7 +11,7 @@ public class PessoaController {
 
     public static Connection getConnection() {
         PessoaDao pessoaDao = new PessoaDao();
-        return (pessoaDao.getCon());
+        return (pessoaDao.getConnection());
     }
 
     public static List<Pessoa> select() {

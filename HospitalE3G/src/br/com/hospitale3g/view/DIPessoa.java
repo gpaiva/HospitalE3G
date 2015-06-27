@@ -20,28 +20,39 @@ public class DIPessoa extends javax.swing.JDialog {
     private String oldRg;
 
     public DIPessoa(java.awt.Frame parent, boolean modal, String title, Usuario usuario) {
+        //inclusão
         super(parent, modal);
         this.initComponents();
+        //passa a posição do dialog pro meio da tela
         this.setLocationRelativeTo(null);
+        //altera o titulo
         this.setTitle(title);
 
+        //inicializa as variaveis
         this.sCodigo.setValue(PessoaController.getNextCodPessoa());
         this.setTipo(tipoFormulario.tfINCLUSAO);
         this.setOldCpf("");
         this.setOldRg("");
-        
-        if(UsuarioController.getPrivilegio(usuario) == "Secretário"){
-        this.cbTipoPessoa.removeAllItems();
-        this.cbTipoPessoa.addItem("Paciente");
+
+        //caso for secretario, altera o combo para ter só o valor paciente
+        //lembrando que pela analise, um secretario somente pode inserir pessoa
+        //do tipo paciente
+        if (UsuarioController.getPrivilegio(usuario) == "Secretário") {
+            this.cbTipoPessoa.removeAllItems();
+            this.cbTipoPessoa.addItem("Paciente");
         }
     }
 
     public DIPessoa(java.awt.Frame parent, boolean modal, String title, Pessoa pessoa) {
+        //edição
         super(parent, modal);
         this.initComponents();
+        //passa o dialog pro meio da tela
         this.setLocationRelativeTo(null);
+        //altera o titulo do dialog
         this.setTitle(title);
 
+        //iniciliza todos os componentes, pois é a edição
         this.sCodigo.setValue(pessoa.getCodPessoa());
         this.tNome.setText(pessoa.getNome());
         this.cbSexo.setSelectedIndex(Lib.iif(pessoa.getSexo() == 'M', 0, 1));
@@ -57,6 +68,8 @@ public class DIPessoa extends javax.swing.JDialog {
         this.setOldCpf(pessoa.getCpf());
         this.setOldRg(pessoa.getRg());
 
+        //remove todos os tipos da pessoa, e passa para o tipo da pessoa que está
+        //sendo editada
         this.cbTipoPessoa.removeAllItems();
         this.cbTipoPessoa.addItem(PessoaController.getPessoa(pessoa));
     }
@@ -70,9 +83,7 @@ public class DIPessoa extends javax.swing.JDialog {
         lbNome = new javax.swing.JLabel();
         sCodigo = new javax.swing.JSpinner();
         tNome = new javax.swing.JTextField();
-        tCPF = new javax.swing.JTextField();
         lbCPF = new javax.swing.JLabel();
-        tRG = new javax.swing.JTextField();
         lbRG = new javax.swing.JLabel();
         cbSexo = new javax.swing.JComboBox();
         lbSexo = new javax.swing.JLabel();
@@ -80,7 +91,6 @@ public class DIPessoa extends javax.swing.JDialog {
         lbTipoPessoa = new javax.swing.JLabel();
         jtfRua = new javax.swing.JTextField();
         jlbRua = new javax.swing.JLabel();
-        jtfNumero = new javax.swing.JTextField();
         jlbNumero = new javax.swing.JLabel();
         jtfComplemento = new javax.swing.JTextField();
         jlbNumero1 = new javax.swing.JLabel();
@@ -90,9 +100,12 @@ public class DIPessoa extends javax.swing.JDialog {
         jlbCidade = new javax.swing.JLabel();
         jtfCep = new javax.swing.JTextField();
         jlbCep = new javax.swing.JLabel();
+        tCPF = new javax.swing.JFormattedTextField();
         jpBotoes = new javax.swing.JPanel();
         btSalvar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
+        jtfNumero = new javax.swing.JTextField();
+        tRG = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Incluir - Pessoa");
@@ -114,12 +127,8 @@ public class DIPessoa extends javax.swing.JDialog {
 
         tNome.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
-        tCPF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-
         lbCPF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         lbCPF.setText("*CPF");
-
-        tRG.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
         lbRG.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         lbRG.setText("*RG");
@@ -140,8 +149,6 @@ public class DIPessoa extends javax.swing.JDialog {
 
         jlbRua.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jlbRua.setText("*Rua");
-
-        jtfNumero.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
         jlbNumero.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jlbNumero.setText("*Número");
@@ -165,6 +172,12 @@ public class DIPessoa extends javax.swing.JDialog {
 
         jlbCep.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jlbCep.setText("*CEP");
+
+        try {
+            tCPF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jpBotoes.setBackground(new java.awt.Color(204, 204, 255));
         jpBotoes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -210,73 +223,79 @@ public class DIPessoa extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        jtfNumero.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+
+        tRG.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
+                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jpBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPrincipalLayout.createSequentialGroup()
-                                    .addComponent(sCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(tNome))
-                                .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                    .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbCPF)
-                                        .addComponent(tCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbRG)
-                                        .addComponent(tRG, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                .addComponent(lbCodigo)
-                                .addGap(20, 20, 20)
-                                .addComponent(lbNome)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addContainerGap()
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lbSexo, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbTipoPessoa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbTipoPessoa, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbSexo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbRua)
-                            .addComponent(jtfRua, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbNumero)
-                            .addComponent(jtfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                .addComponent(jlbNumero1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jtfComplemento)))
-                    .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbBairro)
-                            .addComponent(jtfBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbCidade)
-                            .addComponent(jtfCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpPrincipalLayout.createSequentialGroup()
-                                .addComponent(jlbCep)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jtfCep))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPrincipalLayout.createSequentialGroup()
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlbRua)
+                                    .addComponent(jtfRua, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                        .addComponent(jlbNumero)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jtfNumero))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                        .addComponent(jlbNumero1)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jtfComplemento)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPrincipalLayout.createSequentialGroup()
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPrincipalLayout.createSequentialGroup()
+                                        .addComponent(sCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(tNome))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPrincipalLayout.createSequentialGroup()
+                                        .addComponent(lbCodigo)
+                                        .addGap(20, 20, 20)
+                                        .addComponent(lbNome))
+                                    .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbCPF)
+                                            .addComponent(tCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(tRG, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lbRG))
+                                        .addGap(15, 15, 15)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lbSexo, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbTipoPessoa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbTipoPessoa, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbSexo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPrincipalLayout.createSequentialGroup()
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlbBairro)
+                                    .addComponent(jtfBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlbCidade)
+                                    .addComponent(jtfCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlbCep)
+                                    .addComponent(jtfCep))))))
                 .addContainerGap())
-            .addComponent(jpBotoes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(lbCodigo)
@@ -290,15 +309,16 @@ public class DIPessoa extends javax.swing.JDialog {
                             .addComponent(tNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbCPF)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpPrincipalLayout.createSequentialGroup()
+                                .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbCPF)
+                                    .addComponent(lbRG))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tRG, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbRG)
-                            .addComponent(lbTipoPessoa))
+                        .addComponent(lbTipoPessoa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbTipoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,12 +326,13 @@ public class DIPessoa extends javax.swing.JDialog {
                         .addGap(22, 22, 22)
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jtfRua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jtfComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jlbNumero1)
                         .addComponent(jlbNumero)
                         .addComponent(jlbRua)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jpPrincipalLayout.createSequentialGroup()
@@ -319,15 +340,14 @@ public class DIPessoa extends javax.swing.JDialog {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jtfBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jpPrincipalLayout.createSequentialGroup()
-                            .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jlbCidade)
-                                .addComponent(jlbCep))
+                            .addComponent(jlbCidade)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jtfCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
+                        .addComponent(jlbCep)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtfCep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -335,9 +355,7 @@ public class DIPessoa extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,12 +370,19 @@ public class DIPessoa extends javax.swing.JDialog {
     }//GEN-LAST:event_btSairActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+        //variavel para controle
         boolean isValid = true;
+
+        //verificações
         if (this.tNome.getText().isEmpty()) {
             Lib.information("*Nome.\nPreenchimento Obrigatório!");
             isValid = false;
             this.tNome.requestFocus();
-        } else if (this.tCPF.getText().isEmpty()) {
+        } else if (this.tNome.getText().length() > 50) {
+            Lib.information("Nome.\nSomente é permitido até 50 caracteres!");
+            isValid = false;
+            this.tNome.requestFocus();
+        } else if (this.tCPF.getText().equals("   .   .   -  ")) {
             Lib.information("*CPF.\nPreenchimento Obrigatório!");
             isValid = false;
             this.tCPF.requestFocus();
@@ -369,6 +394,10 @@ public class DIPessoa extends javax.swing.JDialog {
             Lib.information("*RG.\nPreenchimento Obrigatório!");
             isValid = false;
             this.tRG.requestFocus();
+        } else if (this.tRG.getText().length() > 15) {
+            Lib.information("RG.\nSomente é permitido até 15 caracteres!");
+            isValid = false;
+            this.tRG.requestFocus();
         } else if ((PessoaController.existsPessoaRg(this.tRG.getText())) && (!this.getOldRg().equals(this.tRG.getText()))) {
             Lib.information("RG já Cadastrado no Sistema!");
             isValid = false;
@@ -377,68 +406,102 @@ public class DIPessoa extends javax.swing.JDialog {
             Lib.information("*Rua.\nPreenchimento Obrigatório!");
             isValid = false;
             this.jtfRua.requestFocus();
+        } else if (this.jtfRua.getText().length() > 30) {
+            Lib.information("Rua.\nSomente é permitido até 30 caracteres!");
+            isValid = false;
+            this.jtfRua.requestFocus();
         } else if (this.jtfNumero.getText().isEmpty()) {
             Lib.information("*Número.\nPreenchimento Obrigatório!");
+            isValid = false;
+            this.jtfNumero.requestFocus();
+        } else if (this.jtfNumero.getText().length() > 10) {
+            Lib.information("Número.\nSomente é permitido até 10 caracteres!");
             isValid = false;
             this.jtfNumero.requestFocus();
         } else if (this.jtfBairro.getText().isEmpty()) {
             Lib.information("*Bairro.\nPreenchimento Obrigatório!");
             isValid = false;
             this.jtfBairro.requestFocus();
+        } else if (this.jtfBairro.getText().length() > 30) {
+            Lib.information("Bairro.\nSomente é permitido até 30 caracteres!");
+            isValid = false;
+            this.jtfBairro.requestFocus();
         } else if (this.jtfCidade.getText().isEmpty()) {
             Lib.information("*Cidade.\nPreenchimento Obrigatório!");
+            isValid = false;
+            this.jtfCidade.requestFocus();
+        } else if (this.jtfCidade.getText().length() > 30) {
+            Lib.information("Cidade.\nSomente é permitido até 30 caracteres!");
             isValid = false;
             this.jtfCidade.requestFocus();
         } else if (this.jtfCep.getText().isEmpty()) {
             Lib.information("*CEP.\nPreenchimento Obrigatório!");
             isValid = false;
             this.jtfCep.requestFocus();
+        } else if (this.jtfCep.getText().length() > 15) {
+            Lib.information("CEP.\nSomente é permitido até 15 caracteres!");
+            isValid = false;
+            this.jtfCep.requestFocus();
         }
 
+        //se ainda for valido
         if (isValid) {
             try {
+                //salva a pessoa
                 this.salvar();
-            } catch (SQLException ex) {
+            } catch (SQLException ex) {//tratamento de exceção
                 DExcecao excecao = new DExcecao((JFrame) this.getParent(), true, ex.getMessage());
+                excecao.setVisible(true);
             }
         }
     }//GEN-LAST:event_btSalvarActionPerformed
 
     private void salvar() throws SQLException {
+        //variavel para receber o sexo selecionado
         char sexo = Lib.iif(cbSexo.getSelectedIndex() == 0, 'M', 'F');
-
+        //é instanciado uma pessoa de acordo com os valores no componente
         Pessoa pessoa = new Pessoa(Integer.parseInt(this.sCodigo.getValue().toString()),
                 this.tNome.getText(), sexo, tCPF.getText(), tRG.getText(),
                 this.jtfRua.getText(), this.jtfNumero.getText(), this.jtfComplemento.getText(),
                 this.jtfBairro.getText(), this.jtfCidade.getText(), this.jtfCep.getText());
 
+        //se for inclusão
         if (this.getTipo() == tipoFormulario.tfINCLUSAO) {
+            //insere uma pessoa no bd
             PessoaController.insert(pessoa);
-        } else if (this.getTipo() == tipoFormulario.tfEDICAO) {
+        } else if (this.getTipo() == tipoFormulario.tfEDICAO) {//se for edição
+            //atualiza uma pessoa no bd
             PessoaController.update(pessoa);
         }
 
+        //se for edição, verifica o tipo da pessoa, e abre a tela do tipo
+        //correspondente
         if (this.getTipo() == tipoFormulario.tfINCLUSAO) {
-            switch (this.cbTipoPessoa.getSelectedIndex()) {
-                case 0:
+            switch (this.cbTipoPessoa.getSelectedItem().toString()) {
+                case "Enfermeiro":
                     DIEnfermeiro iEnfermeiro = new DIEnfermeiro((JFrame) this.getParent(),
                             true, "Inclusão - Enfermeiro", pessoa);
                     iEnfermeiro.setVisible(true);
                     break;
-                case 1:
+                case "Médico":
                     DIMedico iMedico = new DIMedico((JFrame) this.getParent(),
                             true, "Inclusão - Médico", pessoa);
                     iMedico.setVisible(true);
                     break;
-                case 2:
+                case "Paciente":
                     DIPaciente iPaciente = new DIPaciente((JFrame) this.getParent(),
                             true, "Inclusão - Paciente", pessoa);
                     iPaciente.setVisible(true);
                     break;
-                case 3:
+                case "Secretário":
                     DISecretario iSecretario = new DISecretario((JFrame) this.getParent(),
                             true, "Inclusão - Secretário", pessoa);
                     iSecretario.setVisible(true);
+                    break;
+                default:
+                    DExcecao excecao = new DExcecao(null, true, "Erro ao inserir Pessoa\n"
+                            + "Reinicie o Sistema!");
+                    excecao.setVisible(true);
                     break;
             }
         }
@@ -487,14 +550,6 @@ public class DIPessoa extends javax.swing.JDialog {
         });
     }
 
-    private tipoFormulario getTipo() {
-        return (this.tipo);
-    }
-
-    private void setTipo(tipoFormulario tipo) {
-        this.tipo = tipo;
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btSair;
     private javax.swing.JButton btSalvar;
@@ -521,10 +576,19 @@ public class DIPessoa extends javax.swing.JDialog {
     private javax.swing.JLabel lbSexo;
     private javax.swing.JLabel lbTipoPessoa;
     private javax.swing.JSpinner sCodigo;
-    private javax.swing.JTextField tCPF;
+    private javax.swing.JFormattedTextField tCPF;
     private javax.swing.JTextField tNome;
     private javax.swing.JTextField tRG;
     // End of variables declaration//GEN-END:variables
+
+    //gets e sets
+    private tipoFormulario getTipo() {
+        return (this.tipo);
+    }
+
+    private void setTipo(tipoFormulario tipo) {
+        this.tipo = tipo;
+    }
 
     private String getOldCpf() {
         return (this.oldCpf);

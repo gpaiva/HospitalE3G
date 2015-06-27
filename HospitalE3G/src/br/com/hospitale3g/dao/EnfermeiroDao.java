@@ -26,11 +26,11 @@ public class EnfermeiroDao extends Dao {
         String sqlQuery = "SELECT * "
                 + "FROM ENFERMEIRO";
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         List<Enfermeiro> enfermeiros = new ArrayList<Enfermeiro>();
         ResultSet resultSet;
         try {
-            resultSet = this.getComando().executeQuery(sqlQuery);
+            resultSet = this.getStatement().executeQuery(sqlQuery);
             while (resultSet.next()) {
                 int codPessoa = resultSet.getInt(EnfermeiroDao.codPessoa);
 
@@ -56,9 +56,9 @@ public class EnfermeiroDao extends Dao {
                 + "VALUES(" + enfermeiro.getCodPessoa() + ", "
                 + Lib.quotedStr(enfermeiro.getCoren()) + ");";
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -73,9 +73,9 @@ public class EnfermeiroDao extends Dao {
                 + " COREN = " + Lib.quotedStr(enfermeiro.getCoren()) + " "
                 + "WHERE CODPESSOA = " + enfermeiro.getCodPessoa();
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -88,9 +88,9 @@ public class EnfermeiroDao extends Dao {
         String sqlQuery = "DELETE FROM ENFERMEIRO "
                 + " WHERE CODPESSOA = " + codPessoa;
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -104,11 +104,11 @@ public class EnfermeiroDao extends Dao {
                 + " FROM ENFERMEIRO "
                 + " WHERE CODPESSOA = " + codPessoa;
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         List<Enfermeiro> enfermeiros = new ArrayList<Enfermeiro>();
         ResultSet resultSet;
         try {
-            resultSet = this.getComando().executeQuery(sqlQuery);
+            resultSet = this.getStatement().executeQuery(sqlQuery);
             if ((resultSet != null) && (resultSet.next())) {
                 PessoaDao daoPessoa = new PessoaDao();
                 Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(EnfermeiroDao.codPessoa));
@@ -132,11 +132,11 @@ public class EnfermeiroDao extends Dao {
                 + " FROM ENFERMEIRO "
                 + " WHERE COREN LIKE " + Lib.quotedStr(coren);
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         List<Enfermeiro> enfermeiros = new ArrayList<Enfermeiro>();
         ResultSet resultSet;
         try {
-            resultSet = this.getComando().executeQuery(sqlQuery);
+            resultSet = this.getStatement().executeQuery(sqlQuery);
             if ((resultSet != null) && (resultSet.next())) {
                 PessoaDao daoPessoa = new PessoaDao();
                 Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(EnfermeiroDao.codPessoa));
@@ -156,12 +156,12 @@ public class EnfermeiroDao extends Dao {
     }
 
     public boolean findEnfermeiro(String coren) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM ENFERMEIRO "
                     + " WHERE COREN LIKE " + Lib.quotedStr(coren);
-            ResultSet resultSet = this.getComando().executeQuery(sqlQuery);
+            ResultSet resultSet = this.getStatement().executeQuery(sqlQuery);
             return (resultSet.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -172,12 +172,12 @@ public class EnfermeiroDao extends Dao {
     }
 
     public boolean existsEnfermeiro(int codPessoa) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM ENFERMEIRO "
                     + " WHERE CODPESSOA = " + codPessoa + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -188,12 +188,12 @@ public class EnfermeiroDao extends Dao {
     }
 
     public boolean existsEnfermeiro(String coren) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM ENFERMEIRO "
                     + " WHERE COREN LIKE " + Lib.quotedStr(coren) + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -204,12 +204,12 @@ public class EnfermeiroDao extends Dao {
     }
 
     public boolean hasDependenceAtendimento(String coren) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT A.* "
                     + " FROM ATENDIMENTO A "
                     + " WHERE A.COREN LIKE " + Lib.quotedStr(coren) + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -220,14 +220,14 @@ public class EnfermeiroDao extends Dao {
     }
 
     public boolean hasDependenceUsuario(String coren) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT U.* "
                     + " FROM USUARIO U "
                     + " WHERE U.CODPESSOA = (SELECT E.CODPESSOA"
                     + " FROM ENFERMEIRO E "
                     + " WHERE E.COREN LIKE " + Lib.quotedStr(coren) + ");";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -267,16 +267,16 @@ public class EnfermeiroDao extends Dao {
     }
 
     public JasperViewer getIReport() {
-        this.conect(url);
+        this.connect(url);
         try {
-            this.getComando().execute("SELECT E.*, P.*, "
+            this.getStatement().execute("SELECT E.*, P.*, "
                     + "             CASE P.SEXO "
                     + "                WHEN 'M' THEN 'Masculino' "
                     + "                WHEN 'F' THEN 'Feminino' "
                     + "             END AS PSEXO "
                     + "FROM ENFERMEIRO E "
                     + "JOIN PESSOA P ON P.CODPESSOA = E.CODPESSOA");
-            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getStatement().getResultSet());
             JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Enfermeiro.jasper", new HashMap(), relResult);
             return (new JasperViewer(jpPrint, true));
         } catch (SQLException | JRException ex) {

@@ -29,10 +29,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <Component id="jpPrincipal" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <Component id="jpPrincipal" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -52,91 +49,94 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jpBotoes" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="sCodigo" min="-2" pref="56" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="tNome" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlbRua" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jtfRua" min="-2" pref="224" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lbCPF" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="tCPF" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="jlbNumero" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lbRG" min="-2" max="-2" attributes="0"/>
-                                          <Component id="tRG" min="-2" pref="147" max="-2" attributes="0"/>
+                                      <Component id="jtfNumero" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="jlbNumero1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
+                                      <Component id="jtfComplemento" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lbCodigo" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="20" pref="20" max="-2" attributes="0"/>
-                                  <Component id="lbNome" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="sCodigo" min="-2" pref="56" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="tNome" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="lbCodigo" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="20" pref="20" max="-2" attributes="0"/>
+                                          <Component id="lbNome" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="lbCPF" min="-2" max="-2" attributes="0"/>
+                                              <Component id="tCPF" min="-2" pref="183" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="tRG" min="-2" pref="175" max="-2" attributes="0"/>
+                                              <Component id="lbRG" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="lbSexo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbTipoPessoa" alignment="0" min="-2" pref="93" max="-2" attributes="0"/>
+                                      <Component id="lbTipoPessoa" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbSexo" alignment="0" min="-2" pref="93" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="lbSexo" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbTipoPessoa" alignment="0" min="-2" pref="93" max="-2" attributes="0"/>
-                              <Component id="lbTipoPessoa" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbSexo" alignment="0" min="-2" pref="93" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jlbRua" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtfRua" min="-2" pref="224" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jlbNumero" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtfNumero" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jlbNumero1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlbBairro" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jtfBairro" min="-2" pref="144" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlbCidade" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jtfCidade" min="-2" pref="183" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlbCep" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jtfCep" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <Component id="jtfComplemento" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jlbBairro" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtfBairro" min="-2" pref="144" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jlbCidade" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtfCidade" min="-2" pref="152" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jlbCep" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="jtfCep" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
-              <Component id="jpBotoes" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                           <Component id="lbCodigo" min="-2" max="-2" attributes="0"/>
@@ -153,18 +153,20 @@
                               <Component id="cbSexo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lbCPF" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tCPF" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tRG" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lbCPF" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbRG" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="tCPF" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="tRG" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lbRG" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbTipoPessoa" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="lbTipoPessoa" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="cbTipoPessoa" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -174,8 +176,8 @@
                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jtfRua" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtfNumero" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfComplemento" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfNumero" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
@@ -184,28 +186,27 @@
                           <Component id="jlbRua" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jlbBairro" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jtfBairro" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jlbCidade" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jlbCep" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jlbCidade" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jtfCidade" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="jlbCep" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jtfCep" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jpBotoes" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -246,26 +247,12 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tCPF">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Calibri" size="12" style="0"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="lbCPF">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Calibri" size="12" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="*CPF"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tRG">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Calibri" size="12" style="0"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbRG">
@@ -335,13 +322,6 @@
             <Property name="text" type="java.lang.String" value="*Rua"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jtfNumero">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Calibri" size="12" style="0"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jlbNumero">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -408,6 +388,13 @@
               <Font name="Calibri" size="12" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="*CEP"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="tCPF">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
+              <Format format="###.###.###-##" subtype="-1" type="5"/>
+            </Property>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="jpBotoes">
@@ -484,6 +471,20 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JTextField" name="jtfNumero">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Calibri" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tRG">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Calibri" size="12" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

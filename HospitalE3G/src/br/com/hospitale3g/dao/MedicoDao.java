@@ -26,11 +26,11 @@ public class MedicoDao extends Dao {
         String sqlQuery = "SELECT * "
                 + "FROM MEDICO";
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         List<Medico> medicos = new ArrayList<Medico>();
         ResultSet resultSet;
         try {
-            resultSet = this.getComando().executeQuery(sqlQuery);
+            resultSet = this.getStatement().executeQuery(sqlQuery);
             while (resultSet.next()) {
                 int codPessoa = resultSet.getInt(MedicoDao.codPessoa);
 
@@ -56,9 +56,9 @@ public class MedicoDao extends Dao {
                 + "VALUES(" + medico.getCodPessoa() + ", "
                 + Lib.quotedStr(medico.getCrm()) + ");";
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -73,9 +73,9 @@ public class MedicoDao extends Dao {
                 + " CRM = " + Lib.quotedStr(medico.getCrm()) + " "
                 + "WHERE CODPESSOA = " + medico.getCodPessoa();
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -88,9 +88,9 @@ public class MedicoDao extends Dao {
         String sqlQuery = "DELETE FROM MEDICO "
                 + " WHERE CODPESSOA = " + codPessoa;
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -104,11 +104,11 @@ public class MedicoDao extends Dao {
                 + " FROM MEDICO "
                 + " WHERE CODPESSOA = " + codPessoa;
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         List<Medico> medicos = new ArrayList<Medico>();
         ResultSet resultSet;
         try {
-            resultSet = this.getComando().executeQuery(sqlQuery);
+            resultSet = this.getStatement().executeQuery(sqlQuery);
             if ((resultSet != null) && (resultSet.next())) {
                 PessoaDao daoPessoa = new PessoaDao();
                 Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(MedicoDao.codPessoa));
@@ -132,11 +132,11 @@ public class MedicoDao extends Dao {
                 + " FROM MEDICO "
                 + " WHERE CRM LIKE " + Lib.quotedStr(crm);
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         List<Medico> medicos = new ArrayList<Medico>();
         ResultSet resultSet;
         try {
-            resultSet = this.getComando().executeQuery(sqlQuery);
+            resultSet = this.getStatement().executeQuery(sqlQuery);
             if ((resultSet != null) && (resultSet.next())) {
                 PessoaDao daoPessoa = new PessoaDao();
                 Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(MedicoDao.codPessoa));
@@ -156,12 +156,12 @@ public class MedicoDao extends Dao {
     }
 
     public boolean findMedico(String crm) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM MEDICO "
                     + " WHERE CRM LIKE " + Lib.quotedStr(crm);
-            ResultSet resultSet = this.getComando().executeQuery(sqlQuery);
+            ResultSet resultSet = this.getStatement().executeQuery(sqlQuery);
             return (resultSet.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -172,12 +172,12 @@ public class MedicoDao extends Dao {
     }
 
     public boolean existsMedico(int codPessoa) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM MEDICO "
                     + " WHERE CODPESSOA = " + codPessoa + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -188,12 +188,12 @@ public class MedicoDao extends Dao {
     }
 
     public boolean existsMedico(String crm) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM MEDICO "
                     + " WHERE CRM LIKE " + Lib.quotedStr(crm) + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -204,12 +204,12 @@ public class MedicoDao extends Dao {
     }
 
     public boolean hasDependenceAtendimento(String crm) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT A.* "
                     + " FROM ATENDIMENTO A "
                     + " WHERE A.CRM LIKE " + Lib.quotedStr(crm) + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -220,14 +220,14 @@ public class MedicoDao extends Dao {
     }
 
     public boolean hasDependenceUsuario(String crm) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT U.* "
                     + " FROM USUARIO U "
                     + " WHERE U.CODPESSOA = (SELECT M.CODPESSOA"
                     + " FROM MEDICO M "
                     + " WHERE M.CRM LIKE " + Lib.quotedStr(crm) + ");";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -267,16 +267,16 @@ public class MedicoDao extends Dao {
     }
 
     public JasperViewer getIReport() {
-        this.conect(url);
+        this.connect(url);
         try {
-            this.getComando().execute("SELECT M.*, P.*, "
+            this.getStatement().execute("SELECT M.*, P.*, "
                     + "             CASE P.SEXO "
                     + "                WHEN 'M' THEN 'Masculino' "
                     + "                WHEN 'F' THEN 'Feminino' "
                     + "             END AS PSEXO "
                     + "FROM MEDICO M "
                     + "JOIN PESSOA P ON P.CODPESSOA = M.CODPESSOA");
-            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getStatement().getResultSet());
             JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Medico.jasper", new HashMap(), relResult);
             return (new JasperViewer(jpPrint, true));
         } catch (SQLException | JRException ex) {

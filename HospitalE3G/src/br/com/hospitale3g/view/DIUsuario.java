@@ -237,8 +237,16 @@ public class DIUsuario extends javax.swing.JDialog {
                 Lib.information("*Usuário.\nPreenchimento Obrigatório!");
                 isValid = false;
                 this.jtfUsuario.requestFocus();
+            }else if(this.jtfUsuario.getText().length() > 20){
+                Lib.information("Usuario.\nSomente até 20 caracteres!");
+                isValid = false;
+                this.jtfUsuario.requestFocus();
             } else if (this.jtfSenha.getText().isEmpty()) {
                 Lib.information("*Senha.\nPreenchimento Obrigatório!");
+                isValid = false;
+                this.jtfSenha.requestFocus();
+            }else if(this.jtfSenha.getText().length() > 20){
+                Lib.information("Senha.\nSomente até 20 caracteres!");
                 isValid = false;
                 this.jtfSenha.requestFocus();
             }

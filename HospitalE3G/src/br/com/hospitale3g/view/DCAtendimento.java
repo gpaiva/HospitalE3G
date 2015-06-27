@@ -441,8 +441,7 @@ public class DCAtendimento extends javax.swing.JDialog {
     }
 
     private void atualizarJTable() {
-        AtendimentoDao atendimentoDao = new AtendimentoDao();
-        this.getTbAtendimento().setModel(atendimentoDao.getTableModel());
+        this.getTbAtendimento().setModel(AtendimentoController.getTableModel());
         for (int i = 0; i <= this.jtbAtendimento.getColumnCount() - 1; i++) {
             this.jtbAtendimento.getColumnModel().getColumn(i).setPreferredWidth(120);
         }
@@ -450,6 +449,7 @@ public class DCAtendimento extends javax.swing.JDialog {
         if (this.getTbAtendimento().getModel().getRowCount() > 0) {
             this.getTbAtendimento().setRowSelectionInterval(0, 0);
         }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,7 +9,6 @@ import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.controller.PessoaController;
 import br.com.hospitale3g.controller.SecretarioController;
 import br.com.hospitale3g.model.Usuario;
-import java.awt.Toolkit;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.view.JasperViewer;
@@ -22,7 +21,9 @@ public class DCPessoa extends javax.swing.JDialog {
         super(parent, modal);
         this.initComponents();
 
+        //atualiza o grid
         this.atualizarJTable();
+        //passa a posição inicial do dialog pro meio da tela
         this.setLocationRelativeTo(null);
 
         this.setUsuario(null);
@@ -32,7 +33,9 @@ public class DCPessoa extends javax.swing.JDialog {
         super(parent, modal);
         this.initComponents();
 
+        //atualiza o grid
         this.atualizarJTable();
+        //passa a posição inicial do dialog pro meio da tela
         this.setLocationRelativeTo(null);
 
         this.setUsuario(usuario);
@@ -319,11 +322,14 @@ public class DCPessoa extends javax.swing.JDialog {
         });
     }
 
+    //função que retorna a pessoa que está focada no grid
     private Pessoa getPessoaSelecionada() {
+        //se o grid tiver vazio, retorna nulo pois nenhuma pessoa está selecionada
         if (this.tbPessoa.getRowCount() <= 0) {
             return (null);
         }
 
+        //instancia uma Pessoa de acordo com os valores da linha selecionada no grid
         Pessoa pessoa = new Pessoa(
                 Integer.parseInt(this.tbPessoa.getValueAt(
                                 this.tbPessoa.getSelectedRow(), 0).toString()),
@@ -337,20 +343,28 @@ public class DCPessoa extends javax.swing.JDialog {
                 this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 8).toString(),
                 this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 9).toString(),
                 this.tbPessoa.getValueAt(this.tbPessoa.getSelectedRow(), 10).toString());
+        //retorna essa pessoa
         return (pessoa);
     }
 
     private void sair() {
+        //fecha a tela
         this.dispose();
     }
 
+    //atualiza o grid
     private void atualizarJTable() {
+        //modelo do grid é atualizado
         this.tbPessoa.setModel(PessoaController.getTableModel());
+        //é passado todas as colunas para o tamanho 120
         for (int i = 0; i <= this.tbPessoa.getColumnCount() - 1; i++) {
             this.tbPessoa.getColumnModel().getColumn(i).setPreferredWidth(120);
         }
+        //foca o grid
         this.tbPessoa.requestFocus();
+        //se existir algum registro no grid
         if (this.tbPessoa.getModel().getRowCount() > 0) {
+            //é focado o primeiro registro
             this.tbPessoa.setRowSelectionInterval(0, 0);
         }
     }
@@ -377,6 +391,7 @@ public class DCPessoa extends javax.swing.JDialog {
     private javax.swing.JTable tbPessoa;
     // End of variables declaration//GEN-END:variables
 
+    //gets e sets
     private Usuario getUsuario() {
         return (this.usuario);
     }
@@ -385,6 +400,7 @@ public class DCPessoa extends javax.swing.JDialog {
         this.usuario = usuario;
     }
 
+    //função para abrir a tela de novo
     private void novo() {
         DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
                 "Incluir - Pessoa", this.getUsuario());
@@ -392,6 +408,7 @@ public class DCPessoa extends javax.swing.JDialog {
         this.atualizarJTable();
     }
 
+    //função para abrir a tela de edição
     private void editar() {
         if (this.getPessoaSelecionada() != null) {
             DIPessoa iPessoa = new DIPessoa((JFrame) this.getParent(), true,
@@ -403,10 +420,16 @@ public class DCPessoa extends javax.swing.JDialog {
         }
     }
 
+    //função para excluir uma pessoa
     private void excluir() {
+        //variavel para controle
         boolean isValid = true;
+
+        //se tiver alguma pessoa selecionada
         if (this.getPessoaSelecionada() != null) {
+            //variavel para receber o codigo da pessoa
             int codPessoa = this.getPessoaSelecionada().getCodPessoa();
+
             if (codPessoa == 1) {
                 Lib.information("Não é possível excluir o Administrador!");
                 isValid = false;
@@ -418,54 +441,70 @@ public class DCPessoa extends javax.swing.JDialog {
                 isValid = false;
             }
 
-            String tipoPessoa = PessoaController.getPessoa(PessoaController.getPessoa(codPessoa));
-            if (tipoPessoa.equals("Enfermeiro")) {
-                if (Lib.confirmation("Essa Pessoa tem vínculo com Enfermeiro.\n"
-                        + "Deseja realmente Excluír?", "Excluir Pessoa") == 0) {
-                    EnfermeiroController.delete(codPessoa);
-                } else {
-                    isValid = false;
-                }
-            } else if (tipoPessoa.equals("Médico")) {
-                if (Lib.confirmation("Essa Pessoa tem vínculo com Médico.\n"
-                        + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
-                    MedicoController.delete(codPessoa);
-                } else {
-                    isValid = false;
-                }
-            } else if (tipoPessoa.equals("Paciente")) {
-                if (Lib.confirmation("Essa Pessoa tem vínculo com Paciente.\n"
-                        + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
-                    PacienteController.delete(codPessoa);
-                } else {
-                    isValid = false;
-                }
-            } else if (tipoPessoa.equals("Secretário")) {
-                if (Lib.confirmation("Essa Pessoa tem vínculo com Secretário.\n"
-                        + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
-                    SecretarioController.delete(codPessoa);
-                } else {
-                    isValid = false;
+            //se ainda for valido para inserir uma pessoa
+            if (isValid) {
+                //variavel para retornar o tipo da pessoa
+                String tipoPessoa = PessoaController.getPessoa(PessoaController.getPessoa(codPessoa));
+                //verifica qual o tipo da pessoa
+                if (tipoPessoa.equals("Enfermeiro")) {
+                    if (Lib.confirmation("Essa Pessoa tem vínculo com Enfermeiro.\n"
+                            + "Deseja realmente Excluír?", "Excluir Pessoa") == 0) {
+                        EnfermeiroController.delete(codPessoa);
+                    } else {
+                        isValid = false;
+                    }
+                } else if (tipoPessoa.equals("Médico")) {
+                    if (Lib.confirmation("Essa Pessoa tem vínculo com Médico.\n"
+                            + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
+                        MedicoController.delete(codPessoa);
+                    } else {
+                        isValid = false;
+                    }
+                } else if (tipoPessoa.equals("Paciente")) {
+                    if (Lib.confirmation("Essa Pessoa tem vínculo com Paciente.\n"
+                            + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
+                        PacienteController.delete(codPessoa);
+                    } else {
+                        isValid = false;
+                    }
+                } else if (tipoPessoa.equals("Secretário")) {
+                    if (Lib.confirmation("Essa Pessoa tem vínculo com Secretário.\n"
+                            + "Deseja realmente Excluir?", "Excluir Pessoa") == 0) {
+                        SecretarioController.delete(codPessoa);
+                    } else {
+                        isValid = false;
+                    }
                 }
             }
 
+            //caso ainda for valido
             if (isValid) {
+                //exclui a pessoa seleciona
                 PessoaController.delete(this.getPessoaSelecionada().getCodPessoa());
+                //atualiza a grid(tabela)
                 this.atualizarJTable();
-            } else {
-                JOptionPane.showMessageDialog(this, "Nenhuma Pessoa selecionada!");
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhuma Pessoa selecionada!");
         }
     }
 
+    //função para exibir o relatorio na tela
     private void iReport() {
-        JDialog viewer = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
-        viewer.setSize(this.getParent().getWidth(), this.getParent().getHeight());
-        viewer.setLocationRelativeTo(null);
-        viewer.setAlwaysOnTop(true);
+        //é criado um dialog padrão
+        JDialog dialog = new JDialog(new javax.swing.JFrame(), "Visualização do Relatório", true);
+        //passa o tamanho do dialog
+        dialog.setSize(this.getParent().getWidth(), this.getParent().getHeight());
+        //passa a posição do grid para o meio da tela
+        dialog.setLocationRelativeTo(null);
+        //obriga o relatorio sempre ficar por cima do sistema
+        dialog.setAlwaysOnTop(true);
 
+        //variavel que recebe o relatorio
         JasperViewer jv = PessoaController.getIReport();
-        viewer.getContentPane().add(jv.getContentPane());
-        viewer.setVisible(true);
+        //adiciona o relatorio dentro do dialog
+        dialog.getContentPane().add(jv.getContentPane());
+        //mostra o dialog
+        dialog.setVisible(true);
     }
 }

@@ -157,7 +157,6 @@ public class FPrincipal extends javax.swing.JFrame {
         jbtSobre.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jbtSobre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/hospitale3g/icons/sobre.png"))); // NOI18N
         jbtSobre.setText("Sobre");
-        jbtSobre.setEnabled(false);
         jbtSobre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtSobreActionPerformed(evt);
@@ -303,7 +302,8 @@ public class FPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtPessoaActionPerformed
 
     private void jbtSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSobreActionPerformed
-        // TODO add your handling code here:
+        DSobre sobre = new DSobre(this, true);
+        sobre.setVisible(true);
     }//GEN-LAST:event_jbtSobreActionPerformed
 
     public static void main(String args[]) {

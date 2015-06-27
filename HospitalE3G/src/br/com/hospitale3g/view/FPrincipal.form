@@ -269,7 +269,6 @@
               <Image iconType="3" name="/br/com/hospitale3g/icons/sobre.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Sobre"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtSobreActionPerformed"/>

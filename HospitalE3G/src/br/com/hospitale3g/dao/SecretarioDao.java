@@ -26,11 +26,11 @@ public class SecretarioDao extends Dao {
         String sqlQuery = "SELECT * "
                 + "FROM SECRETARIO";
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         List<Secretario> secretarios = new ArrayList<Secretario>();
         ResultSet resultSet;
         try {
-            resultSet = this.getComando().executeQuery(sqlQuery);
+            resultSet = this.getStatement().executeQuery(sqlQuery);
             while (resultSet.next()) {
                 int codPessoa = resultSet.getInt(SecretarioDao.codPessoa);
 
@@ -56,9 +56,9 @@ public class SecretarioDao extends Dao {
                 + "VALUES(" + secretario.getCodPessoa() + ", "
                 + secretario.getRegistro() + ");";
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -73,9 +73,9 @@ public class SecretarioDao extends Dao {
                 + " REGISTRO = " + secretario.getRegistro() + " "
                 + "WHERE CODPESSOA = " + secretario.getCodPessoa();
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -88,9 +88,9 @@ public class SecretarioDao extends Dao {
         String sqlQuery = "DELETE FROM SECRETARIO "
                 + " WHERE CODPESSOA = " + codPessoa;
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
+            this.getStatement().executeUpdate(sqlQuery);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
@@ -104,11 +104,11 @@ public class SecretarioDao extends Dao {
                 + " FROM SECRETARIO "
                 + " WHERE CODPESSOA = " + codPessoa;
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         List<Secretario> secretarios = new ArrayList<Secretario>();
         ResultSet resultSet;
         try {
-            resultSet = this.getComando().executeQuery(sqlQuery);
+            resultSet = this.getStatement().executeQuery(sqlQuery);
             if ((resultSet != null) && (resultSet.next())) {
                 PessoaDao daoPessoa = new PessoaDao();
                 Pessoa pessoa = daoPessoa.getPessoa(resultSet.getInt(SecretarioDao.codPessoa));
@@ -128,12 +128,12 @@ public class SecretarioDao extends Dao {
     }
 
     public boolean findSecretario(int registro) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM SECRETARIO "
                     + " WHERE REGISTRO = " + registro;
-            ResultSet resultSet = this.getComando().executeQuery(sqlQuery);
+            ResultSet resultSet = this.getStatement().executeQuery(sqlQuery);
             return (resultSet.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -144,12 +144,12 @@ public class SecretarioDao extends Dao {
     }
 
     public boolean existsSecretario(int registro) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM SECRETARIO "
                     + " WHERE REGISTRO = " + registro;
-            ResultSet resultSet = this.getComando().executeQuery(sqlQuery);
+            ResultSet resultSet = this.getStatement().executeQuery(sqlQuery);
             return (resultSet.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -164,9 +164,9 @@ public class SecretarioDao extends Dao {
         String sqlQuery = "SELECT COALESCE(MAX(REGISTRO), 0) + 1 AS REGISTRO "
                 + " FROM SECRETARIO ";
 
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
-            ResultSet rs = this.getComando().executeQuery(sqlQuery);
+            ResultSet rs = this.getStatement().executeQuery(sqlQuery);
             while (rs.next()) {
                 aux = rs.getInt("REGISTRO");
             }
@@ -180,14 +180,14 @@ public class SecretarioDao extends Dao {
     }
 
     public boolean hasDependenceUsuario(int registro) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT U.* "
                     + " FROM USUARIO U "
                     + " WHERE U.CODPESSOA = (SELECT S.CODPESSOA"
                     + " FROM SECRETARIO S "
                     + " WHERE S.REGISTRO = " + registro + ");";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
             System.err.println(e.toString());
@@ -227,16 +227,16 @@ public class SecretarioDao extends Dao {
     }
 
     public JasperViewer getIReport() {
-        this.conect(url);
+        this.connect(url);
         try {
-            this.getComando().execute("SELECT S.*, P.*, "
+            this.getStatement().execute("SELECT S.*, P.*, "
                     + "             CASE P.SEXO "
                     + "                WHEN 'M' THEN 'Masculino' "
                     + "                WHEN 'F' THEN 'Feminino' "
                     + "             END AS PSEXO "
                     + "FROM SECRETARIO S "
                     + "JOIN PESSOA P ON P.CODPESSOA = S.CODPESSOA");
-            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getStatement().getResultSet());
             JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Secretario.jasper", new HashMap(), relResult);
             return (new JasperViewer(jpPrint, true));
         } catch (SQLException | JRException ex) {

@@ -1,5 +1,17 @@
 package br.com.hospitale3g.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
+
 import br.com.hospitale3g.controller.EnfermeiroController;
 import br.com.hospitale3g.controller.Lib;
 import br.com.hospitale3g.controller.MedicoController;
@@ -8,27 +20,13 @@ import br.com.hospitale3g.controller.SecretarioController;
 import br.com.hospitale3g.model.Enfermeiro;
 import br.com.hospitale3g.model.Medico;
 import br.com.hospitale3g.model.Paciente;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
 import br.com.hospitale3g.model.Pessoa;
 import br.com.hospitale3g.model.Secretario;
-import br.com.hospitale3g.model.Usuario;
 import br.com.hospitale3g.view.DExcecao;
-import java.io.File;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class PessoaDao extends Dao {
 
+    //constantes com os nomes de cada atributo no banco de dados
     static final String codPessoa = "codPessoa";
     static final String nome = "nome";
     static final String cpf = "cpf";
@@ -41,43 +39,54 @@ public class PessoaDao extends Dao {
     static final String cidade = "cidade";
     static final String cep = "cep";
 
+    //instancia um PessoaDao
     public PessoaDao() {
         super();
     }
 
+    //função que retorna em uma lista, os dados que estão no banco de dados
     public List<Pessoa> select() {
         String sqlQuery = "SELECT * "
                 + "FROM PESSOA";
 
-        this.conect(Dao.url);
+        //conecta no banco de dados
+        this.connect(Dao.url);
+        //instancia uma lista de pessoas
         List<Pessoa> pessoas = new ArrayList<Pessoa>();
-        ResultSet rs;
+        ResultSet resultSet;
         try {
-            rs = this.getComando().executeQuery(sqlQuery);
-            while (rs.next()) {
-                Pessoa pessoa = new Pessoa(rs.getInt(codPessoa),
-                        rs.getString(nome),
-                        rs.getString(sexo).charAt(0),
-                        rs.getString(cpf),
-                        rs.getString(rg),
-                        rs.getString(rua),
-                        rs.getString(numero),
-                        rs.getString(complemento),
-                        rs.getString(bairro),
-                        rs.getString(cidade),
-                        rs.getString(cep));
+            //resultSet recebe os dados retornados da query
+            resultSet = this.getStatement().executeQuery(sqlQuery);
+            //caso ainda houver proximo no resultSet
+            while (resultSet.next()) {
+                //é criado uma nova instancia de pessoa de acordo com os dados
+                //do resultSet
+                Pessoa pessoa = new Pessoa(resultSet.getInt(codPessoa),
+                        resultSet.getString(nome),
+                        resultSet.getString(sexo).charAt(0),
+                        resultSet.getString(cpf),
+                        resultSet.getString(rg),
+                        resultSet.getString(rua),
+                        resultSet.getString(numero),
+                        resultSet.getString(complemento),
+                        resultSet.getString(bairro),
+                        resultSet.getString(cidade),
+                        resultSet.getString(cep));
+                //adiciona a pessoa na lista de pessoas
                 pessoas.add(pessoa);
             }
+            //retorna a lista de pessoas
             return (pessoas);
-        } catch (SQLException e) {
+        } catch (SQLException e) {//tratamento de exceções
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
             return (null);
         } finally {
-            this.close();
+            this.close();//fecha o banco de dados
         }
     }
 
+    //função que insere uma pessoa no banco de dados
     public void insert(Pessoa pessoa) {
         String sqlQuery = "INSERT INTO PESSOA(CODPESSOA, NOME, CPF, RG, SEXO, "
                 + "RUA, NUMERO, COMPLEMENTO, BAIRRO, CIDADE, CEP) "
@@ -92,17 +101,21 @@ public class PessoaDao extends Dao {
                 + Lib.quotedStr(pessoa.getBairro()) + ", "
                 + Lib.quotedStr(pessoa.getCidade()) + ", "
                 + Lib.quotedStr(pessoa.getCep()) + ");";
-        this.conect(Dao.url);
+
+        //conecta com o banco de dados
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
-        } catch (SQLException e) {
+            //executa a query
+            this.getStatement().executeUpdate(sqlQuery);
+        } catch (SQLException e) {//tratamento de exceção
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
         } finally {
-            this.close();
+            this.close();//fecha a conexão
         }
     }
 
+    //função que atualiza a pessoa passada por parametro no banco de dados
     public void update(Pessoa pessoa) {
         String sqlQuery = "UPDATE PESSOA "
                 + "SET CODPESSOA = " + pessoa.getCodPessoa() + ", "
@@ -118,75 +131,96 @@ public class PessoaDao extends Dao {
                 + " CEP = " + Lib.quotedStr(pessoa.getCep()) + " "
                 + "WHERE CODPESSOA = " + pessoa.getCodPessoa();
 
-        this.conect(Dao.url);
+        //conecta com o bd
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
-        } catch (SQLException e) {
+            //executa a query
+            this.getStatement().executeUpdate(sqlQuery);
+        } catch (SQLException e) {//tratamento de exceção
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
         } finally {
+            //fecha a conexão
             this.close();
         }
     }
 
+    //função que delete uma pessoa de acordo com o código passado por parametro
     public void delete(int codPessoa) {
         String sqlQuery = "DELETE FROM PESSOA "
                 + " WHERE CODPESSOA = " + codPessoa;
 
-        this.conect(Dao.url);
+        //conecta com o banco de dados
+        this.connect(Dao.url);
         try {
-            this.getComando().executeUpdate(sqlQuery);
-        } catch (SQLException e) {
+            //executa a query
+            this.getStatement().executeUpdate(sqlQuery);
+        } catch (SQLException e) {//tratamento de exceção
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
         } finally {
+            //fecha a conexão com o banco de dados
             this.close();
         }
     }
 
+    //função que retorna o proximo código da pessoa
     public int getNextCodPessoa() {
         int aux = -1;
         String sqlQuery = "SELECT COALESCE(MAX(CODPESSOA), 0) + 1 AS CODPESSOA "
                 + " FROM PESSOA ";
 
-        this.conect(Dao.url);
+        //conecta com o bando de dados
+        this.connect(Dao.url);
         try {
-            ResultSet rs = this.getComando().executeQuery(sqlQuery);
-            while (rs.next()) {
-                aux = rs.getInt("CODPESSOA");
+            //resultSet recebe os dados da query
+            ResultSet resultSet = this.getStatement().executeQuery(sqlQuery);
+            while (resultSet.next()) {
+                //aux recebe o valor retornado da query
+                aux = resultSet.getInt(codPessoa);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) {//tratamento de exceção
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
         } finally {
+            //fecha a conexão
             this.close();
         }
+        //retorna o proximo valor do código
         return (aux);
     }
 
+    //função que retorna uma Pessoa de acordo com o código passado como parametro
     public Pessoa getPessoa(int codPessoa) {
         String sqlQuery = "SELECT * "
                 + " FROM PESSOA "
                 + " WHERE CODPESSOA = " + codPessoa;
 
-        this.conect(Dao.url);
+        //conecta com o banco de dados
+        this.connect(Dao.url);
+        //instancia uma lista de pessoa
         List<Pessoa> pessoas = new ArrayList<Pessoa>();
-        ResultSet rs;
+        //cria o resultSet
+        ResultSet resultSet;
         try {
-            rs = this.getComando().executeQuery(sqlQuery);
+            //resultSet recebe os dados retornados da query
+            resultSet = this.getStatement().executeQuery(sqlQuery);
 
-            if ((rs != null) && (rs.next())) {
-                Pessoa pessoa = new Pessoa(rs.getInt(PessoaDao.codPessoa),
-                        rs.getString(PessoaDao.nome),
-                        rs.getString(PessoaDao.sexo).charAt(0),
-                        rs.getString(PessoaDao.cpf),
-                        rs.getString(PessoaDao.rg),
-                        rs.getString(rua),
-                        rs.getString(numero),
-                        rs.getString(complemento),
-                        rs.getString(bairro),
-                        rs.getString(cidade),
-                        rs.getString(cep));
+            //verifica se não está nulo, e se existe proximo dentro do resultSet
+            if ((resultSet != null) && (resultSet.next())) {
+                //instancia uma pessoa de acordo com os dados do resultSet
+                Pessoa pessoa = new Pessoa(resultSet.getInt(PessoaDao.codPessoa),
+                        resultSet.getString(PessoaDao.nome),
+                        resultSet.getString(PessoaDao.sexo).charAt(0),
+                        resultSet.getString(PessoaDao.cpf),
+                        resultSet.getString(PessoaDao.rg),
+                        resultSet.getString(rua),
+                        resultSet.getString(numero),
+                        resultSet.getString(complemento),
+                        resultSet.getString(bairro),
+                        resultSet.getString(cidade),
+                        resultSet.getString(cep));
+                //retorna  pessoa instanciada
                 return (pessoa);
             }
             return (null);
@@ -199,42 +233,60 @@ public class PessoaDao extends Dao {
         }
     }
 
+    //função que verifica se existe o cpf passado por parametro, dentro do bd
     public boolean existsPessoaCpf(String cpf) {
-        this.conect(Dao.url);
+        //conecta com o bd
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM PESSOA "
                     + " WHERE CPF LIKE " + Lib.quotedStr(cpf) + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            //resultSet recebe os dados da query
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
+            //retorna se existe um primeiro registro
             return (result.first());
-        } catch (SQLException e) {
-            System.err.println(e.toString());
+        } catch (SQLException e) {//tratamento de exceção
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
         } finally {
+            //fecha a conexão
             this.close();
         }
         return (false);
     }
 
+    //função que verifica se existe um rg dentro do bd
     public boolean existsPessoaRg(String rg) {
-        this.conect(Dao.url);
+        //conecta com o bd
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT * "
                     + " FROM PESSOA "
                     + " WHERE RG LIKE " + Lib.quotedStr(rg) + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
-            return (result.first());
-        } catch (SQLException e) {
-            System.err.println(e.toString());
+
+            //resultSet que recebe os dados da query
+            ResultSet resultSet = this.getStatement().executeQuery(sqlQuery);
+            //retorna se existe um primeiro registro no resultSet
+            return (resultSet.first());
+        } catch (SQLException e) {//tratamento de exceção
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
         } finally {
+            //fecha a conexão
             this.close();
         }
         return (false);
     }
 
+    //função que retorna o tipo da pessoa
     public String getPessoa(Pessoa pessoa) {
+        //se o código for 1, então é o administrador
         if (pessoa.getCodPessoa() == 1) {
             return ("Administrador");
         }
+        
+        //se existir algum registro dessa pessoa em outra tabela, significa
+        //que ela é um registro dessa tabela
         Enfermeiro enfermeiro = EnfermeiroController.getEnfermeiro(pessoa.getCodPessoa());
         if (enfermeiro != null) {
             return ("Enfermeiro");
@@ -254,8 +306,10 @@ public class PessoaDao extends Dao {
         return ("Desconhecido");
     }
 
+    //função que verifica se a pessoa está vinculada a qualquer atendimento
     public boolean hasDependenceAtendimento(int codPessoa) {
-        this.conect(Dao.url);
+        //conecta com o banco de dados
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT A.* "
                     + "FROM ATENDIMENTO A "
@@ -265,57 +319,74 @@ public class PessoaDao extends Dao {
                     + "WHERE (E.CODPESSOA = " + codPessoa + ") OR  "
                     + "      (M.CODPESSOA = " + codPessoa + ") OR "
                     + "      (P.CODPESSOA = " + codPessoa + ");";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
-            return (result.first());
-        } catch (SQLException e) {
-            System.err.println(e.toString());
+            
+            //resultSet recebe os dados retornados da query
+            ResultSet resultSet = this.getStatement().executeQuery(sqlQuery);
+            //retorna se existe algum dado da query
+            return (resultSet.first());
+        } catch (SQLException e) {//tratamento de exceções
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
         } finally {
             this.close();
         }
         return (false);
     }
 
+    //função que verifica se existe alguma depedencia com usuario, passando como
+    //parametro o crm
     public boolean hasDependenceUsuario(String crm) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT U.* "
                     + " FROM USUARIO U "
                     + " WHERE U.CODPESSOA = (SELECT M.CODPESSOA"
                     + " FROM MEDICO M "
                     + " WHERE M.CRM LIKE " + Lib.quotedStr(crm) + ");";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
-            return (result.first());
+            //retorna os valores da query
+            ResultSet resultSet = this.getStatement().executeQuery(sqlQuery);
+            //retorna verdadeiro se existir algum valor nesse resultSet
+            return (resultSet.first());
         } catch (SQLException e) {
-            System.err.println(e.toString());
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
         } finally {
             this.close();
         }
         return (false);
     }
 
+    
+    //função que verifica se existe alguma depedencia com usuario, passando como
+    //parametro o codido da pessoa
     public boolean hasDependenceUsuario(int codPessoa) {
-        this.conect(Dao.url);
+        this.connect(Dao.url);
         try {
             String sqlQuery = "SELECT U.* "
                     + " FROM USUARIO U "
                     + " WHERE U.CODPESSOA = " + codPessoa + ";";
-            ResultSet result = this.getComando().executeQuery(sqlQuery);
+            
+            ResultSet result = this.getStatement().executeQuery(sqlQuery);
             return (result.first());
         } catch (SQLException e) {
-            System.err.println(e.toString());
+            DExcecao excecao = new DExcecao(null, true, e.getMessage());
+            excecao.setVisible(true);
         } finally {
             this.close();
         }
         return (false);
     }
 
+    //função que retorna os nomes das colunas do grid
     public String[] getColumns() {
         String[] aux = {"Código", "Nome", "Sexo", "CPF", "RG",
             "Rua", "Número", "Complemento", "Bairro", "Cidade", "CEP"};
         return (aux);
     }
-
+    
+    //função que retorna o modelo do grid
     public DefaultTableModel getTableModel() {
+        //passa a opção de alterar as celulas do grid para falso
         DefaultTableModel model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int rowIndex, int mColIndex) {
@@ -323,12 +394,14 @@ public class PessoaDao extends Dao {
             }
         };
 
+        //adiciona as colunas no grid
         for (int i = 0; i <= this.getColumns().length - 1; i++) {
             String[] aux = this.getColumns();
             model.addColumn(aux[i]);
-            //model.ge
         }
         model.setNumRows(0);
+        
+        //adiciona os valores recebidos da função select no grid
         for (Pessoa pessoa : this.select()) {
             model.addRow(new Object[]{pessoa.getCodPessoa(),
                 pessoa.getNome(),
@@ -345,20 +418,26 @@ public class PessoaDao extends Dao {
         return (model);
     }
 
+    //função que retorna o relatorio
     public JasperViewer getIReport() {
-        this.conect(url);
+        //conecta com o bd
+        this.connect(url);
         try {
-            this.getComando().execute("SELECT P.*, "
+            //salva a query
+            this.getStatement().execute("SELECT P.*, "
                     + "CASE P.SEXO "
                     + "WHEN 'M' THEN 'Masculino' "
                     + "WHEN 'F' THEN 'Feminino' "
                     + " END AS PSEXO "
                     + "FROM PESSOA P");
-            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getComando().getResultSet());
+            //resulSet recebe os valores da query
+            JRResultSetDataSource relResult = new JRResultSetDataSource(this.getStatement().getResultSet());
+            //jpPrint recebe o relatorio
             JasperPrint jpPrint = JasperFillManager.fillReport("iReports/Pessoa.jasper", new HashMap(), relResult);
+            //é retornado o relatorio
             return (new JasperViewer(jpPrint, true));
 
-        } catch (SQLException | JRException ex) {
+        } catch (SQLException | JRException ex) {//tratamento de exceções
             DExcecao excecao = new DExcecao(null, true, ex.getMessage());
             excecao.setVisible(true);
         }

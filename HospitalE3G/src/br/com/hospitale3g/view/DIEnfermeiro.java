@@ -346,8 +346,11 @@ public class DIEnfermeiro extends javax.swing.JDialog {
             Lib.information("*COREN. Preenchimento Obrigatório!");
             isValid = false;
             this.jtfCOREN.requestFocus();
-        }
-        if (this.getTipo() == DIEnfermeiro.tipoFormulario.tfINCLUSAO) {
+        } else if (this.jtfCOREN.getText().length() > 15) {
+            Lib.information("COREN.\nSomente é permitido até 15 caracteres!");
+            isValid = false;
+            this.jtfCOREN.requestFocus();
+        } else if (this.getTipo() == DIEnfermeiro.tipoFormulario.tfINCLUSAO) {
             if (EnfermeiroController.existsEnfermeiro(this.jtfCOREN.getText())) {
                 Lib.information("COREN já Cadastrado no Sistema!");
                 isValid = false;

@@ -328,20 +328,37 @@ public class DIAtendimento extends javax.swing.JDialog {
     }
 
     private void salvar() {
-        Medico medico = getMedicos().get(this.jcbMedico.getSelectedIndex());
-        Paciente paciente = getPacientes().get(this.jcbPaciente.getSelectedIndex());
+        boolean isValid = true;
 
-        Atendimento atendimento;
-        atendimento = new Atendimento(Integer.parseInt(this.jsCodigo.getValue().toString()),
-                medico.getCrm(), paciente.getId(), null,
-                "", "", "", "", 0, this.jtpObservacao.getText());
-
-        if (this.getTipo() == DIAtendimento.tipoFormulario.tfINCLUSAO) {
-            AtendimentoController.insert(atendimento);
-        } else if (this.getTipo() == DIAtendimento.tipoFormulario.tfEDICAO) {
-            AtendimentoController.update(atendimento);
+        if (this.jcbMedico.getSelectedIndex() == -1) {
+            Lib.information("*Médico.\nPreenchimento Obrigatório!");
+            isValid = false;
+        } else if (this.jcbPaciente.getSelectedIndex() == -1) {
+            Lib.information("*Paciente.\nPreenchimento Obrigatório!");
+            isValid = false;
+        } else if (this.jtpObservacao.getText().length() > 500) {
+            Lib.information("Observação.\nSomente é permitido até 500 caracteres!");
+            isValid = false;
+            this.jtpObservacao.requestFocus();
         }
-        sair();
+
+        if (isValid) {
+
+            Medico medico = getMedicos().get(this.jcbMedico.getSelectedIndex());
+            Paciente paciente = getPacientes().get(this.jcbPaciente.getSelectedIndex());
+
+            Atendimento atendimento;
+            atendimento = new Atendimento(Integer.parseInt(this.jsCodigo.getValue().toString()),
+                    medico.getCrm(), paciente.getId(), null,
+                    "", "", "", "", 0, this.jtpObservacao.getText());
+
+            if (this.getTipo() == DIAtendimento.tipoFormulario.tfINCLUSAO) {
+                AtendimentoController.insert(atendimento);
+            } else if (this.getTipo() == DIAtendimento.tipoFormulario.tfEDICAO) {
+                AtendimentoController.update(atendimento);
+            }
+            sair();
+        }
     }
 
     private void sair() {
