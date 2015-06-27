@@ -69,7 +69,7 @@ public class Dao {
 
     public boolean createDataBase() {
         try {
-            String scriptDataBase = "CREATE DATA BASE " + dataBase;//script para criação de banco
+            String scriptDataBase = "CREATE DATABASE " + dataBase;//script para criação de banco
             String scriptPessoa = "CREATE TABLE PESSOA("
                     + " CODPESSOA INTEGER, "
                     + " NOME VARCHAR(50) NOT NULL, "
