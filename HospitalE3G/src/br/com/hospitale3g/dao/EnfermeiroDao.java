@@ -18,19 +18,23 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class EnfermeiroDao extends Dao {
-
+    //constantes com os nomes de cada atributo no banco de dados
     static final String codPessoa = "codPessoa";
     static final String coren = "coren";
 
+    //função que retorna em uma lista, os dados que estão no banco de dados
     public List<Enfermeiro> select() {
         String sqlQuery = "SELECT * "
                 + "FROM ENFERMEIRO";
-
+        //conecta no banco de dados
         this.connect(Dao.url);
+        //instancia uma lista de enfermeiros
         List<Enfermeiro> enfermeiros = new ArrayList<Enfermeiro>();
         ResultSet resultSet;
         try {
+            //recebe os dados retornados da query
             resultSet = this.getStatement().executeQuery(sqlQuery);
+            //caso ainda houver proximo no resultSet
             while (resultSet.next()) {
                 int codPessoa = resultSet.getInt(EnfermeiroDao.codPessoa);
 
@@ -39,18 +43,20 @@ public class EnfermeiroDao extends Dao {
 
                 Enfermeiro enfermeiro = new Enfermeiro(pessoa,
                         resultSet.getString(EnfermeiroDao.coren));
+                //adiciona a pessoa na lista de pessoas
                 enfermeiros.add(enfermeiro);
             }
+            //retorna a lista de pessoas
             return (enfermeiros);
-        } catch (SQLException e) {
+        } catch (SQLException e) {//tratamento de exceções
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
             return (null);
         } finally {
-            this.close();
+            this.close();//fecha o banco de dados
         }
     }
-
+    //insere um enfermeiro no banco
     public void insert(Enfermeiro enfermeiro) {
         String sqlQuery = "INSERT INTO ENFERMEIRO(CODPESSOA, COREN) "
                 + "VALUES(" + enfermeiro.getCodPessoa() + ", "
@@ -66,7 +72,7 @@ public class EnfermeiroDao extends Dao {
             this.close();
         }
     }
-
+    //atualiza um enfermeiro no banco
     public void update(Enfermeiro enfermeiro) {
         String sqlQuery = "UPDATE ENFERMEIRO "
                 + "SET CODPESSOA = " + enfermeiro.getCodPessoa() + ", "
@@ -83,7 +89,7 @@ public class EnfermeiroDao extends Dao {
             this.close();
         }
     }
-
+    //deleta um enfermeiro no banco
     public void delete(int codPessoa) {
         String sqlQuery = "DELETE FROM ENFERMEIRO "
                 + " WHERE CODPESSOA = " + codPessoa;
@@ -98,7 +104,7 @@ public class EnfermeiroDao extends Dao {
             this.close();
         }
     }
-
+    //recebe um enfermeiro com codigo especificado
     public Enfermeiro getEnfermeiro(int codPessoa) {
         String sqlQuery = "SELECT * "
                 + " FROM ENFERMEIRO "
@@ -126,7 +132,7 @@ public class EnfermeiroDao extends Dao {
             this.close();
         }
     }
-
+    //recebe um enfermeiro de acordo com seu coren  
     public Enfermeiro getEnfermeiro(String coren) {
         String sqlQuery = "SELECT * "
                 + " FROM ENFERMEIRO "
@@ -154,7 +160,7 @@ public class EnfermeiroDao extends Dao {
             this.close();
         }
     }
-
+    //encontra um enfermeiro usando o coren
     public boolean findEnfermeiro(String coren) {
         this.connect(Dao.url);
         try {
@@ -170,7 +176,7 @@ public class EnfermeiroDao extends Dao {
         }
         return (false);
     }
-
+    //verifica a existencia de um enfermeiro
     public boolean existsEnfermeiro(int codPessoa) {
         this.connect(Dao.url);
         try {
@@ -186,7 +192,7 @@ public class EnfermeiroDao extends Dao {
         }
         return (false);
     }
-
+    //verifica a existencia de um enfermeiro
     public boolean existsEnfermeiro(String coren) {
         this.connect(Dao.url);
         try {
@@ -202,7 +208,7 @@ public class EnfermeiroDao extends Dao {
         }
         return (false);
     }
-
+    //verifica se está em atendimento
     public boolean hasDependenceAtendimento(String coren) {
         this.connect(Dao.url);
         try {
@@ -218,7 +224,7 @@ public class EnfermeiroDao extends Dao {
         }
         return (false);
     }
-
+    //verifica se é usuário do sistema
     public boolean hasDependenceUsuario(String coren) {
         this.connect(Dao.url);
         try {
@@ -236,12 +242,12 @@ public class EnfermeiroDao extends Dao {
         }
         return (false);
     }
-
+    //pega colunas
     public String[] getColumns() {
         String[] aux = {"Código", "Nome", "CPF", "COREN", "Sexo"};
         return (aux);
     }
-
+    //pega modelo de tabela
     public DefaultTableModel getTableModel() {
         DefaultTableModel model = new DefaultTableModel() {
             @Override
@@ -265,7 +271,7 @@ public class EnfermeiroDao extends Dao {
         }
         return (model);
     }
-
+    //relatório
     public JasperViewer getIReport() {
         this.connect(url);
         try {

@@ -220,7 +220,7 @@ public class UsuarioDao extends Dao {
         }
         return (false);
     }
-    //
+    //função que busca um usuario com codpessoa
     public boolean existsUsuarioCodPessoa(int codPessoa) {
         this.connect(Dao.url);
         try {
@@ -263,7 +263,7 @@ public class UsuarioDao extends Dao {
         }
         return (model);
     }
-
+    //relatorio
     public JasperViewer getIReport() {
         this.connect(url);
         try {

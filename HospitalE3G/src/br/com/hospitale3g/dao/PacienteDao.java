@@ -18,20 +18,24 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class PacienteDao extends Dao {
-
+    //constantes com os nomes de cada atributo no banco de dados
     static final String codPessoa = "codPessoa";
     static final String id = "id";
-
+        //função que retorna em uma lista, os dados que estão no banco de dados
     public List<Paciente> select() {
         String sqlQuery = "SELECT * "
                 + "FROM PACIENTE";
-
+        //conecta no banco de dados
         this.connect(Dao.url);
+        //instancia uma lista de pacientes
         List<Paciente> pacientes = new ArrayList<Paciente>();
         ResultSet resultSet;
         try {
+            //recebe os dados retornados da query
             resultSet = this.getStatement().executeQuery(sqlQuery);
             while (resultSet.next()) {
+                //é criado uma nova instancia de paciente de acordo com os dados
+                //do resultSet
                 int codPessoa = resultSet.getInt(PacienteDao.codPessoa);
 
                 PessoaDao daoPessoa = new PessoaDao();
@@ -39,18 +43,20 @@ public class PacienteDao extends Dao {
 
                 Paciente paciente = new Paciente(pessoa,
                         resultSet.getInt(PacienteDao.id));
+                //adiciona o paciente na lista de pacientes
                 pacientes.add(paciente);
             }
+            //retorna lista de pacientes
             return (pacientes);
-        } catch (SQLException e) {
+        } catch (SQLException e) {//tratamento de exceções
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
             return (null);
         } finally {
-            this.close();
+            this.close();//fecha o bd
         }
     }
-
+    //insere pacientes
     public void insert(Paciente paciente) {
         String sqlQuery = "INSERT INTO PACIENTE(CODPESSOA, ID) "
                 + "VALUES(" + paciente.getCodPessoa() + ", "
@@ -66,7 +72,7 @@ public class PacienteDao extends Dao {
             this.close();
         }
     }
-
+    //atualiza pacientes
     public void update(Paciente paciente) {
         String sqlQuery = "UPDATE PACIENTE "
                 + "SET CODPESSOA = " + paciente.getCodPessoa() + ", "
@@ -83,7 +89,7 @@ public class PacienteDao extends Dao {
             this.close();
         }
     }
-
+    //deleta pacientes
     public void delete(int codPessoa) {
         String sqlQuery = "DELETE FROM PACIENTE "
                 + " WHERE CODPESSOA = " + codPessoa;
@@ -98,7 +104,7 @@ public class PacienteDao extends Dao {
             this.close();
         }
     }
-
+    //recebe um paciente
     public Paciente getPaciente(int codPessoa) {
         String sqlQuery = "SELECT * "
                 + " FROM PACIENTE "
@@ -126,7 +132,7 @@ public class PacienteDao extends Dao {
             this.close();
         }
     }
-
+    //recebe um paciente
     public Paciente getPacienteId(int id) {
         String sqlQuery = "SELECT * "
                 + " FROM PACIENTE "
@@ -154,7 +160,7 @@ public class PacienteDao extends Dao {
             this.close();
         }
     }
-
+    //encontra paciente
     public boolean findPaciente(int id) {
         this.connect(Dao.url);
         try {
@@ -170,7 +176,7 @@ public class PacienteDao extends Dao {
         }
         return (false);
     }
-
+    //verifica a existencia de um paciente
     public boolean existsPaciente(int id) {
         this.connect(Dao.url);
         try {
@@ -186,7 +192,7 @@ public class PacienteDao extends Dao {
         }
         return (false);
     }
-
+    //recebe o proximo id
     public int getNextId() {
         int aux = -1;
         String sqlQuery = "SELECT COALESCE(MAX(ID), 0) + 1 AS ID "
@@ -206,7 +212,7 @@ public class PacienteDao extends Dao {
         }
         return (aux);
     }
-
+    //verifica se o paciente está sendo atendido
     public boolean hasDependenceAtendimento(int id) {
         this.connect(Dao.url);
         try {
@@ -226,7 +232,7 @@ public class PacienteDao extends Dao {
         String[] aux = {"Código", "Nome", "CPF", "ID", "Sexo"};
         return (aux);
     }
-
+    
     public DefaultTableModel getTableModel() {
         DefaultTableModel model = new DefaultTableModel() {
             @Override
@@ -250,7 +256,7 @@ public class PacienteDao extends Dao {
         }
         return (model);
     }
-
+    //relatorio
     public JasperViewer getIReport() {
         this.connect(url);
         try {

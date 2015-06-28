@@ -18,20 +18,24 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class SecretarioDao extends Dao {
-
+    //constantes com os nomes de cada atributo no banco de dados
     static final String codPessoa = "codPessoa";
     static final String registro = "registro";
-
+    //função que retorna em uma lista, os dados que estão no banco de dados
     public List<Secretario> select() {
         String sqlQuery = "SELECT * "
                 + "FROM SECRETARIO";
-
+        //conecta com o bd
         this.connect(Dao.url);
+        //instancia uma lista de secretarios
         List<Secretario> secretarios = new ArrayList<Secretario>();
         ResultSet resultSet;
         try {
+            //recebe dados retornados da query
             resultSet = this.getStatement().executeQuery(sqlQuery);
             while (resultSet.next()) {
+                //é criado uma nova instancia de secretario de acordo com os dados
+                //do resultSet
                 int codPessoa = resultSet.getInt(SecretarioDao.codPessoa);
 
                 PessoaDao daoPessoa = new PessoaDao();
@@ -39,18 +43,20 @@ public class SecretarioDao extends Dao {
 
                 Secretario secretario = new Secretario(pessoa,
                         resultSet.getInt(SecretarioDao.registro));
+                //adiciona o secretario na lista de secretarios
                 secretarios.add(secretario);
             }
+            //retorna a lista de secretarios
             return (secretarios);
-        } catch (SQLException e) {
+        } catch (SQLException e) {//tratamento de exceções
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
             return (null);
         } finally {
-            this.close();
+            this.close();//fecha o bd
         }
     }
-
+    //insere um secretario
     public void insert(Secretario secretario) {
         String sqlQuery = "INSERT INTO SECRETARIO(CODPESSOA, REGISTRO) "
                 + "VALUES(" + secretario.getCodPessoa() + ", "
@@ -66,7 +72,7 @@ public class SecretarioDao extends Dao {
             this.close();
         }
     }
-
+    //atualiza um secretario
     public void update(Secretario secretario) {
         String sqlQuery = "UPDATE SECRETARIO "
                 + "SET CODPESSOA = " + secretario.getCodPessoa() + ", "
@@ -83,7 +89,7 @@ public class SecretarioDao extends Dao {
             this.close();
         }
     }
-
+    //deleta um secretario
     public void delete(int codPessoa) {
         String sqlQuery = "DELETE FROM SECRETARIO "
                 + " WHERE CODPESSOA = " + codPessoa;
@@ -98,7 +104,7 @@ public class SecretarioDao extends Dao {
             this.close();
         }
     }
-
+    //recebe um secretario
     public Secretario getSecretario(int codPessoa) {
         String sqlQuery = "SELECT * "
                 + " FROM SECRETARIO "
@@ -126,7 +132,7 @@ public class SecretarioDao extends Dao {
             this.close();
         }
     }
-
+    //encontra um secretario
     public boolean findSecretario(int registro) {
         this.connect(Dao.url);
         try {
@@ -142,7 +148,7 @@ public class SecretarioDao extends Dao {
         }
         return (false);
     }
-
+    //verifica a existencia de um secretario
     public boolean existsSecretario(int registro) {
         this.connect(Dao.url);
         try {
@@ -158,7 +164,7 @@ public class SecretarioDao extends Dao {
         }
         return (false);
     }
-
+    //recebe o proximo registro de secretario
     public int getNextRegistro() {
         int aux = -1;
         String sqlQuery = "SELECT COALESCE(MAX(REGISTRO), 0) + 1 AS REGISTRO "
@@ -178,7 +184,7 @@ public class SecretarioDao extends Dao {
         }
         return (aux);
     }
-
+    //verifica a se é um usuario
     public boolean hasDependenceUsuario(int registro) {
         this.connect(Dao.url);
         try {
@@ -225,7 +231,7 @@ public class SecretarioDao extends Dao {
         }
         return (model);
     }
-
+    //relatorio
     public JasperViewer getIReport() {
         this.connect(url);
         try {

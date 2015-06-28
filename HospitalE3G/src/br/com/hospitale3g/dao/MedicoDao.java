@@ -18,20 +18,24 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class MedicoDao extends Dao {
-
+    //constantes com os nomes de cada atributo no banco de dados
     static final String codPessoa = "codPessoa";
     static final String crm = "crm";
-
+    //função que retorna em uma lista, os dados que estão no banco de dados
     public List<Medico> select() {
         String sqlQuery = "SELECT * "
                 + "FROM MEDICO";
-
+        //conecta no banco de dados
         this.connect(Dao.url);
+        //instancia uma lista de medicos
         List<Medico> medicos = new ArrayList<Medico>();
         ResultSet resultSet;
         try {
+            //recebe os dados retornados da query
             resultSet = this.getStatement().executeQuery(sqlQuery);
             while (resultSet.next()) {
+                //é criado uma nova instancia de medico de acordo com os dados
+                //do resultSet
                 int codPessoa = resultSet.getInt(MedicoDao.codPessoa);
 
                 PessoaDao daoPessoa = new PessoaDao();
@@ -39,18 +43,20 @@ public class MedicoDao extends Dao {
 
                 Medico medico = new Medico(pessoa,
                         resultSet.getString(MedicoDao.crm));
+                //adiciona o medico na lista
                 medicos.add(medico);
             }
+            //retorna o medico
             return (medicos);
         } catch (SQLException e) {
             DExcecao excecao = new DExcecao(null, true, e.getMessage());
             excecao.setVisible(true);
             return (null);
         } finally {
-            this.close();
+            this.close();//fecha o banco de dados
         }
     }
-
+    //insere medicos
     public void insert(Medico medico) {
         String sqlQuery = "INSERT INTO MEDICO(CODPESSOA, CRM) "
                 + "VALUES(" + medico.getCodPessoa() + ", "
@@ -66,7 +72,7 @@ public class MedicoDao extends Dao {
             this.close();
         }
     }
-
+    //atualiza medicos
     public void update(Medico medico) {
         String sqlQuery = "UPDATE MEDICO "
                 + "SET CODPESSOA = " + medico.getCodPessoa() + ", "
@@ -83,7 +89,7 @@ public class MedicoDao extends Dao {
             this.close();
         }
     }
-
+    //apaga medicos
     public void delete(int codPessoa) {
         String sqlQuery = "DELETE FROM MEDICO "
                 + " WHERE CODPESSOA = " + codPessoa;
@@ -98,7 +104,7 @@ public class MedicoDao extends Dao {
             this.close();
         }
     }
-
+    //seleciona medico
     public Medico getMedico(int codPessoa) {
         String sqlQuery = "SELECT * "
                 + " FROM MEDICO "
@@ -126,7 +132,7 @@ public class MedicoDao extends Dao {
             this.close();
         }
     }
-
+    //seleciona medico
     public Medico getMedico(String crm) {
         String sqlQuery = "SELECT * "
                 + " FROM MEDICO "
@@ -154,7 +160,7 @@ public class MedicoDao extends Dao {
             this.close();
         }
     }
-
+    //encontra o medico
     public boolean findMedico(String crm) {
         this.connect(Dao.url);
         try {
@@ -170,7 +176,7 @@ public class MedicoDao extends Dao {
         }
         return (false);
     }
-
+    //verifica a existencia de um medico
     public boolean existsMedico(int codPessoa) {
         this.connect(Dao.url);
         try {
@@ -186,7 +192,7 @@ public class MedicoDao extends Dao {
         }
         return (false);
     }
-
+    //verifica a existencia de um medico
     public boolean existsMedico(String crm) {
         this.connect(Dao.url);
         try {
@@ -202,7 +208,7 @@ public class MedicoDao extends Dao {
         }
         return (false);
     }
-
+    //verifica se o medico está em atendimento
     public boolean hasDependenceAtendimento(String crm) {
         this.connect(Dao.url);
         try {
@@ -218,7 +224,7 @@ public class MedicoDao extends Dao {
         }
         return (false);
     }
-
+    //verifica se o medico é um usuario
     public boolean hasDependenceUsuario(String crm) {
         this.connect(Dao.url);
         try {
@@ -236,12 +242,12 @@ public class MedicoDao extends Dao {
         }
         return (false);
     }
-
+    //seleciona colunas
     public String[] getColumns() {
         String[] aux = {"Código", "Nome", "CPF", "CRM", "Sexo"};
         return (aux);
     }
-
+    //seleciona o modelo de tabela
     public DefaultTableModel getTableModel() {
         DefaultTableModel model = new DefaultTableModel() {
             @Override
@@ -265,7 +271,7 @@ public class MedicoDao extends Dao {
         }
         return (model);
     }
-
+    //relatorio
     public JasperViewer getIReport() {
         this.connect(url);
         try {
